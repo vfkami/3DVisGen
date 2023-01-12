@@ -18,6 +18,11 @@ Unity 3D version:
   2020.3.43f1 LTS or later
 ```
 
+ProBuilder version:
+```
+  4.5.2 or later
+```
+
 ## How to use this API:
 
 - TODO: Write this section later!
