@@ -81,4 +81,43 @@ public class Utils : MonoBehaviour
         return decimo / qtdBarras; 
     }
 
+    // Calcula o ângulo de rotação para que um objeto X aponte para um objeto Y. Retorna o ângulo de rotação;
+    public static Quaternion CalculaAnguloEntreDoisPontos(GameObject x, GameObject y)
+    {
+        // i'll assume that dots are in the same z axis 
+        Vector3 direction = CalculaDirecaoEntreDoisPontos(x, y);
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg - 90;
+
+        Quaternion angleAxis = Quaternion.AngleAxis(angle, Vector3.forward);
+        return angleAxis;
+    }
+
+    public static Vector3 CalculaDirecaoEntreDoisPontos(GameObject x, GameObject y)
+    {
+        return y.transform.position - x.transform.position;
+    }
+
+    // Limitation: Only rotate in X angle; 
+    public static void RotacionaObjeto(GameObject x, Quaternion angle)
+    {
+        x.transform.rotation = Quaternion.Slerp(x.transform.rotation, angle, Time.deltaTime * 50);
+
+        return;
+    }
+
+    public static void EscalaLinhaParaTocarSegundoPonto(GameObject x, GameObject y, GameObject line)
+    {
+        Vector3 direction = CalculaDirecaoEntreDoisPontos(x, y);
+
+        //The size of line will be the hipotenuse of 3d triangle: 
+        //See tutorial here: https://www.mathsisfun.com/geometry/pythagoras-3d.html
+        var hipotenuse = Mathf.Sqrt(Mathf.Pow(direction.x, 2) + Mathf.Pow(direction.y, 2) + Mathf.Pow(direction.z, 2));
+        line.transform.localScale = new Vector3(0.5F, hipotenuse, 0.5F);
+
+        return;
+
+    }
+
+
+
 }
