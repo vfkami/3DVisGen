@@ -49,6 +49,7 @@ public class PontoLinha : MonoBehaviour
 
         linha.transform.localPosition = new Vector3(0, 0.5F, 0);
 
+
         linha.name = "Linha";
         linha.GetComponent<Renderer>().material = cor;
 
@@ -115,14 +116,11 @@ public class PontoLinha : MonoBehaviour
 
     public void ConectaProximoPonto()
     {
-        Utils.ConectaDoisPontos(gameObject, proximoPonto);
+        Utils.ConectaDoisPontos(gameObject, proximoPonto, linhaParent);
     }
 
-    public void ResetaPosicaoLinhaePonto()
+    public void RedefineEscalaLinha()
     {
-        linhaParent.transform.localPosition = Vector3.zero;
-        ponto.transform.localPosition = Vector3.zero;
-
         linha.transform.localScale = new Vector3(0.1F, 1F, 0.1F);
     }
 }

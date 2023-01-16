@@ -72,7 +72,10 @@ public class LineChartManager : MonoBehaviour
             {
                 ElementosVisuais[i - 1].GetComponent<PontoLinha>().setProximoPonto(ElementosVisuais[i]);
                 ElementosVisuais[i - 1].GetComponent<PontoLinha>().ConectaProximoPonto();
+                ElementosVisuais[i - 1].GetComponent<PontoLinha>().RedefineEscalaLinha();
+
             }
+
         }
 
         XAxisLabel.text = labelEixoX;

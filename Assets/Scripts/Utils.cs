@@ -6,6 +6,8 @@ using UnityEngine;
 
 public class Utils : MonoBehaviour
 {
+
+    //Normaliza os valores recebidos em um range de {0 - 1}
     public static float[] NormalizaValores(float[] valores)
     {
         float[] valoresNormalizados = new float[valores.Length];
@@ -16,43 +18,43 @@ public class Utils : MonoBehaviour
         return valoresNormalizados;
     }
 
-    public static float[] NormalizaValoresComMultiplicador(float[] valores, int multiplicador)
+    //Normaliza os valores recebidos em um range de {0 - 1} * x
+    public static float[] NormalizaValoresComMultiplicador(float[] valores, int x)
     {
-        float[] valoresNormalizados = new float[valores.Length];
-
-        for (int i = 0; i < valores.Length; i++)
-            valoresNormalizados[i] = ((valores[i] - valores.Min()) / (valores.Max() - valores.Min())) * multiplicador;
+        float[] valoresNormalizados = NormalizaValores(valores);
+        valoresNormalizados = valoresNormalizados.Select(v => (v * x)).ToArray();
 
         return valoresNormalizados;
     }
 
+    /* 
+     * Converte os valores categoricos em um valor numérico {int} para
+     * serem utilizados como indice de um array;
+     */
     public static int[] ConverteCategoriasParaNumerico(string[] valores)
     {
-        int count = 0;
         int[] valoresNormalizados = new int[valores.Length];
         Dictionary<string, int> dicionario = new Dictionary<string, int>();
 
         for (int i = 0; i < valores.Length; i++)
         {
             if (!dicionario.ContainsKey(valores[i]))
-            {
-                dicionario.Add(valores[i], count);
-                valoresNormalizados[i] = count;
-                count++;
-            }
-            else
-                valoresNormalizados[i] = dicionario[valores[i]];
+                dicionario.Add(valores[i], dicionario.Count);
+            
+            valoresNormalizados[i] = dicionario[valores[i]];
         }
 
         return valoresNormalizados;
     }
 
+    // Verifica se as arrays recebidas são do mesmo tamanho
     public static bool ArraysSaoDoMesmoTamanho(params Array[] arrays)
     {
         return arrays.All(a => a.Length == arrays[0].Length);
     }
 
-
+    // Utilizado na construção do BarChart, esse método calcula a posição
+    // das barras de acordo com a quantidade de barras e o tamanho do eixo X
     public static float[] CalculaPosicaoBarras(int qtdBarras, int tamanhoEixoX)
     {
         float espacamento = CalculaEspacamentoEntreBarras(qtdBarras, tamanhoEixoX);
@@ -68,65 +70,62 @@ public class Utils : MonoBehaviour
         return posicaoBarras;
     }
 
+    // Calcula a espessura das barras para que caibam no tamanho do eixo x
     public static float CalculaEspessuraGameObject(int qtdBarras, int tamanhoEixoX)
     {
-        float decimo = tamanhoEixoX / 10;
-        float espacoTotal = tamanhoEixoX - decimo;
+        float espacoTotal = tamanhoEixoX - (tamanhoEixoX / 10);
         return espacoTotal / qtdBarras;
     }
 
+    // Calcula o espaçamento maximo das barras para que caibam no tamanho do eixo x
     public static float CalculaEspacamentoEntreBarras(int qtdBarras, int tamanhoEixoX)
     {
         float decimo = tamanhoEixoX / 10;
         return decimo / qtdBarras; 
     }
 
-    // Calcula o ângulo de rotação para que um objeto X aponte para um objeto Y. Retorna o ângulo de rotação;
+    // Calcula o ângulo de rotação (eixo y) para que um objeto X aponte para um objeto Y.
+    // Retorna o ângulo de rotação; Funciona apenas para pontos no mesmo eixo Z
     public static Quaternion CalculaAnguloEntreDoisPontos(GameObject x, GameObject y)
     {
-        // i'll assume that dots are in the same z axis 
-        Vector3 direction = CalculaDirecaoEntreDoisPontos(x, y);
-        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg - 90;
+        Vector3 direcao = CalculaDirecaoEntreDoisPontos(x, y);
+        float angulo = Mathf.Atan2(direcao.y, direcao.x) * Mathf.Rad2Deg - 90;
 
-        Quaternion angleAxis = Quaternion.AngleAxis(angle, Vector3.forward);
-        return angleAxis;
+        return Quaternion.AngleAxis(angulo, Vector3.forward);
     }
 
+    //Calcula um Vector3 com o ponto médio entre dois GameObjects
     public static Vector3 CalculaDirecaoEntreDoisPontos(GameObject x, GameObject y)
     {
         return y.transform.position - x.transform.position;
     }
 
-    // Limitation: Only rotate in X angle; 
-    public static void RotacionaObjeto(GameObject x, Quaternion angle)
+    // Rotaciona um objeto x no ângulo recebido. Limitacao: Rotaciona apenas no eixo Y 
+    public static void RotacionaObjeto(GameObject go, Quaternion angle)
     {
-        x.transform.rotation = Quaternion.Slerp(x.transform.rotation, angle, Time.deltaTime * 50);
-
-        return;
+        go.transform.rotation = Quaternion.Slerp(go.transform.rotation, angle, Time.deltaTime * 50);
     }
 
-    public static void EscalaLinhaParaTocarSegundoPonto(GameObject x, GameObject y)
-    {
-        Vector3 direction = CalculaDirecaoEntreDoisPontos(x, y);
-
-        //The size of line will be the hipotenuse of 3d triangle: 
-        //See tutorial here: https://www.mathsisfun.com/geometry/pythagoras-3d.html
-        var hipotenuse = Mathf.Sqrt(Mathf.Pow(direction.x, 2) + Mathf.Pow(direction.y, 2) + Mathf.Pow(direction.z, 2));
-        
-        var linhaParent = x.GetComponent<PontoLinha>().getLinhaParentVariavelVisual();
-        linhaParent.transform.localScale = new Vector3(1, hipotenuse, 1);
-
-        return;
-    }
-
-    public static void ConectaDoisPontos(GameObject x, GameObject y)
+    /* 
+     * Conecta dois GameObjects (X e Y) através de uma linha. Para isso,
+     * é calculado a hipotenusa de um triângulo 3D. Tutorial aqui:
+     * https://www.mathsisfun.com/geometry/pythagoras-3d.html
+     */
+    public static void ConectaDoisPontos(GameObject x, GameObject y, GameObject linha)
     {
         Quaternion angulo = CalculaAnguloEntreDoisPontos(x, y);
+        
+        // O Objeto não pode estar rotacionado
+        x.transform.localRotation = new Quaternion(0, 0, 0, 0);
         RotacionaObjeto(x, angulo);
-        EscalaLinhaParaTocarSegundoPonto(x, y);
 
-        x.GetComponent<PontoLinha>().ResetaPosicaoLinhaePonto();
+        Vector3 direcao = CalculaDirecaoEntreDoisPontos(x, y);
 
+        float hipotenusa = Mathf.Sqrt(
+            Mathf.Pow(direcao.x, 2) + Mathf.Pow(direcao.y, 2) + Mathf.Pow(direcao.z, 2)
+        );
+
+        linha.transform.localScale = new Vector3(1, hipotenusa, 1);
         return;
     }
 
