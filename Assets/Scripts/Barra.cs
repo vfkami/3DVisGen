@@ -12,6 +12,9 @@ public class Barra : MonoBehaviour
     public float yValor, zValor;
     public string xValor, grupoValor, corValor;
 
+    //altura minima da barra caso valor seja 0
+    public const float ALTURA_MINIMA = 0.5F;
+
     public void setAtributosGameObject(float x, float grossuraBarra, float y, Material cor)
     {
         posX = x;
@@ -20,29 +23,25 @@ public class Barra : MonoBehaviour
 
         referenciaPrefab = GameObject.CreatePrimitive(PrimitiveType.Cube);
 
-        float alturaMinima = 0.5F;
-
-        GameObject variavelVisual = Instantiate(
+        
+        GameObject barra = Instantiate(
             original: referenciaPrefab,
             parent: this.transform,
             position: new Vector3(0, 0, 0),
             rotation: Quaternion.identity
         ) ;
 
-        variavelVisual.transform.localPosition = new Vector3(0.5F, 0.5F, 0);
-        variavelVisual.GetComponent<Renderer>().material = cor;
-        variavelVisual.name = "VariavelVisual";
+        barra.transform.localPosition = new Vector3(0.5F, 0.5F, 0);
+        barra.GetComponent<Renderer>().material = cor;
+        barra.name = "Barra";
 
         transform.localPosition = new Vector3(x, 0, 0);
-        transform.localScale = new Vector3(grossuraBarra, y + alturaMinima, 1);
+        transform.localScale = new Vector3(grossuraBarra, y + ALTURA_MINIMA, 1);
 
         Destroy(referenciaPrefab);
-        
-        return;
     }
 
-    //TODO: criar setAtributosGameObject com eixo z
-
+    //TODO: Seta os atributos da base de dados no GameObject
     public void setAtributosBase(string x, float y, float z, string grupo, string cor)
     {
         xValor = x;
@@ -51,14 +50,12 @@ public class Barra : MonoBehaviour
         grupoValor = grupo;
         corValor = cor;
     }
-
     public void setAtributosBase(string x, float y, string cor)
     {
         xValor = x;
         yValor = y;
         corValor = cor;
     }
-
     public void setAtributosBase(string x, float y)
     {
         xValor = x;
