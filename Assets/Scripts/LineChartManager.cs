@@ -36,46 +36,46 @@ public class LineChartManager : MonoBehaviour
 
         QtdObjetos = eixoX.Length;
         ElementosVisuais = new GameObject[QtdObjetos];
-
-
         float[] EixoXNormalizado = Utils.CalculaPosicaoBarras(QtdObjetos, TAMANHO_EIXOX);
         float[] EixoYNormalizado = Utils.NormalizaValoresComMultiplicador(eixoY, TAMANHO_EIXOX);
+        
+        
         //int[] CorNormalizado = Utils.ConverteCategoriasParaNumerico(cor);
 
         ElementosVisuais = new GameObject[QtdObjetos];
         float tamanhoPonto = Utils.CalculaEspessuraGameObject(QtdObjetos, TAMANHO_EIXOX);
 
         GameObject empty = new GameObject();
-        GameObject tempAnterior = null;
 
         for (int i = 0; i < QtdObjetos; i++)
         {
             ElementosVisuais[i] = Instantiate(original: empty,
                 parent: VariaveisVisuaisParent,
                 position: new Vector3(0, 0, 0),
-                rotation: Quaternion.identity);
+                rotation: Quaternion.identity
+            );
 
-            ElementosVisuais[i].transform.localPosition = new Vector3(
-                EixoXNormalizado[i], EixoYNormalizado[i], 0F);
-
-            ElementosVisuais[i].AddComponent<PontoLinha>();
             ElementosVisuais[i].name = "Row " + i;
-            //ElementosVisuais[i].GetComponent<PontoLinha>().setCorGameObject(TemplateMaterials[0]);
+            
+            ElementosVisuais[i].AddComponent<PontoLinha>();
             ElementosVisuais[i].GetComponent<PontoLinha>().setAtributosBase(eixoX[i], eixoY[i]);
 
             ElementosVisuais[i].GetComponent<PontoLinha>().setAtributosGameObject(
-                EixoXNormalizado[i], EixoYNormalizado[i], TemplateMaterials[0]);
+                EixoXNormalizado[i], EixoYNormalizado[i]);
+
+            ElementosVisuais[i].GetComponent<PontoLinha>().CriaPonto(TemplateMaterials[0]);
+
+
+            if (i != QtdObjetos -1)
+                ElementosVisuais[i].GetComponent<PontoLinha>().CriaLinha(TemplateMaterials[0]);
+
+            ElementosVisuais[i].GetComponent<PontoLinha>().setTamanhoPonto(tamanhoPonto);
+
             if (i != 0)
             {
                 ElementosVisuais[i - 1].GetComponent<PontoLinha>().setProximoPonto(ElementosVisuais[i]);
                 ElementosVisuais[i - 1].GetComponent<PontoLinha>().ConectaProximoPonto();
             }
-
-            if (i + 1 == QtdObjetos) continue;
-            ElementosVisuais[i].GetComponent<PontoLinha>().CriaLinha(TemplateMaterials[0]);
-            ElementosVisuais[i].GetComponent<PontoLinha>().setTamanhoPonto(tamanhoPonto);
-
-
         }
 
         XAxisLabel.text = labelEixoX;

@@ -21,11 +21,10 @@ public class PontoLinha : MonoBehaviour
 
     public GameObject proximoPonto;
 
-    public void setAtributosGameObject(float x, float y, Material cor)
+    public void setAtributosGameObject(float x, float y)
     {
         posX = x;
         posY = y;
-
         transform.localPosition = new Vector3(x, y, 0);
         return;
     }
@@ -33,14 +32,8 @@ public class PontoLinha : MonoBehaviour
     public void CriaLinha(Material cor)
     {
         referenciaPrefabLinha = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        referenciaPrefabPonto = GameObject.CreatePrimitive(PrimitiveType.Sphere);
 
-        ponto = Instantiate(
-            original: referenciaPrefabPonto,
-            parent: this.transform,
-            position: Vector3.zero,
-            rotation: Quaternion.identity
-        );
+        
 
         linhaParent = new GameObject("linhaParent");
         linhaParent.transform.SetParent(this.transform);
@@ -51,16 +44,30 @@ public class PontoLinha : MonoBehaviour
             position: Vector3.zero,
             rotation: Quaternion.identity
         );
-
-        ponto.name = "Ponto";
-        ponto.GetComponent<Renderer>().material = cor;
+        linhaParent.transform.localPosition = Vector3.zero;
 
 
         linha.transform.localPosition = new Vector3(0, 0.5F, 0);
+
         linha.name = "Linha";
         linha.GetComponent<Renderer>().material = cor;
 
         Destroy(referenciaPrefabLinha);
+    }
+
+    public void CriaPonto(Material cor)
+    {
+        referenciaPrefabPonto = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+        ponto = Instantiate(
+            original: referenciaPrefabPonto,
+            parent: this.transform,
+            position: Vector3.zero,
+            rotation: Quaternion.identity
+        );
+
+        ponto.name = "Ponto";
+        ponto.GetComponent<Renderer>().material = cor;
+        ponto.transform.localPosition = Vector3.zero;
         Destroy(referenciaPrefabPonto);
     }
 
@@ -103,7 +110,7 @@ public class PontoLinha : MonoBehaviour
 
     public GameObject getLinhaParentVariavelVisual()
     {
-        return this.linhaParent;
+        return linhaParent;
     }
 
     public void setProximoPonto(GameObject go)
@@ -114,5 +121,13 @@ public class PontoLinha : MonoBehaviour
     public void ConectaProximoPonto()
     {
         Utils.ConectaDoisPontos(gameObject, proximoPonto);
+    }
+
+    public void ResetaPosicaoLinhaePonto()
+    {
+        linhaParent.transform.localPosition = Vector3.zero;
+        ponto.transform.localPosition = Vector3.zero;
+        linha.transform.localScale = new Vector3(0.5F, 1F, 0.5F);
+
     }
 }

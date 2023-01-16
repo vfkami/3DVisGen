@@ -112,8 +112,8 @@ public class Utils : MonoBehaviour
         //The size of line will be the hipotenuse of 3d triangle: 
         //See tutorial here: https://www.mathsisfun.com/geometry/pythagoras-3d.html
         var hipotenuse = Mathf.Sqrt(Mathf.Pow(direction.x, 2) + Mathf.Pow(direction.y, 2) + Mathf.Pow(direction.z, 2));
+        
         var linhaParent = x.GetComponent<PontoLinha>().getLinhaParentVariavelVisual();
-
         linhaParent.transform.localScale = new Vector3(1, hipotenuse, 1);
 
         return;
@@ -124,6 +124,8 @@ public class Utils : MonoBehaviour
         Quaternion angulo = CalculaAnguloEntreDoisPontos(x, y);
         RotacionaObjeto(x, angulo);
         EscalaLinhaParaTocarSegundoPonto(x, y);
+
+        x.GetComponent<PontoLinha>().ResetaPosicaoLinhaePonto();
 
         return;
     }
