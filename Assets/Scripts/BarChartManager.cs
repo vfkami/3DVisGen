@@ -40,7 +40,7 @@ public class BarChartManager : MonoBehaviour
         int[] CorNormalizado = Utils.ConverteCategoriasParaNumerico(cor);
 
         ElementosVisuais = new GameObject[QtdObjetos];
-        float grossuraBarra = Utils.CalculaGrossuraBarra(QtdObjetos, TAMANHO_EIXOX);
+        float espessura = Utils.CalculaEspessuraGameObject(QtdObjetos, TAMANHO_EIXOX);
         GameObject empty = new GameObject();
 
         for (int i = 0; i < QtdObjetos; i++)
@@ -63,7 +63,7 @@ public class BarChartManager : MonoBehaviour
 
             //Cria barra com valores necessários pro Unity
             ElementosVisuais[i].GetComponent<Barra>().setAtributosGameObject(
-               EixoXNormalizado[i], grossuraBarra, EixoYNormalizado[i], TemplateMaterials[CorNormalizado[i]]);
+               EixoXNormalizado[i], espessura, EixoYNormalizado[i], TemplateMaterials[CorNormalizado[i]]);
 
         }
 

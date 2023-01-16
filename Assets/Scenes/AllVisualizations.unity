@@ -168,9 +168,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87335479542ba3c45afa9e052cfaf4b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Ponto: {fileID: 4482900413333021264, guid: c074a1257d7028441bbb216c7b22b153, type: 3}
-  Cor: {fileID: 2100000, guid: 862639e42abee0244a3d8411a6261303, type: 2}
   VariaveisVisuaisParent: {fileID: 2083939627}
+  TemplateMaterials:
+  - {fileID: 2100000, guid: 42c225ab5776f564481b695e62f76fde, type: 2}
+  - {fileID: 2100000, guid: d26f74cc4549f3c48a6690ceebb08807, type: 2}
+  - {fileID: 2100000, guid: 862639e42abee0244a3d8411a6261303, type: 2}
+  - {fileID: 2100000, guid: 3d4509c5933b1104584f728b50bdef27, type: 2}
+  - {fileID: 2100000, guid: 447dd52e527eb6d4084e13700b33d578, type: 2}
+  - {fileID: 2100000, guid: 58d7bd591085bdd45ade7051507ae63c, type: 2}
+  - {fileID: 2100000, guid: ae4a08c388aaa984b912697209b1cc27, type: 2}
+  - {fileID: 2100000, guid: 30d8bfe5ef37e04498fd157f822d3b50, type: 2}
   XAxisLabel: {fileID: 938241804}
   YAxisLabel: {fileID: 1604607213}
 --- !u!1001 &75169595
@@ -266,7 +273,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5276252040475171954, guid: b02d12a5d0bbc3142b120d58b1cd1c72, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b02d12a5d0bbc3142b120d58b1cd1c72, type: 3}
@@ -311,6 +318,10 @@ PrefabInstance:
     - target: {fileID: 2384622912920245388, guid: 67d20d742e5632146bbed0638832d06c, type: 3}
       propertyPath: m_Name
       value: 3D Bar Chart
+      objectReference: {fileID: 0}
+    - target: {fileID: 2384622912920245388, guid: 67d20d742e5632146bbed0638832d06c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2384622912920245391, guid: 67d20d742e5632146bbed0638832d06c, type: 3}
       propertyPath: m_RootOrder
@@ -517,7 +528,7 @@ Camera:
   m_GameObject: {fileID: 730800200}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 1
+  m_ClearFlags: 2
   m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
@@ -559,7 +570,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 730800200}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 11.336259, y: 4.41, z: -10.08}
+  m_LocalPosition: {x: 11, y: 4.5, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}

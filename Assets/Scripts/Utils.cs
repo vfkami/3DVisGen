@@ -56,7 +56,7 @@ public class Utils : MonoBehaviour
     public static float[] CalculaPosicaoBarras(int qtdBarras, int tamanhoEixoX)
     {
         float espacamento = CalculaEspacamentoEntreBarras(qtdBarras, tamanhoEixoX);
-        float grossuraBarra = CalculaGrossuraBarra(qtdBarras, tamanhoEixoX);
+        float grossuraBarra = CalculaEspessuraGameObject(qtdBarras, tamanhoEixoX);
 
         float espacoTotalBarra = grossuraBarra + espacamento;
         float[] posicaoBarras = new float[qtdBarras];
@@ -68,7 +68,7 @@ public class Utils : MonoBehaviour
         return posicaoBarras;
     }
 
-    public static float CalculaGrossuraBarra(int qtdBarras, int tamanhoEixoX)
+    public static float CalculaEspessuraGameObject(int qtdBarras, int tamanhoEixoX)
     {
         float decimo = tamanhoEixoX / 10;
         float espacoTotal = tamanhoEixoX - decimo;
@@ -105,17 +105,27 @@ public class Utils : MonoBehaviour
         return;
     }
 
-    public static void EscalaLinhaParaTocarSegundoPonto(GameObject x, GameObject y, GameObject line)
+    public static void EscalaLinhaParaTocarSegundoPonto(GameObject x, GameObject y)
     {
         Vector3 direction = CalculaDirecaoEntreDoisPontos(x, y);
 
         //The size of line will be the hipotenuse of 3d triangle: 
         //See tutorial here: https://www.mathsisfun.com/geometry/pythagoras-3d.html
         var hipotenuse = Mathf.Sqrt(Mathf.Pow(direction.x, 2) + Mathf.Pow(direction.y, 2) + Mathf.Pow(direction.z, 2));
-        line.transform.localScale = new Vector3(0.5F, hipotenuse, 0.5F);
+        var linhaParent = x.GetComponent<PontoLinha>().getLinhaParentVariavelVisual();
+
+        linhaParent.transform.localScale = new Vector3(1, hipotenuse, 1);
 
         return;
+    }
 
+    public static void ConectaDoisPontos(GameObject x, GameObject y)
+    {
+        Quaternion angulo = CalculaAnguloEntreDoisPontos(x, y);
+        RotacionaObjeto(x, angulo);
+        EscalaLinhaParaTocarSegundoPonto(x, y);
+
+        return;
     }
 
 

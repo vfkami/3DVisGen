@@ -5,9 +5,8 @@ using UnityEngine;
 
 public class LineChartManager : MonoBehaviour
 {
-    public GameObject Ponto;
-    public Material Cor;
     public Transform VariaveisVisuaisParent;
+    public Material[] TemplateMaterials;
 
     public TextMeshPro XAxisLabel;
     public TextMeshPro YAxisLabel;
@@ -16,35 +15,39 @@ public class LineChartManager : MonoBehaviour
     public const int TAMANHO_EIXOX = 10;
 
     private GameObject[] ElementosVisuais;
+
     private int QtdObjetos;
 
 
-    public void CriaLineChart(
-        float[] eixoX,
+    public void CriaSingleLineChart(
+        string[] eixoX,
         float[] eixoY,
-        string[] cor,
-        string[] grupo,
+        //string[] cor,
         string labelEixoX,
         string labelEixoY,
-        string labelCor,
-        string labelGrupo)
+        string labelCor)
     {
-        if (!Utils.ArraysSaoDoMesmoTamanho(eixoX, eixoY, cor, grupo))
+        if (!Utils.ArraysSaoDoMesmoTamanho(eixoX, eixoY))
         {
             Debug.LogError("Os parâmetros não são do mesmo tamanho. Verifique e tente novamente!");
             return;
         }
 
+
         QtdObjetos = eixoX.Length;
         ElementosVisuais = new GameObject[QtdObjetos];
 
-        float[] EixoXNormalizado = Utils.NormalizaValoresComMultiplicador(eixoX, TAMANHO_EIXOX);
+
+        float[] EixoXNormalizado = Utils.CalculaPosicaoBarras(QtdObjetos, TAMANHO_EIXOX);
         float[] EixoYNormalizado = Utils.NormalizaValoresComMultiplicador(eixoY, TAMANHO_EIXOX);
-        int[] CorNormalizado = Utils.ConverteCategoriasParaNumerico(cor);
-        int[] GrupoNormalizado = Utils.ConverteCategoriasParaNumerico(grupo);
+        //int[] CorNormalizado = Utils.ConverteCategoriasParaNumerico(cor);
+
+        ElementosVisuais = new GameObject[QtdObjetos];
+        float tamanhoPonto = Utils.CalculaEspessuraGameObject(QtdObjetos, TAMANHO_EIXOX);
 
         GameObject empty = new GameObject();
-        /*
+        GameObject tempAnterior = null;
+
         for (int i = 0; i < QtdObjetos; i++)
         {
             ElementosVisuais[i] = Instantiate(original: empty,
@@ -53,34 +56,58 @@ public class LineChartManager : MonoBehaviour
                 rotation: Quaternion.identity);
 
             ElementosVisuais[i].transform.localPosition = new Vector3(
-                EixoXNormalizado[i], EixoYNormalizado[i], EixoZNormalizado[i]);
+                EixoXNormalizado[i], EixoYNormalizado[i], 0F);
 
-            ElementosVisuais[i].AddComponent<VariavelVisual>();
-            ElementosVisuais[i].GetComponent<VariavelVisual>().setAtributosBase(
-                eixoX[i], eixoY[i], eixoZ[i], grupo[i], cor[i]);
-
-            ElementosVisuais[i].GetComponent<VariavelVisual>().setAtributosGameObject(
-                EixoXNormalizado[i], EixoYNormalizado[i], EixoZNormalizado[i],
-                TemplatePrefabs[GrupoNormalizado[i]], TemplateMaterials[CorNormalizado[i]]);
-
+            ElementosVisuais[i].AddComponent<PontoLinha>();
             ElementosVisuais[i].name = "Row " + i;
+            //ElementosVisuais[i].GetComponent<PontoLinha>().setCorGameObject(TemplateMaterials[0]);
+            ElementosVisuais[i].GetComponent<PontoLinha>().setAtributosBase(eixoX[i], eixoY[i]);
+
+            ElementosVisuais[i].GetComponent<PontoLinha>().setAtributosGameObject(
+                EixoXNormalizado[i], EixoYNormalizado[i], TemplateMaterials[0]);
+            if (i != 0)
+            {
+                ElementosVisuais[i - 1].GetComponent<PontoLinha>().setProximoPonto(ElementosVisuais[i]);
+                ElementosVisuais[i - 1].GetComponent<PontoLinha>().ConectaProximoPonto();
+            }
+
+            if (i + 1 == QtdObjetos) continue;
+            ElementosVisuais[i].GetComponent<PontoLinha>().CriaLinha(TemplateMaterials[0]);
+            ElementosVisuais[i].GetComponent<PontoLinha>().setTamanhoPonto(tamanhoPonto);
+
+
         }
 
         XAxisLabel.text = labelEixoX;
         YAxisLabel.text = labelEixoY;
-        ZAxisLabel.text = labelEixoZ;
-        */
+        //ZAxisLabel.text = labelEixoZ;
 
         Destroy(empty);
-
     }
 
 
+    
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        string[] X = new string[] { "azul", "vermelho", "verde", "laranja",
+            "azul", "marrom", "marrom", "preto", "vermelho", "lilas" };
+
+        float[] Y = new float[] { 2, 3, 4, 3, 4, 5, 2, 3, 4, 2 };
+
+        //string[] COR = new string[] {"azul", "vermelho", "verde", "laranja",
+        //"azul", "marrom", "marrom", "preto", "vermelho", "lilas"
+        //};
+
+        CriaSingleLineChart(X, Y, "Producao", "Custo", "País");
+
+        Vector2[][] matriz = new Vector2[2][];
+
+        matriz[0] = new Vector2[] { new Vector2(0, 1), new Vector2(1, 1), new Vector2(2, 3) };
+
+
+
     }
 
 
