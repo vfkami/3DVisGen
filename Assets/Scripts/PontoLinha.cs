@@ -68,6 +68,8 @@ public class PontoLinha : MonoBehaviour
         ponto.name = "Ponto";
         ponto.GetComponent<Renderer>().material = cor;
         ponto.transform.localPosition = Vector3.zero;
+        ponto.transform.localScale = new Vector3(0.5F, 0.5F, 0.5F);
+
         Destroy(referenciaPrefabPonto);
     }
 
@@ -77,13 +79,6 @@ public class PontoLinha : MonoBehaviour
         
         corPrefab = cor;
         return;
-    }
-
-    //TODO: criar setAtributosGameObject com eixo z
-
-    public void setTamanhoPonto(float size)
-    {
-        ponto.transform.localScale = new Vector3(size, size, size);
     }
 
     public void setAtributosBase(string x, float y, float z, string grupo, string cor)
@@ -127,7 +122,7 @@ public class PontoLinha : MonoBehaviour
     {
         linhaParent.transform.localPosition = Vector3.zero;
         ponto.transform.localPosition = Vector3.zero;
-        linha.transform.localScale = new Vector3(0.5F, 1F, 0.5F);
 
+        linha.transform.localScale = new Vector3(0.1F, 1F, 0.1F);
     }
 }

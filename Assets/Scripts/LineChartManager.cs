@@ -43,7 +43,6 @@ public class LineChartManager : MonoBehaviour
         //int[] CorNormalizado = Utils.ConverteCategoriasParaNumerico(cor);
 
         ElementosVisuais = new GameObject[QtdObjetos];
-        float tamanhoPonto = Utils.CalculaEspessuraGameObject(QtdObjetos, TAMANHO_EIXOX);
 
         GameObject empty = new GameObject();
 
@@ -69,8 +68,6 @@ public class LineChartManager : MonoBehaviour
             if (i != QtdObjetos -1)
                 ElementosVisuais[i].GetComponent<PontoLinha>().CriaLinha(TemplateMaterials[0]);
 
-            ElementosVisuais[i].GetComponent<PontoLinha>().setTamanhoPonto(tamanhoPonto);
-
             if (i != 0)
             {
                 ElementosVisuais[i - 1].GetComponent<PontoLinha>().setProximoPonto(ElementosVisuais[i]);
@@ -92,9 +89,10 @@ public class LineChartManager : MonoBehaviour
     void Start()
     {
         string[] X = new string[] { "azul", "vermelho", "verde", "laranja",
-            "azul", "marrom", "marrom", "preto", "vermelho", "lilas" };
+            "azul", "marrom", "marrom", "preto", "vermelho", "lilas", "2019", "abbv",
+            "alka", "kjdasn", "ldkasjd"};
 
-        float[] Y = new float[] { 2, 3, 4, 3, 4, 5, 2, 3, 4, 2 };
+        float[] Y = new float[] { 2, 3, 4, 3, 4, 5, 2, 3, 4, 2, 2, 3, 5, 1, 5};
 
         //string[] COR = new string[] {"azul", "vermelho", "verde", "laranja",
         //"azul", "marrom", "marrom", "preto", "vermelho", "lilas"
