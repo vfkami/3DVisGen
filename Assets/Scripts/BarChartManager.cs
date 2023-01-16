@@ -1,11 +1,15 @@
 using TMPro;
 using UnityEngine;
 
+//TODO: Adicionar label do atributo cor na cena;
+//TODO: Adicionar BarChart com Eixo Z
+
 public class BarChartManager : MonoBehaviour
 {
     public Transform VariaveisVisuaisParent;
     public Material[] TemplateMaterials;
 
+    public TextMeshPro ChartNameLabel;
     public TextMeshPro XAxisLabel;
     public TextMeshPro YAxisLabel;
     public TextMeshPro ZAxisLabel;
@@ -16,15 +20,14 @@ public class BarChartManager : MonoBehaviour
 
     private const int TAMANHO_EIXOX = 10;
 
-    // 3D Bar Chart sem eixo Z
-    //TODO: Adicionar label do atributo cor na cena;
-    public void CriaBarChart(
+    public void CriaSimpleBarChart(
         string[] eixoX,
         float[] eixoY,
         string[] cor,
         string labelEixoX,
         string labelEixoY,
-        string labelCor)
+        string labelCor,
+        string chartName)
     {
         if(!Utils.ArraysSaoDoMesmoTamanho(eixoX, eixoY, cor))
         {
@@ -33,7 +36,6 @@ public class BarChartManager : MonoBehaviour
         }
 
         QtdObjetos = eixoX.Length;
-
 
         float[] EixoXNormalizado = Utils.CalculaPosicaoBarras(QtdObjetos, TAMANHO_EIXOX);
         float[] EixoYNormalizado = Utils.NormalizaValoresComMultiplicador(eixoY, TAMANHO_EIXOX);
@@ -67,11 +69,74 @@ public class BarChartManager : MonoBehaviour
 
         }
 
+        // Define label dos eixos
         XAxisLabel.text = labelEixoX;
         YAxisLabel.text = labelEixoY;
+
+        if (chartName == "")
+            ChartNameLabel.text = labelEixoX + " X " + labelEixoY + " X " + labelCor;
+        else
+            ChartNameLabel.text = chartName;
     }
 
-    //TODO: Adicionar BarChart com eixo Z
+    public void CriaSimpleBarChart(
+        string[] eixoX,
+        float[] eixoY,
+        string labelEixoX,
+        string labelEixoY,
+        string chartName,
+        Material cor
+        )
+    {
+        if (!Utils.ArraysSaoDoMesmoTamanho(eixoX, eixoY))
+        {
+            Debug.LogError("Os parâmetros não são do mesmo tamanho. Verifique e tente novamente!");
+            return;
+        }
+
+        QtdObjetos = eixoX.Length;
+
+        float[] EixoXNormalizado = Utils.CalculaPosicaoBarras(QtdObjetos, TAMANHO_EIXOX);
+        float[] EixoYNormalizado = Utils.NormalizaValoresComMultiplicador(eixoY, TAMANHO_EIXOX);
+
+        ElementosVisuais = new GameObject[QtdObjetos];
+        float espessura = Utils.CalculaEspessuraGameObject(QtdObjetos, TAMANHO_EIXOX);
+        GameObject empty = new GameObject();
+
+        for (int i = 0; i < QtdObjetos; i++)
+        {
+            //Instancia GO vazio
+            ElementosVisuais[i] = Instantiate(original: empty,
+                parent: VariaveisVisuaisParent,
+                position: new Vector3(0, 0, 0),
+                rotation: Quaternion.identity);
+            ElementosVisuais[i].AddComponent<Barra>();
+            ElementosVisuais[i].name = "Row " + i;
+
+            //Define a localposition do objeto
+            ElementosVisuais[i].transform.localPosition = new Vector3(
+                EixoXNormalizado[i], EixoYNormalizado[i], 0);
+
+            //Adiciona informacoes da base de dados ao objeto
+            ElementosVisuais[i].GetComponent<Barra>().setAtributosBase(
+                eixoX[i], eixoY[i]);
+
+            //Cria barra com valores necessários pro Unity
+            ElementosVisuais[i].GetComponent<Barra>().setAtributosGameObject(
+               EixoXNormalizado[i], espessura, EixoYNormalizado[i], cor);
+
+        }
+
+        // Define label dos eixos
+        XAxisLabel.text = labelEixoX;
+        YAxisLabel.text = labelEixoY;
+
+        if (chartName == "")
+            ChartNameLabel.text = labelEixoX + " X " + labelEixoY;
+        else
+            ChartNameLabel.text = chartName;
+    }
+
 
     // remove on deploy
     void Start()
@@ -85,6 +150,6 @@ public class BarChartManager : MonoBehaviour
         };
 
 
-        CriaBarChart(X, Y, COR, "Marca", "Custo", "País");
+        CriaSimpleBarChart(X, Y, COR, "Marca", "Custo", "País", "Custo por Marca e País");
     }
 }

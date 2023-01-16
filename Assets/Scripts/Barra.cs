@@ -59,4 +59,9 @@ public class Barra : MonoBehaviour
         corValor = cor;
     }
 
+    public void setAtributosBase(string x, float y)
+    {
+        xValor = x;
+        yValor = y;
+    }
 }
