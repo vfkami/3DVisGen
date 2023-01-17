@@ -22,10 +22,8 @@ public class LineChartManager : MonoBehaviour
     public void CriaSingleLineChart(
         string[] eixoX,
         float[] eixoY,
-        //string[] cor,
         string labelEixoX,
-        string labelEixoY,
-        string labelCor)
+        string labelEixoY)
     {
         if (!Utils.ArraysSaoDoMesmoTamanho(eixoX, eixoY))
         {

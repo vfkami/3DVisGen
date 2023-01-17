@@ -4,12 +4,13 @@ using UnityEngine;
 
 public class PontoLinha : MonoBehaviour
 {
+    //TODO: Adicionar a opção de ocultar os pontos
+
     //variáveis visuais:
     public float posX, posY, posZ;
     public Material corPrefab;
     public GameObject referenciaPrefabLinha;
     public GameObject referenciaPrefabPonto;
-
 
     //variáveis da base:
     public float yValor, zValor;
@@ -29,33 +30,30 @@ public class PontoLinha : MonoBehaviour
         return;
     }
 
+    // Cria o elemento visual linha. Para isso é criado um GameObject vazio
+    // que será utilizado como pivot da linha em si. Após isso, é criado a
+    // linha (cubo) e aplicado a devida configuração.
     public void CriaLinha(Material cor)
     {
-        referenciaPrefabLinha = GameObject.CreatePrimitive(PrimitiveType.Cube);
-
-        
-
         linhaParent = new GameObject("linhaParent");
         linhaParent.transform.SetParent(this.transform);
+        linhaParent.transform.localPosition = Vector3.zero;
 
+        referenciaPrefabLinha = GameObject.CreatePrimitive(PrimitiveType.Cube);
         linha = Instantiate(
             original: referenciaPrefabLinha,
             parent: linhaParent.transform,
             position: Vector3.zero,
             rotation: Quaternion.identity
         );
-        linhaParent.transform.localPosition = Vector3.zero;
-
-
-        linha.transform.localPosition = new Vector3(0, 0.5F, 0);
-
-
         linha.name = "Linha";
+        linha.transform.localPosition = new Vector3(0, 0.5F, 0);
         linha.GetComponent<Renderer>().material = cor;
 
         Destroy(referenciaPrefabLinha);
     }
 
+    // Cria o elemento visual ponto.
     public void CriaPonto(Material cor)
     {
         referenciaPrefabPonto = GameObject.CreatePrimitive(PrimitiveType.Sphere);
@@ -76,10 +74,32 @@ public class PontoLinha : MonoBehaviour
 
     public void setCorGameObject(Material cor)
     {
-        GetComponent<Renderer>().material = cor;
-        
         corPrefab = cor;
-        return;
+        GetComponent<Renderer>().material = corPrefab;
+    }
+
+    // Define o proximo ponto. É o ponto que será utilizado para escalar
+    // a linha deste GameObject de forma que os pontos se toquem
+    public void setProximoPonto(GameObject go)
+    {
+        proximoPonto = go;
+    }
+
+    // Realiza a escala no linhaParent para que o gameobject conecte visualmente
+    // ao proximo ponto;
+    public void ConectaProximoPonto()
+    {
+        if (proximoPonto == null)
+            throw new System.Exception("Próximo ponto não definido ainda");
+
+        var novaEscala = Utils.CalculaDistorcaoLinha(gameObject, proximoPonto);
+        linhaParent.transform.localScale = novaEscala;
+    }
+
+    // Função para retornar a escala da linha para dos valores padrão
+    public void RedefineEscalaLinha()
+    {
+        linha.transform.localScale = new Vector3(0.1F, 1F, 0.1F);
     }
 
     public void setAtributosBase(string x, float y, float z, string grupo, string cor)
@@ -104,23 +124,4 @@ public class PontoLinha : MonoBehaviour
         yValor = y;
     }
 
-    public GameObject getLinhaParentVariavelVisual()
-    {
-        return linhaParent;
-    }
-
-    public void setProximoPonto(GameObject go)
-    {
-        proximoPonto = go;
-    }
-
-    public void ConectaProximoPonto()
-    {
-        Utils.ConectaDoisPontos(gameObject, proximoPonto, linhaParent);
-    }
-
-    public void RedefineEscalaLinha()
-    {
-        linha.transform.localScale = new Vector3(0.1F, 1F, 0.1F);
-    }
 }

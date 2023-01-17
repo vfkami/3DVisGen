@@ -107,11 +107,11 @@ public class Utils : MonoBehaviour
     }
 
     /* 
-     * Conecta dois GameObjects (X e Y) através de uma linha. Para isso,
-     * é calculado a hipotenusa de um triângulo 3D. Tutorial aqui:
+     * Calcula a escala que deve ser aplicada ao Game Object que irá conectar os dois
+     * pontos. Para isso, é calculado a hipotenusa de um triângulo 3D. Tutorial aqui:
      * https://www.mathsisfun.com/geometry/pythagoras-3d.html
      */
-    public static void ConectaDoisPontos(GameObject x, GameObject y, GameObject linha)
+    public static Vector3 CalculaDistorcaoLinha(GameObject x, GameObject y)
     {
         Quaternion angulo = CalculaAnguloEntreDoisPontos(x, y);
         
@@ -125,8 +125,7 @@ public class Utils : MonoBehaviour
             Mathf.Pow(direcao.x, 2) + Mathf.Pow(direcao.y, 2) + Mathf.Pow(direcao.z, 2)
         );
 
-        linha.transform.localScale = new Vector3(1, hipotenusa, 1);
-        return;
+        return new Vector3(1, hipotenusa, 1); 
     }
 
 
