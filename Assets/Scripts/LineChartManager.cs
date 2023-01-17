@@ -99,7 +99,7 @@ public class LineChartManager : MonoBehaviour
         //"azul", "marrom", "marrom", "preto", "vermelho", "lilas"
         //};
 
-        CriaSingleLineChart(X, Y, "Producao", "Custo", "País");
+        CriaSingleLineChart(X, Y, "Producao", "Custo");
 
         Vector2[][] matriz = new Vector2[2][];
 
