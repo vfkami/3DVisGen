@@ -35,8 +35,29 @@ public class VariavelVisual : MonoBehaviour
         return;
     }
 
+    public void setAtributosGameObject(float x, float y, GameObject prefab, Material cor)
+    {
+        posX = x;
+        posY = y;
+
+        referenciaPrefab = prefab;
+        corPrefab = cor;
+
+        GameObject variavelVisual = Instantiate(
+            original: referenciaPrefab,
+            parent: this.transform,
+            position: new Vector3(0, 0, 0),
+            rotation: Quaternion.identity
+        );
+
+        variavelVisual.transform.localPosition = new Vector3(0, 0, 0);
+        variavelVisual.GetComponent<Renderer>().material = cor;
+        variavelVisual.name = "VariavelVisual";
+        return;
+    }
 
 
+    // Seta os atributos da base para consulta no prefab posteriormente
     public void setAtributosBase(float x, float y, float z, string grupo, string cor)
     {
         xValor = x;
@@ -45,6 +66,12 @@ public class VariavelVisual : MonoBehaviour
         grupoValor = grupo;
         corValor = cor;
     }
-
+    public void setAtributosBase(float x, float y, string grupo, string cor)
+    {
+        xValor = x;
+        yValor = y;
+        grupoValor = grupo;
+        corValor = cor;
+    }
 
 }

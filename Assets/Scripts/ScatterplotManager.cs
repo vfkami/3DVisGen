@@ -21,11 +21,11 @@ public class ScatterplotManager : MonoBehaviour
     private int QtdObjetos;
 
 
-    // TODO: Adicionar validacao tamanho array prefabs/material com categorias recebidas grupo/cor
-    // TODO: Adicionar Labels de cor/grupo
-    // TODO: Adicionar interacao ao clicar com mouse no elemento
-
-    public void CriaScatterplot(
+    /* TODO: Adicionar validacao tamanho array prefabs/material com categorias recebidas grupo/cor
+     * TODO: Adicionar Labels de cor/grupo
+     * TODO: Adicionar interacao ao clicar com mouse no elemento
+     */ 
+    public void Cria3DScatterplot(
         float[] eixoX, 
         float[] eixoY, 
         float[] eixoZ, 
@@ -56,14 +56,17 @@ public class ScatterplotManager : MonoBehaviour
 
         for (int i = 0; i < QtdObjetos; i++)
         {
+            //Instancia parent vazio
             ElementosVisuais[i] = Instantiate(original: empty,
                 parent: VariaveisVisuaisParent,
                 position: new Vector3(0, 0, 0), 
                 rotation: Quaternion.identity);
 
+            //Define localizacao do parent
             ElementosVisuais[i].transform.localPosition = new Vector3(
                 EixoXNormalizado[i], EixoYNormalizado[i], EixoZNormalizado[i]);
 
+            //Adiciona configurações referente ao GameObject e a base de dados
             ElementosVisuais[i].AddComponent<VariavelVisual>();
             ElementosVisuais[i].GetComponent<VariavelVisual>().setAtributosBase(
                 eixoX[i], eixoY[i], eixoZ[i], grupo[i], cor[i]);
@@ -79,9 +82,63 @@ public class ScatterplotManager : MonoBehaviour
         YAxisLabel.text = labelEixoY;
         ZAxisLabel.text = labelEixoZ;
 
+        Destroy(empty);
+    }
+
+    public void Cria2DScatterplot(
+       float[] eixoX,
+       float[] eixoY,
+       string[] cor,
+       string[] grupo,
+       string labelEixoX,
+       string labelEixoY,
+       string labelCor,
+       string labelGrupo)
+    {
+        if (!Utils.ArraysSaoDoMesmoTamanho(eixoX, eixoY, cor, grupo))
+        {
+            Debug.LogError("Os parâmetros não são do mesmo tamanho. Verifique e tente novamente!");
+            return;
+        }
+
+        QtdObjetos = eixoX.Length;
+        ElementosVisuais = new GameObject[QtdObjetos];
+
+        float[] EixoXNormalizado = Utils.NormalizaValoresComMultiplicador(eixoX, TAMANHO_EIXOX);
+        float[] EixoYNormalizado = Utils.NormalizaValoresComMultiplicador(eixoY, TAMANHO_EIXOX);
+        int[] CorNormalizado = Utils.ConverteCategoriasParaNumerico(cor);
+        int[] GrupoNormalizado = Utils.ConverteCategoriasParaNumerico(grupo);
+
+        GameObject empty = new GameObject();
+
+        for (int i = 0; i < QtdObjetos; i++)
+        {
+            //Instancia parent vazio
+            ElementosVisuais[i] = Instantiate(original: empty,
+                parent: VariaveisVisuaisParent,
+                position: new Vector3(0, 0, 0),
+                rotation: Quaternion.identity);
+
+            //Define localizacao do parent
+            ElementosVisuais[i].transform.localPosition = new Vector3(
+                EixoXNormalizado[i], EixoYNormalizado[i], 0);
+
+            //Adiciona configurações referente ao GameObject e a base de dados
+            ElementosVisuais[i].AddComponent<VariavelVisual>();
+            ElementosVisuais[i].GetComponent<VariavelVisual>().setAtributosBase(
+                eixoX[i], eixoY[i], grupo[i], cor[i]);
+
+            ElementosVisuais[i].GetComponent<VariavelVisual>().setAtributosGameObject(
+                EixoXNormalizado[i], EixoYNormalizado[i],
+                TemplatePrefabs[GrupoNormalizado[i]], TemplateMaterials[CorNormalizado[i]]);
+
+            ElementosVisuais[i].name = "Row " + i;
+        }
+
+        XAxisLabel.text = labelEixoX;
+        YAxisLabel.text = labelEixoY;
 
         Destroy(empty);
-
     }
 
     private void Start()
@@ -99,9 +156,14 @@ public class ScatterplotManager : MonoBehaviour
             "e", "f", "b", "a", "f", "e", "b", "h"
         };
 
-        CriaScatterplot(X, Y, Z, COR, GRUPO, "Pontuação", "Desempenho", "Custo", "Marca", "País");
+        if (gameObject.name.Contains("3D"))
+            Cria3DScatterplot(X, Y, Z, COR, GRUPO, "Pontuação", "Desempenho", "Custo", "Marca", "País");
 
+        else
+            Cria2DScatterplot(X, Y, COR, GRUPO, "Pontuação", "Desempenho", "Marca", "País");
     }
+
+
     
 
 }
