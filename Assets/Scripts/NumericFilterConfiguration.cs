@@ -10,10 +10,13 @@ public class NumericFilterConfiguration : MonoBehaviour
     public TMP_InputField inputMinValue; 
     public TMP_InputField inputMaxValue;
 
+    public TMP_Text inputMinPlaceholder;
+    public TMP_Text inputMaxPlaceholder;
+
     public void SetOptions(Vector2 valorMinMax)
     {
-        inputMinValue.transform.Find("Placeholder").GetComponent<TMP_Text>().text = valorMinMax.x.ToString();
-        inputMaxValue.transform.Find("Placeholder").GetComponent<TMP_Text>().text = valorMinMax.y.ToString();
+        inputMinPlaceholder.text = valorMinMax.x.ToString();
+        inputMaxPlaceholder.text = valorMinMax.y.ToString();
 
         helper.text = $"Both value must be between " + valorMinMax.x + " and " + valorMinMax.y;
     }

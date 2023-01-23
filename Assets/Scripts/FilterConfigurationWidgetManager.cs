@@ -20,6 +20,8 @@ public class FilterConfigurationWidgetManager : MonoBehaviour
 
     public void SetLabelsFiltro(string[] labels)
     {
+        filters = new GameObject[labels.Length];
+
         List<TMP_Dropdown.OptionData> newOptions = new List<TMP_Dropdown.OptionData>();
         TMP_Dropdown.OptionData option = new TMP_Dropdown.OptionData("Selecione");
         newOptions.Add(option);
@@ -61,8 +63,57 @@ public class FilterConfigurationWidgetManager : MonoBehaviour
         }
     }
 
+
+    public void DesabilitarVisibilidadeTodosFiltros()
+    {
+        foreach (GameObject filter in filters)
+            if (filter != null)    
+                filter.SetActive(false);
+    }
+
     public void OnFiltroSelectorValueChanged()
     {
+        var index = filtroSelector.value - 1;
+
+        if (filters[index] == null)
+        {
+            //GameObject template = filterType[index].Contains("categoric") ? CategoricTemplate : NumericTemplate;
+        
+            if (filterType[index].Contains("categoric"))
+            {
+                filters[index] = Instantiate(original: CategoricTemplate,
+                parent: ancoraFiltros.transform,
+                position: new Vector3(0, 0, 0),
+                rotation: Quaternion.identity
+                );
+
+                filters[index].transform.localPosition = Vector3.zero;
+
+                //get das informações para preencher este filtro
+                string[] abc = new string[] { "abc", "def", "ghi", "jkl" };
+
+                filters[index].GetComponent<CategoricFilterConfiguration>().SetOptions(abc);
+            }
+            else
+            {
+                filters[index] = Instantiate(original: NumericTemplate,
+                parent: ancoraFiltros.transform,
+                position: new Vector3(0, 0, 0),
+                rotation: Quaternion.identity
+                );
+                
+                filters[index].transform.localPosition = Vector3.zero;
+
+                //get das informações para preencher este filtro
+                Vector2 minMax = new Vector2(10, 200);
+                filters[index].GetComponent<NumericFilterConfiguration>().SetOptions(minMax);
+
+            }
+        }
+
+        filters[index].SetActive(true);
+
+
 
     }
 
@@ -80,5 +131,8 @@ public class FilterConfigurationWidgetManager : MonoBehaviour
         SetLabelsFiltro(labelFiltros);
         SetTipoFiltros(tipoFiltros);
     }
+
+
+
 
 }

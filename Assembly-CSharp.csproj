@@ -59,7 +59,7 @@
     <Compile Include="Assets\Scripts\PontoLinha.cs" />
     <Compile Include="Assets\Scripts\CameraController.cs" />
     <Compile Include="Assets\Scripts\ScatterplotManager.cs" />
-    <Compile Include="Assets\FilterConfigurationWidgetManager.cs" />
+    <Compile Include="Assets\Scripts\FilterConfigurationWidgetManager.cs" />
     <Compile Include="Assets\Scripts\BarChartManager.cs" />
     <Compile Include="Assets\Scripts\LineChartManager.cs" />
     <Compile Include="Assets\Scripts\Utils.cs" />
@@ -68,8 +68,8 @@
     <Compile Include="Assets\Scripts\VariavelVisual.cs" />
     <Compile Include="Assets\Scripts\FiducialMarkerController.cs" />
     <Compile Include="Assets\Scripts\Barra.cs" />
-    <Compile Include="Assets\CategoricFilterConfiguration.cs" />
-    <Compile Include="Assets\NumericFilterConfiguration.cs" />
+    <Compile Include="Assets\Scripts\CategoricFilterConfiguration.cs" />
+    <Compile Include="Assets\Scripts\NumericFilterConfiguration.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />

@@ -11,7 +11,7 @@ public class CategoricFilterConfiguration : MonoBehaviour
 
     public void SetOptions(string[] labelText)
     {
-        labelText = values;
+        values = labelText;
 
         if (labelText.Length > goToggle.Length)
         {
