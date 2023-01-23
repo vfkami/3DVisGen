@@ -39,6 +39,8 @@ ExportedObj/
 *.mdb
 *.opendb
 *.VC.db
+*.vsconfig
+*.csproj
 
 # Unity3D generated meta files
 *.pidb.meta
