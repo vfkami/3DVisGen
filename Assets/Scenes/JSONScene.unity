@@ -152,7 +152,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a3734bebe2d743343b7169f3cec6cc9c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  JSON: '{"columns":["sepal_length","sepal_width","petal_length","petal_width","iris"],"rows":150,"meta":[{"name":"sepal_length","type":"numeric","extent":[4.3,7.9]},{"name":"sepal_width","type":"numeric","extent":[2,4.4]},{"name":"petal_length","type":"numeric","extent":[1,6.9]},{"name":"petal_width","type":"numeric","extent":[0.1,2.5]},{"name":"iris","type":"categorical","extent":["Iris-setosa","Iris-versicolor","Iris-virginica"]}]}'
+  JSON: 
 --- !u!4 &200210446
 Transform:
   m_ObjectHideFlags: 0
