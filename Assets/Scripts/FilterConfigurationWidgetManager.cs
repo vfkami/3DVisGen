@@ -74,11 +74,10 @@ public class FilterConfigurationWidgetManager : MonoBehaviour
     public void OnFiltroSelectorValueChanged()
     {
         var index = filtroSelector.value - 1;
+        if (index < 0) return;
 
         if (filters[index] == null)
-        {
-            //GameObject template = filterType[index].Contains("categoric") ? CategoricTemplate : NumericTemplate;
-        
+        {        
             if (filterType[index].Contains("categoric"))
             {
                 filters[index] = Instantiate(original: CategoricTemplate,
@@ -93,6 +92,7 @@ public class FilterConfigurationWidgetManager : MonoBehaviour
                 string[] abc = new string[] { "abc", "def", "ghi", "jkl" };
 
                 filters[index].GetComponent<CategoricFilterConfiguration>().SetOptions(abc);
+                return;
             }
             else
             {
@@ -107,14 +107,11 @@ public class FilterConfigurationWidgetManager : MonoBehaviour
                 //get das informações para preencher este filtro
                 Vector2 minMax = new Vector2(10, 200);
                 filters[index].GetComponent<NumericFilterConfiguration>().SetOptions(minMax);
-
+                return;
             }
         }
 
         filters[index].SetActive(true);
-
-
-
     }
 
 
@@ -131,8 +128,4 @@ public class FilterConfigurationWidgetManager : MonoBehaviour
         SetLabelsFiltro(labelFiltros);
         SetTipoFiltros(tipoFiltros);
     }
-
-
-
-
 }

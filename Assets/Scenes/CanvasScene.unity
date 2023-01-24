@@ -1599,7 +1599,7 @@ GameObject:
   - component: {fileID: 364964921}
   - component: {fileID: 364964923}
   m_Layer: 5
-  m_Name: Filter
+  m_Name: FilterConfigurationWidgetManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6420,6 +6420,8 @@ MonoBehaviour:
   helper: {fileID: 0}
   inputMinValue: {fileID: 0}
   inputMaxValue: {fileID: 0}
+  inputMinPlaceholder: {fileID: 0}
+  inputMaxPlaceholder: {fileID: 0}
 --- !u!1 &1822277801
 GameObject:
   m_ObjectHideFlags: 0
