@@ -70,7 +70,6 @@
     <Compile Include="Assets\Scripts\VariavelVisual.cs" />
     <Compile Include="Assets\Scripts\FiducialMarkerController.cs" />
     <Compile Include="Assets\Scripts\Barra.cs" />
-    <Compile Include="Assets\Scripts\JSONReader.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
