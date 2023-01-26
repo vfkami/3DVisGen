@@ -32,8 +32,9 @@ public class CategoricFilterConfiguration : MonoBehaviour
     {
         List<string> valoresSelecionados = new List<string>();
 
-        for(int i = 0; i < goToggle.Length; i++)
-            if (goToggle[i].isOn)
+        for (int i = 0; i < goToggle.Length; i++)
+
+            if (goToggle[i].gameObject.activeSelf && goToggle[i].isOn)              
                 valoresSelecionados.Add(values[i]);
 
         return valoresSelecionados.ToArray();

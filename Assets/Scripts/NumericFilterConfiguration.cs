@@ -13,6 +13,8 @@ public class NumericFilterConfiguration : MonoBehaviour
     public TMP_Text inputMinPlaceholder;
     public TMP_Text inputMaxPlaceholder;
 
+    //TODO: Add validacao de valores adicionados pelo usuario
+
     public void SetOptions(Vector2 valorMinMax)
     {
         inputMinPlaceholder.text = valorMinMax.x.ToString();
@@ -21,12 +23,9 @@ public class NumericFilterConfiguration : MonoBehaviour
         helper.text = $"Both value must be between " + valorMinMax.x + " and " + valorMinMax.y;
     }
 
-    public Vector2 GetValues()
+    public string[] GetValues() // TODO: Adicionar informaçao do checkbox valores invertidos
     {
-        float valMinimo = float.Parse(inputMinValue.text);
-        float valMaximo = float.Parse(inputMaxValue.text);
-
-        return new Vector2(valMinimo, valMaximo);
+        return new string[] { inputMinValue.text, inputMaxValue.text };
     }
 
 }

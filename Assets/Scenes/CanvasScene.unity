@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028352, g: 0.22571376, b: 0.30692244, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028334, g: 0.22571328, b: 0.3069217, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -3423,6 +3423,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 364964923}
+        m_TargetAssemblyTypeName: FilterConfigurationWidgetManager, Assembly-CSharp
+        m_MethodName: DebugAtributosSelecionados
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &954050288
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6474,11 +6486,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17bfb14b8db7572419c2309b31d41384, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  helper: {fileID: 0}
-  inputMinValue: {fileID: 0}
-  inputMaxValue: {fileID: 0}
-  inputMinPlaceholder: {fileID: 0}
-  inputMaxPlaceholder: {fileID: 0}
+  helper: {fileID: 1954566125}
+  inputMinValue: {fileID: 1207967960}
+  inputMaxValue: {fileID: 643088179}
+  inputMinPlaceholder: {fileID: 2012707394}
+  inputMaxPlaceholder: {fileID: 223806937}
 --- !u!1 &1822277801
 GameObject:
   m_ObjectHideFlags: 0

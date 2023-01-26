@@ -22,7 +22,7 @@ public class RequisitionManager : MonoBehaviour
 
     private void Update()
     {
-        Debug.Log(respostaJson);
+        //Debug.Log(respostaJson);
 
     }
 

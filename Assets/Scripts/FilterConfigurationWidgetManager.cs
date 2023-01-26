@@ -9,6 +9,7 @@ using System.Linq;
 public class FilterConfigurationWidgetManager : MonoBehaviour
 {
     private GameObject[] filters;
+    private string[] filterLabels;
     private string[] filterType;
 
     public TMP_Dropdown filtroSelector;
@@ -18,8 +19,11 @@ public class FilterConfigurationWidgetManager : MonoBehaviour
     public GameObject CategoricTemplate;
     public GameObject NumericTemplate;
 
+    private Filtro[] filtros;
+
     public void SetLabelsFiltro(string[] labels)
     {
+        filterLabels = labels;
         filters = new GameObject[labels.Length];
 
         List<TMP_Dropdown.OptionData> newOptions = new List<TMP_Dropdown.OptionData>();
@@ -92,7 +96,6 @@ public class FilterConfigurationWidgetManager : MonoBehaviour
                 string[] abc = new string[] { "abc", "def", "ghi", "jkl" };
 
                 filters[index].GetComponent<CategoricFilterConfiguration>().SetOptions(abc);
-                return;
             }
             else
             {
@@ -107,13 +110,51 @@ public class FilterConfigurationWidgetManager : MonoBehaviour
                 //get das informações para preencher este filtro
                 Vector2 minMax = new Vector2(10, 200);
                 filters[index].GetComponent<NumericFilterConfiguration>().SetOptions(minMax);
-                return;
+            }
+        }
+        filters[index].SetActive(true);
+
+    }
+
+    public string GetFiltrosConfigurados()
+    {
+        filtros = new Filtro[filterLabels.Length];
+
+
+        for(int i = 0; i < filterLabels.Length; i++)
+        {
+            CategoricFilterConfiguration catConf;
+            NumericFilterConfiguration numConf;
+
+            if(filters[i] != null)
+            {
+                filters[i].TryGetComponent<CategoricFilterConfiguration>(out catConf);
+                filters[i].TryGetComponent<NumericFilterConfiguration>(out numConf);
+
+                if (catConf != null)
+                {
+                    filtros[i] = new Filtro(filterLabels[i], catConf.GetValues());
+                    continue;
+                }
+                if (numConf != null)
+                {
+                    filtros[i] = new Filtro(filterLabels[i], numConf.GetValues());
+                    continue;
+                }
+                filtros[i] = new Filtro(filterLabels[i], new string[0]);     
             }
         }
 
-        filters[index].SetActive(true);
+        FiltrosSelecionados fs = new FiltrosSelecionados(filtros);
+            
+        return JsonUtility.ToJson(fs);
     }
 
+    public void DebugAtributosSelecionados()
+    {
+        string json = GetFiltrosConfigurados();        
+        Debug.Log(json);
+    }
 
     private void Start()
     {
@@ -128,4 +169,28 @@ public class FilterConfigurationWidgetManager : MonoBehaviour
         SetLabelsFiltro(labelFiltros);
         SetTipoFiltros(tipoFiltros);
     }
+}
+
+public class FiltrosSelecionados
+{
+    public Filtro[] fSelecionados;
+
+    public FiltrosSelecionados(Filtro[] fs)
+    {
+        fSelecionados = fs;
+    }
+}
+
+public class Filtro
+{
+    public string atributo;
+    public string[] values;
+
+    public Filtro (string nome, string[] valores){
+        atributo = nome;
+        values = valores;
+    
+    }
+
+
 }

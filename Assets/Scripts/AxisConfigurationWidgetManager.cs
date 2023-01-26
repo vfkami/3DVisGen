@@ -70,7 +70,7 @@ public class AxisConfigurationWidgetManager : MonoBehaviour
         atributos = new AtributosSelecionados(eixoX, eixoY, cor);
         return JsonUtility.ToJson(atributos);
     }
-
+    
     public void DebugAtributosSelecionados()
     {
         string json = GetAtributosSelecionados();
