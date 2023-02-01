@@ -56,7 +56,6 @@ public class RequisitionManager : MonoBehaviour
     private void ResponseCallback(string data)
     {
         respostaJson = data;
-
         DatasetManager.SetDataset(data);
         Debug.Log(data);
     }

@@ -136,21 +136,10 @@ public class Utils : MonoBehaviour
         return JsonUtility.FromJson<Dataset>(JSON);
     }
 
+
+
+
 }
 
-[System.Serializable]
-public class Dataset
-{
-    public string[] columns;
-    public int rows;
-    public Metadata[] meta;
-}
 
-[System.Serializable]
-public class Metadata
-{
-    public string name;
-    public string type;
-    public string[] extent;
-}
 

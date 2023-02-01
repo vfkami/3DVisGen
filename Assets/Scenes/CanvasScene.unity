@@ -3694,7 +3694,19 @@ MonoBehaviour:
       m_Calls: []
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1802834856}
+        m_TargetAssemblyTypeName: NumericFilterConfiguration, Assembly-CSharp
+        m_MethodName: ValidaValorInput
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_OnTouchScreenKeyboardStatusChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -4161,7 +4173,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c069f019cdb519428da54a8ad06084b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canvas: {fileID: 1421117772}
+  datasetWidget: {fileID: 29128304}
   uri: http://localhost:3000/metadata/automobile
 --- !u!4 &894359488
 Transform:
@@ -5796,7 +5808,19 @@ MonoBehaviour:
       m_Calls: []
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1802834856}
+        m_TargetAssemblyTypeName: NumericFilterConfiguration, Assembly-CSharp
+        m_MethodName: ValidaValorInput
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_OnTouchScreenKeyboardStatusChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -8832,6 +8856,7 @@ MonoBehaviour:
   inputMaxValue: {fileID: 643088179}
   inputMinPlaceholder: {fileID: 2012707394}
   inputMaxPlaceholder: {fileID: 223806937}
+  selecaoInvertida: {fileID: 0}
 --- !u!1 &1822277801
 GameObject:
   m_ObjectHideFlags: 0
@@ -10446,7 +10471,7 @@ MonoBehaviour:
   m_charWidthMaxAdj: 0
   m_enableWordWrapping: 1
   m_wordWrappingRatios: 0.4
-  m_overflowMode: 0
+  m_overflowMode: 1
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1

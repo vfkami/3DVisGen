@@ -27,6 +27,10 @@ public class FilterConfigurationWidgetManager : MonoBehaviour
 
     public void SetLabelsFiltro(string[] labels)
     {
+        if (filters != null)
+            filters.Where(go => go != null).ToList()
+                .ForEach(go => Destroy(go));
+
         filterLabels = labels;
         filters = new GameObject[labels.Length];
 
@@ -88,15 +92,11 @@ public class FilterConfigurationWidgetManager : MonoBehaviour
         return new Vector2(min, max);
     }
 
-    public void DesabilitarVisibilidadeTodosFiltros()
-    {
-        foreach (GameObject filter in filters)
-            if (filter != null)    
-                filter.SetActive(false);
-    }
-
     public void OnFiltroSelectorValueChanged()
     {
+        filters.Where(go => go != null).ToList()
+            .ForEach(go => go.SetActive(false));
+
         var index = filtroSelector.value - 1;
         if (index < 0) return;
 
@@ -110,6 +110,7 @@ public class FilterConfigurationWidgetManager : MonoBehaviour
                 rotation: Quaternion.identity
                 );
 
+                filters[index].name = filterLabels[index] + "_cat_" + index;
                 filters[index].transform.localPosition = Vector3.zero;
                 filters[index].GetComponent<CategoricFilterConfiguration>().
                     SetOptions(GetLabelAtributosCategoricos(index));
@@ -121,7 +122,8 @@ public class FilterConfigurationWidgetManager : MonoBehaviour
                 position: new Vector3(0, 0, 0),
                 rotation: Quaternion.identity
                 );
-                
+
+                filters[index].name = filterLabels[index] + "_num_" + index;
                 filters[index].transform.localPosition = Vector3.zero;
                 filters[index].GetComponent<NumericFilterConfiguration>().
                     SetOptions(GetRangeNumerico(index));

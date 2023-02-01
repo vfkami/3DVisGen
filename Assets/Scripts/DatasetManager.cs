@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,21 @@ public class DatasetManager : MonoBehaviour
 
     public static void SetDataset(string json)
     {
-        dataset = Utils.CriaDoJSON(json);
+        try
+        {
+            dataset = Utils.CriaDoJSON(json);
+        }
+        catch (ArgumentException ex)
+        {
+            dataset = new Dataset()
+            {
+                columns = new string[0],
+                rows = 0,
+                meta = new Metadata[0]
+            };
+
+            Debug.LogError(ex.Message);
+        }
 
         AtualizaTodosElementosCanvas();
     }
@@ -48,34 +63,23 @@ public class DatasetManager : MonoBehaviour
         aw.SetLabelsAtributoCor(dataset.meta.Select(i => i.name.ToString()).ToArray());
         aw.SetLabelsAtributoEixoX(categoricLabels.ToArray());
         aw.SetLabelsAtributoEixoY(numericLabels.ToArray());
-
-
-        /*
-         
-         [System.Serializable]
-         public class Dataset
-         {
-             public string[] columns;
-             public int rows;
-             public Metadata[] meta;
-         }
-
-         [System.Serializable]
-         public class Metadata
-         {
-             public string name;
-             public string type;
-             public string[] extent;
-         }
-         */
-
-
-
-
-
-
-
     }
 
 
+}
+
+[System.Serializable]
+public class Dataset
+{
+    public string[] columns;
+    public int rows;
+    public Metadata[] meta;
+}
+
+[System.Serializable]
+public class Metadata
+{
+    public string name;
+    public string type;
+    public string[] extent;
 }
