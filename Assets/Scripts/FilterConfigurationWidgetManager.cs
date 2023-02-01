@@ -12,9 +12,11 @@ public class FilterConfigurationWidgetManager : MonoBehaviour
     private static string NUMERIC = "numeric";
 
     private GameObject[] filters;
+
     private string[] filterLabels;
     private string[] filterType;
-
+    private string[][] filterInformation;
+    
     public TMP_Dropdown filtroSelector;
 
     public GameObject ancoraFiltros;
@@ -48,28 +50,43 @@ public class FilterConfigurationWidgetManager : MonoBehaviour
         filterType = tipos;
     }
 
-
-    public void SetAtributosCategoricos(int index, string[] options)
+    public void SetInfoFiltros(string[][] infos)
     {
-        if (!filterType[index].Equals(CATEGORIC)) 
+        filterInformation = infos;
+    }
+
+    private string[] GetLabelAtributosCategoricos(int index)
+    {
+        if (!filterType[index].Equals(CATEGORIC))
         {
             Debug.LogError(
                 $"O atributo passado no índice " + index + " não corresponde a um atributo categórico");
-            return;
+            return new string[0];
 
         }
+
+        return filterInformation[index];
     }
 
-    public void SetRangeNumerico(int index, Vector2 valorMinMax)
+    private Vector2 GetRangeNumerico(int index)
     {
         if (!filterType[index].Equals(NUMERIC))
         {
             Debug.LogError(
                 $"O atributo passado no índice " + index + " não corresponde a um atributo categórico");
-            return;
+            return new Vector2(0, 0);
         }
-    }
 
+        var extent = filterInformation[index];
+
+        float min = 0;
+        float max = 0;
+
+        float.TryParse(extent[0], out min);
+        float.TryParse(extent[1], out max);
+
+        return new Vector2(min, max);
+    }
 
     public void DesabilitarVisibilidadeTodosFiltros()
     {
@@ -94,11 +111,8 @@ public class FilterConfigurationWidgetManager : MonoBehaviour
                 );
 
                 filters[index].transform.localPosition = Vector3.zero;
-
-                //get das informações para preencher este filtro
-                string[] abc = new string[] { "abc", "def", "ghi", "jkl" };
-
-                filters[index].GetComponent<CategoricFilterConfiguration>().SetOptions(abc);
+                filters[index].GetComponent<CategoricFilterConfiguration>().
+                    SetOptions(GetLabelAtributosCategoricos(index));
             }
             else
             {
@@ -109,14 +123,12 @@ public class FilterConfigurationWidgetManager : MonoBehaviour
                 );
                 
                 filters[index].transform.localPosition = Vector3.zero;
-
-                //get das informações para preencher este filtro
-                Vector2 minMax = new Vector2(10, 200);
-                filters[index].GetComponent<NumericFilterConfiguration>().SetOptions(minMax);
+                filters[index].GetComponent<NumericFilterConfiguration>().
+                    SetOptions(GetRangeNumerico(index));
             }
         }
-        filters[index].SetActive(true);
 
+        filters[index].SetActive(true);
     }
 
     public string GetFiltrosConfigurados()
@@ -158,23 +170,6 @@ public class FilterConfigurationWidgetManager : MonoBehaviour
         string json = GetFiltrosConfigurados();        
         Debug.Log(json);
     }
-
-    private void Start()
-    {
-        string[] labelFiltros = new string[] {"Pais", "Cor", "Potencia", "Preço" };
-        string[] tipoFiltros = new string[] {"categoric", "categoric", "numeric", "numeric"};
-
-        string[] atributo0values = new string[] { "Brasil", "Argentina", "Uruguai" };
-        string[] atributo1values = new string[] { "Azul", "Verde", "Amarelo", "Vermelho" };
-        Vector2 atributo2values = new Vector2(500F, 2750F);
-        Vector2 atributo3values = new Vector2(50F, 500F);
-
-        //SetLabelsFiltro(labelFiltros);
-        //SetTipoFiltros(tipoFiltros);
-    }
-
-
-
 }
 
 public class FiltrosSelecionados
@@ -195,8 +190,5 @@ public class Filtro
     public Filtro (string nome, string[] valores){
         atributo = nome;
         values = valores;
-    
     }
-
-
 }

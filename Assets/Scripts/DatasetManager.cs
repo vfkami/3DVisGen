@@ -25,9 +25,11 @@ public class DatasetManager : MonoBehaviour
         
         fw.SetLabelsFiltro(dataset.meta.Select(i => i.name.ToString()).ToArray());
         fw.SetTipoFiltros(dataset.meta.Select(i => i.type.ToString()).ToArray());
+        fw.SetInfoFiltros(dataset.meta.Select(i => i.extent.ToArray<string>()).ToArray());
 
         List<string> categoricLabels = new List<string>();
         List<string> numericLabels = new List<string>();
+
 
         for (int i=0; i < dataset.meta.Length; i++)
         {
@@ -36,26 +38,16 @@ public class DatasetManager : MonoBehaviour
             if (column.type.Equals("categorical"))
             {
                 categoricLabels.Add(column.name);
-                fw.SetAtributosCategoricos(i, column.extent);
             }
             if (column.type.Equals("numeric"))
             {
                 numericLabels.Add(column.name);
-                float min = 0;
-                float max = 0;
-
-                float.TryParse(column.extent[0], out min);
-                float.TryParse(column.extent[1], out max);
-
-                Vector2 fv = new Vector2(min, max);
-                fw.SetRangeNumerico(i, fv);
             }
         }
 
         aw.SetLabelsAtributoCor(dataset.meta.Select(i => i.name.ToString()).ToArray());
         aw.SetLabelsAtributoEixoX(categoricLabels.ToArray());
         aw.SetLabelsAtributoEixoY(numericLabels.ToArray());
-
 
 
         /*

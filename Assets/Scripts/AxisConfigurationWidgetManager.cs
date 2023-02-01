@@ -100,20 +100,6 @@ public class AxisConfigurationWidgetManager : MonoBehaviour
 
         return value;
     }
-
-
-    //comment on deploy
-    private void Start()
-    {
-        string[] xlabels = { "Modelo", "Marca", "Ano", "Grupo" };
-        string[] ylabels = { "Potência", "Desempenho", "Cilindradas", "Cavalos" };
-        string[] colorlabels = { "Modelo", "Marca", "Ano", "Grupo", "Potência", "Desempenho", "Cilindradas", "Cavalos" };
-
-        //SetLabelsAtributoEixoX(xlabels);
-        //SetLabelsAtributoEixoY(ylabels);
-        //SetLabelsAtributoCor(colorlabels);
-    }
-
 }
 
 class AtributosSelecionados 
