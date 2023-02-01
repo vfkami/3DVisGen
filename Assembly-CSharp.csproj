@@ -65,15 +65,15 @@
     <Compile Include="Assets\Scripts\DatasetManager.cs" />
     <Compile Include="Assets\Scripts\LineChartManager.cs" />
     <Compile Include="Assets\Scripts\Utils.cs" />
+    <Compile Include="Assets\DatasetSelectorWidgetManager.cs" />
     <Compile Include="Assets\Scripts\NumericFilterConfiguration.cs" />
+    <Compile Include="Assets\CanvasBehavior.cs" />
     <Compile Include="Assets\Scripts\FiducialMarkerManager.cs" />
     <Compile Include="Assets\Scripts\AxisConfigurationWidgetManager.cs" />
     <Compile Include="Assets\Scripts\VariavelVisual.cs" />
     <Compile Include="Assets\Scripts\RequisitionManager.cs" />
     <Compile Include="Assets\Scripts\FiducialMarkerController.cs" />
     <Compile Include="Assets\Scripts\Barra.cs" />
-    <Compile Include="Assets\CanvasBehavior.cs" />
-    <Compile Include="Assets\DatasetSelectorWidgetManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />

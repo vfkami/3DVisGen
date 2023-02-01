@@ -8,6 +8,9 @@ using System.Linq;
 
 public class FilterConfigurationWidgetManager : MonoBehaviour
 {
+    private static string CATEGORIC = "categorical";
+    private static string NUMERIC = "numeric";
+
     private GameObject[] filters;
     private string[] filterLabels;
     private string[] filterType;
@@ -15,7 +18,6 @@ public class FilterConfigurationWidgetManager : MonoBehaviour
     public TMP_Dropdown filtroSelector;
 
     public GameObject ancoraFiltros;
-
     public GameObject CategoricTemplate;
     public GameObject NumericTemplate;
 
@@ -49,17 +51,18 @@ public class FilterConfigurationWidgetManager : MonoBehaviour
 
     public void SetAtributosCategoricos(int index, string[] options)
     {
-        if (!filterType[index].Contains("categoric"))
+        if (!filterType[index].Equals(CATEGORIC)) 
         {
             Debug.LogError(
                 $"O atributo passado no índice " + index + " não corresponde a um atributo categórico");
             return;
+
         }
     }
 
     public void SetRangeNumerico(int index, Vector2 valorMinMax)
     {
-        if (!filterType[index].Contains("numeric"))
+        if (!filterType[index].Equals(NUMERIC))
         {
             Debug.LogError(
                 $"O atributo passado no índice " + index + " não corresponde a um atributo categórico");
@@ -166,9 +169,12 @@ public class FilterConfigurationWidgetManager : MonoBehaviour
         Vector2 atributo2values = new Vector2(500F, 2750F);
         Vector2 atributo3values = new Vector2(50F, 500F);
 
-        SetLabelsFiltro(labelFiltros);
-        SetTipoFiltros(tipoFiltros);
+        //SetLabelsFiltro(labelFiltros);
+        //SetTipoFiltros(tipoFiltros);
     }
+
+
+
 }
 
 public class FiltrosSelecionados

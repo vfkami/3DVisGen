@@ -109,9 +109,9 @@ public class AxisConfigurationWidgetManager : MonoBehaviour
         string[] ylabels = { "Potência", "Desempenho", "Cilindradas", "Cavalos" };
         string[] colorlabels = { "Modelo", "Marca", "Ano", "Grupo", "Potência", "Desempenho", "Cilindradas", "Cavalos" };
 
-        SetLabelsAtributoEixoX(xlabels);
-        SetLabelsAtributoEixoY(ylabels);
-        SetLabelsAtributoCor(colorlabels);
+        //SetLabelsAtributoEixoX(xlabels);
+        //SetLabelsAtributoEixoY(ylabels);
+        //SetLabelsAtributoCor(colorlabels);
     }
 
 }

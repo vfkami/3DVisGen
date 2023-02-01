@@ -5,6 +5,8 @@ using UnityEngine.Networking;
 
 public class RequisitionManager : MonoBehaviour
 {
+    public DatasetSelectorWidgetManager datasetWidget;
+
     public static string enderecoServidor = "http://localhost";
     public static string porta = "3000";
 
@@ -17,41 +19,45 @@ public class RequisitionManager : MonoBehaviour
     {
         Debug.Log("Application Start...");
 
-        getDatasetPorNome("automobile");
+        getDatasetPorNome("automobile", true);
     }
 
-    private void Update()
-    {
-        //Debug.Log(respostaJson);
-
-    }
-
-    public IEnumerator getDatasetPorNome(string datasetName)
+    public void getDatasetPorNome(string datasetName, bool updateCanvas)
     {
         Debug.Log("start coroutine");
         string uri = enderecoServidor + ":" + porta + "/metadata/" + datasetName;
-        yield return StartCoroutine(getRequest(uri));
-
-        Debug.Log("coroutine finish!");
-
-
+        StartCoroutine(GetRequest(uri, true));
     }
 
-     
 
-    IEnumerator getRequest(string uri)
+    IEnumerator GetRequest(string uri, bool updateText = false)
     {
-        UnityWebRequest request = UnityWebRequest.Get(uri);
-        yield return request.SendWebRequest();
+        using (UnityWebRequest webRequest = UnityWebRequest.Get(uri))
+        {
+            yield return webRequest.SendWebRequest();
 
-        if (request.result == UnityWebRequest.Result.ConnectionError)
-            Debug.LogError("Error while sending request for " + uri);
-        else
-            ResponseCallback(request.downloadHandler.text);
+            switch (webRequest.result)
+            {
+                case UnityWebRequest.Result.ConnectionError:
+                case UnityWebRequest.Result.DataProcessingError:
+                case UnityWebRequest.Result.ProtocolError:
+                    Debug.LogError("Error: " + webRequest.error);
+                    datasetWidget.AtualizaTextoCanvas(webRequest.error);
+                    break;
+                case UnityWebRequest.Result.Success:
+                    ResponseCallback(webRequest.downloadHandler.text);
+                    if (updateText)
+                        datasetWidget.AtualizaTextoCanvas(respostaJson);
+                    break;
+            }
+        }
     }
 
     private void ResponseCallback(string data)
     {
         respostaJson = data;
+
+        DatasetManager.SetDataset(data);
+        Debug.Log(data);
     }
 }

@@ -6,24 +6,14 @@ using UnityEngine.UI;
 
 public class DatasetSelectorWidgetManager : MonoBehaviour
 {
-    private RequisitionManager rq;
-
-
+    public RequisitionManager rq;
 
     public TMP_InputField IfDataset;
     public TMP_Dropdown DpdDataset;
 
-    public Button SwitchButton;
-    public Button SearchButton;
-
     public TMP_Text TxtDatasetContent;
 
     bool searchEnabled = false;
-
-    private void Start()
-    {
-        rq = GameObject.Find("SceneManager").GetComponent<RequisitionManager>();
-    }
 
     public void switchVisibility()
     {
@@ -35,26 +25,30 @@ public class DatasetSelectorWidgetManager : MonoBehaviour
 
     public void GetDatasetBySearchButton()
     {
-        string datasetName = IfDataset.text;
+        string nomeDataset = IfDataset.text;
 
-        if (datasetName.Equals("")) return;
+        if (nomeDataset.Equals("")) return;
 
-        Debug.Log("Searching by... " + datasetName);
+        Debug.Log("Searching by... " + nomeDataset);
+        rq.getDatasetPorNome(nomeDataset, true);
+
     }
 
     public void GetDatasetByDropodownOptions()
     {
         int dropdownIndex = DpdDataset.value - 1;
-        string datasetName = DpdDataset.options[DpdDataset.value].text;
+        string nomeDataset = DpdDataset.options[DpdDataset.value].text;
 
         if (dropdownIndex < 0) return;
-        Debug.Log("Select the " + datasetName + " dataset");
+        Debug.Log("Select the " + nomeDataset + " dataset");
+
+        rq.getDatasetPorNome(nomeDataset, true);
 
     }
 
-    public void GetDatasetContent()
+    public void AtualizaTextoCanvas(string text)
     {
-        
+        TxtDatasetContent.text = text;
     }
 
 }
