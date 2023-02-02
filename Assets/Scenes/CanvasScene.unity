@@ -178,10 +178,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8bce097a8e4ffeb4cbbc83629c9b4f14, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rq: {fileID: 894359487}
-  IfDataset: {fileID: 614526205}
-  DpdDataset: {fileID: 1568627304}
-  TxtDatasetContent: {fileID: 2076503206}
+  requisitionManager: {fileID: 894359487}
+  iFDataset: {fileID: 614526205}
+  dpdDataset: {fileID: 1568627304}
+  txtConteudoDataset: {fileID: 2076503206}
 --- !u!114 &29128305
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1943,10 +1943,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18c3cf35438c9bc4a8a5300f22f91e24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  filtroSelector: {fileID: 1720248458}
+  dpdSeletorFiltros: {fileID: 1720248458}
   ancoraFiltros: {fileID: 488435643}
-  CategoricTemplate: {fileID: 1243399076}
-  NumericTemplate: {fileID: 1802834854}
+  templateCategorico: {fileID: 1243399076}
+  templateNumerico: {fileID: 1802834854}
 --- !u!1 &387996014
 GameObject:
   m_ObjectHideFlags: 0
@@ -6061,7 +6061,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef2de6a092c6491488e2d2cc1f32863b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  goToggle:
+  toggles:
   - {fileID: 1890418065}
   - {fileID: 1340358954}
   - {fileID: 345520839}
@@ -8856,7 +8856,7 @@ MonoBehaviour:
   inputMaxValue: {fileID: 643088179}
   inputMinPlaceholder: {fileID: 2012707394}
   inputMaxPlaceholder: {fileID: 223806937}
-  selecaoInvertida: {fileID: 0}
+  selecaoInvertida: {fileID: 1138011033}
 --- !u!1 &1822277801
 GameObject:
   m_ObjectHideFlags: 0

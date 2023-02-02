@@ -6,11 +6,9 @@ using UnityEngine;
 
 public class Utils : MonoBehaviour
 {
-    public string JSON;
-
+    public string json;
     //{"columns":["sepal_length","sepal_width","petal_length","petal_width","iris"],"rows":150,"meta":[{"name":"sepal_length","type":"numeric","extent":[4.3,7.9]},{"name":"sepal_width","type":"numeric","extent":[2,4.4]},{"name":"petal_length","type":"numeric","extent":[1,6.9]},{"name":"petal_width","type":"numeric","extent":[0.1,2.5]},{"name":"iris","type":"categorical","extent":["Iris-setosa","Iris-versicolor","Iris-virginica"]}]}
 
-    //Normaliza os valores recebidos em um range de {0 - 1}
     public static float[] NormalizaValores(float[] valores)
     {
         float[] valoresNormalizados = new float[valores.Length];
@@ -135,10 +133,6 @@ public class Utils : MonoBehaviour
     {
         return JsonUtility.FromJson<Dataset>(JSON);
     }
-
-
-
-
 }
 
 

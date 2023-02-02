@@ -7,18 +7,18 @@ using TMPro;
 
 public class ScatterplotManager : MonoBehaviour
 {
-    public GameObject[] TemplatePrefabs;
-    public Material[] TemplateMaterials;
-    public Transform VariaveisVisuaisParent;
+    public GameObject[] prefabs;
+    public Material[] materials;
+    public Transform parentVariavelVisual;
 
-    public TextMeshPro XAxisLabel;
-    public TextMeshPro YAxisLabel;
-    public TextMeshPro ZAxisLabel;
+    public TextMeshPro oLabelEixoX;
+    public TextMeshPro oLabelEixoY;
+    public TextMeshPro oLabelEixoZ;
 
-    public const int TAMANHO_EIXOX = 10;
+    public const int TamanhoEixoX = 10;
 
-    private GameObject[] ElementosVisuais;
-    private int QtdObjetos;
+    private GameObject[] _elementosVisuais;
+    private int _qtdObjetos;
 
 
     /* TODO: Adicionar validacao tamanho array prefabs/material com categorias recebidas grupo/cor
@@ -43,44 +43,44 @@ public class ScatterplotManager : MonoBehaviour
             return;
         }
 
-        QtdObjetos = eixoX.Length;
-        ElementosVisuais = new GameObject[QtdObjetos];
+        _qtdObjetos = eixoX.Length;
+        _elementosVisuais = new GameObject[_qtdObjetos];
 
-        float[] EixoXNormalizado = Utils.NormalizaValoresComMultiplicador(eixoX, TAMANHO_EIXOX);
-        float[] EixoYNormalizado = Utils.NormalizaValoresComMultiplicador(eixoY, TAMANHO_EIXOX);
-        float[] EixoZNormalizado = Utils.NormalizaValoresComMultiplicador(eixoZ, TAMANHO_EIXOX);
-        int[] CorNormalizado = Utils.ConverteCategoriasParaNumerico(cor);
-        int[] GrupoNormalizado = Utils.ConverteCategoriasParaNumerico(grupo);
+        float[] eixoXNormalizado = Utils.NormalizaValoresComMultiplicador(eixoX, TamanhoEixoX);
+        float[] eixoYNormalizado = Utils.NormalizaValoresComMultiplicador(eixoY, TamanhoEixoX);
+        float[] eixoZNormalizado = Utils.NormalizaValoresComMultiplicador(eixoZ, TamanhoEixoX);
+        int[] corNormalizado = Utils.ConverteCategoriasParaNumerico(cor);
+        int[] grupoNormalizado = Utils.ConverteCategoriasParaNumerico(grupo);
 
         GameObject empty = new GameObject();
 
-        for (int i = 0; i < QtdObjetos; i++)
+        for (int i = 0; i < _qtdObjetos; i++)
         {
             //Instancia parent vazio
-            ElementosVisuais[i] = Instantiate(original: empty,
-                parent: VariaveisVisuaisParent,
+            _elementosVisuais[i] = Instantiate(original: empty,
+                parent: parentVariavelVisual,
                 position: new Vector3(0, 0, 0), 
                 rotation: Quaternion.identity);
 
             //Define localizacao do parent
-            ElementosVisuais[i].transform.localPosition = new Vector3(
-                EixoXNormalizado[i], EixoYNormalizado[i], EixoZNormalizado[i]);
+            _elementosVisuais[i].transform.localPosition = new Vector3(
+                eixoXNormalizado[i], eixoYNormalizado[i], eixoZNormalizado[i]);
 
             //Adiciona configurações referente ao GameObject e a base de dados
-            ElementosVisuais[i].AddComponent<VariavelVisual>();
-            ElementosVisuais[i].GetComponent<VariavelVisual>().setAtributosBase(
+            _elementosVisuais[i].AddComponent<VariavelVisual>();
+            _elementosVisuais[i].GetComponent<VariavelVisual>().setAtributosBase(
                 eixoX[i], eixoY[i], eixoZ[i], grupo[i], cor[i]);
 
-            ElementosVisuais[i].GetComponent<VariavelVisual>().setAtributosGameObject(
-                EixoXNormalizado[i], EixoYNormalizado[i], EixoZNormalizado[i],
-                TemplatePrefabs[GrupoNormalizado[i]], TemplateMaterials[CorNormalizado[i]]);
+            _elementosVisuais[i].GetComponent<VariavelVisual>().setAtributosGameObject(
+                eixoXNormalizado[i], eixoYNormalizado[i], eixoZNormalizado[i],
+                prefabs[grupoNormalizado[i]], materials[corNormalizado[i]]);
             
-            ElementosVisuais[i].name = "Row " + i;
+            _elementosVisuais[i].name = "Row " + i;
         }
 
-        XAxisLabel.text = labelEixoX;
-        YAxisLabel.text = labelEixoY;
-        ZAxisLabel.text = labelEixoZ;
+        oLabelEixoX.text = labelEixoX;
+        oLabelEixoY.text = labelEixoY;
+        oLabelEixoZ.text = labelEixoZ;
 
         Destroy(empty);
     }
@@ -101,42 +101,42 @@ public class ScatterplotManager : MonoBehaviour
             return;
         }
 
-        QtdObjetos = eixoX.Length;
-        ElementosVisuais = new GameObject[QtdObjetos];
+        _qtdObjetos = eixoX.Length;
+        _elementosVisuais = new GameObject[_qtdObjetos];
 
-        float[] EixoXNormalizado = Utils.NormalizaValoresComMultiplicador(eixoX, TAMANHO_EIXOX);
-        float[] EixoYNormalizado = Utils.NormalizaValoresComMultiplicador(eixoY, TAMANHO_EIXOX);
+        float[] EixoXNormalizado = Utils.NormalizaValoresComMultiplicador(eixoX, TamanhoEixoX);
+        float[] EixoYNormalizado = Utils.NormalizaValoresComMultiplicador(eixoY, TamanhoEixoX);
         int[] CorNormalizado = Utils.ConverteCategoriasParaNumerico(cor);
         int[] GrupoNormalizado = Utils.ConverteCategoriasParaNumerico(grupo);
 
         GameObject empty = new GameObject();
 
-        for (int i = 0; i < QtdObjetos; i++)
+        for (int i = 0; i < _qtdObjetos; i++)
         {
             //Instancia parent vazio
-            ElementosVisuais[i] = Instantiate(original: empty,
-                parent: VariaveisVisuaisParent,
+            _elementosVisuais[i] = Instantiate(original: empty,
+                parent: parentVariavelVisual,
                 position: new Vector3(0, 0, 0),
                 rotation: Quaternion.identity);
 
             //Define localizacao do parent
-            ElementosVisuais[i].transform.localPosition = new Vector3(
+            _elementosVisuais[i].transform.localPosition = new Vector3(
                 EixoXNormalizado[i], EixoYNormalizado[i], 0);
 
             //Adiciona configurações referente ao GameObject e a base de dados
-            ElementosVisuais[i].AddComponent<VariavelVisual>();
-            ElementosVisuais[i].GetComponent<VariavelVisual>().setAtributosBase(
+            _elementosVisuais[i].AddComponent<VariavelVisual>();
+            _elementosVisuais[i].GetComponent<VariavelVisual>().setAtributosBase(
                 eixoX[i], eixoY[i], grupo[i], cor[i]);
 
-            ElementosVisuais[i].GetComponent<VariavelVisual>().setAtributosGameObject(
+            _elementosVisuais[i].GetComponent<VariavelVisual>().setAtributosGameObject(
                 EixoXNormalizado[i], EixoYNormalizado[i],
-                TemplatePrefabs[GrupoNormalizado[i]], TemplateMaterials[CorNormalizado[i]]);
+                prefabs[GrupoNormalizado[i]], materials[CorNormalizado[i]]);
 
-            ElementosVisuais[i].name = "Row " + i;
+            _elementosVisuais[i].name = "Row " + i;
         }
 
-        XAxisLabel.text = labelEixoX;
-        YAxisLabel.text = labelEixoY;
+        oLabelEixoX.text = labelEixoX;
+        oLabelEixoY.text = labelEixoY;
 
         Destroy(empty);
     }

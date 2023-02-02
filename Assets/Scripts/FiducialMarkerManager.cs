@@ -11,7 +11,7 @@ public class FiducialMarkerManager : MonoBehaviour
 
     public void SetTextoMarcadorPorIndex(string text, int index)
     {
-        fiducialMarkers[index].GetComponent<FiducialMarkerController>().SetText(text);
+        fiducialMarkers[index].GetComponent<FiducialMarkerController>().SetTexto(text);
     }
 
     public void SetTextoTodosMarcadores(string[] texts)
@@ -22,12 +22,14 @@ public class FiducialMarkerManager : MonoBehaviour
         {
             Debug.LogWarning(
                 $"A quantidade de texto passado excede a quantidade de marcadores na cena. Os textos excedentes serão ignorados");
+            
             count = _qtdMarcadores;
         }
         else if (texts.Length < _qtdMarcadores)
         {
             Debug.LogWarning(
                 $"A quantidade de texto passado é menor que a quantidade de marcadores na cena. Haverão marcadores sem texto");
+            
             count = texts.Length;
         }
 

@@ -8,31 +8,30 @@ using System.Linq;
 
 public class FilterConfigurationWidgetManager : MonoBehaviour
 {
-    private static string CATEGORIC = "categorical";
-    private static string NUMERIC = "numeric";
+    private static string Categoric = "categorical";
+    private static string Numeric = "numeric";
 
-    private GameObject[] filters;
-
-    private string[] filterLabels;
-    private string[] filterType;
-    private string[][] filterInformation;
+    private GameObject[] _filtrosGameObject;
+    private Filtro[] _filtros;
+    private string[] _labelFiltros;
+    private string[] _tipoFiltros;
+    private string[][] _informacaoFiltros;
     
-    public TMP_Dropdown filtroSelector;
+    public TMP_Dropdown dpdSeletorFiltros;
 
     public GameObject ancoraFiltros;
-    public GameObject CategoricTemplate;
-    public GameObject NumericTemplate;
+    public GameObject templateCategorico;
+    public GameObject templateNumerico;
 
-    private Filtro[] filtros;
 
     public void SetLabelsFiltro(string[] labels)
     {
-        if (filters != null)
-            filters.Where(go => go != null).ToList()
+        if (_filtrosGameObject != null)
+            _filtrosGameObject.Where(go => go != null).ToList()
                 .ForEach(go => Destroy(go));
 
-        filterLabels = labels;
-        filters = new GameObject[labels.Length];
+        _labelFiltros = labels;
+        _filtrosGameObject = new GameObject[labels.Length];
 
         List<TMP_Dropdown.OptionData> newOptions = new List<TMP_Dropdown.OptionData>();
         TMP_Dropdown.OptionData option = new TMP_Dropdown.OptionData("Selecione");
@@ -44,24 +43,24 @@ public class FilterConfigurationWidgetManager : MonoBehaviour
             newOptions.Add(option);
         }
 
-        filtroSelector.ClearOptions();
-        filtroSelector.AddOptions(newOptions);
+        dpdSeletorFiltros.ClearOptions();
+        dpdSeletorFiltros.AddOptions(newOptions);
     }
 
     // accept only: categoric, numeric
     public void SetTipoFiltros(string[] tipos)
     {
-        filterType = tipos;
+        _tipoFiltros = tipos;
     }
 
     public void SetInfoFiltros(string[][] infos)
     {
-        filterInformation = infos;
+        _informacaoFiltros = infos;
     }
 
     private string[] GetLabelAtributosCategoricos(int index)
     {
-        if (!filterType[index].Equals(CATEGORIC))
+        if (!_tipoFiltros[index].Equals(Categoric))
         {
             Debug.LogError(
                 $"O atributo passado no índice " + index + " não corresponde a um atributo categórico");
@@ -69,19 +68,19 @@ public class FilterConfigurationWidgetManager : MonoBehaviour
 
         }
 
-        return filterInformation[index];
+        return _informacaoFiltros[index];
     }
 
     private Vector2 GetRangeNumerico(int index)
     {
-        if (!filterType[index].Equals(NUMERIC))
+        if (!_tipoFiltros[index].Equals(Numeric))
         {
             Debug.LogError(
                 $"O atributo passado no índice " + index + " não corresponde a um atributo categórico");
             return new Vector2(0, 0);
         }
 
-        var extent = filterInformation[index];
+        var extent = _informacaoFiltros[index];
 
         float min = 0;
         float max = 0;
@@ -94,75 +93,75 @@ public class FilterConfigurationWidgetManager : MonoBehaviour
 
     public void OnFiltroSelectorValueChanged()
     {
-        filters.Where(go => go != null).ToList()
+        _filtrosGameObject.Where(go => go != null).ToList()
             .ForEach(go => go.SetActive(false));
 
-        var index = filtroSelector.value - 1;
+        var index = dpdSeletorFiltros.value - 1;
         if (index < 0) return;
 
-        if (filters[index] == null)
+        if (_filtrosGameObject[index] == null)
         {        
-            if (filterType[index].Contains("categoric"))
+            if (_tipoFiltros[index].Contains("categoric"))
             {
-                filters[index] = Instantiate(original: CategoricTemplate,
+                _filtrosGameObject[index] = Instantiate(original: templateCategorico,
                 parent: ancoraFiltros.transform,
                 position: new Vector3(0, 0, 0),
                 rotation: Quaternion.identity
                 );
 
-                filters[index].name = filterLabels[index] + "_cat_" + index;
-                filters[index].transform.localPosition = Vector3.zero;
-                filters[index].GetComponent<CategoricFilterConfiguration>().
+                _filtrosGameObject[index].name = _labelFiltros[index] + "_cat_" + index;
+                _filtrosGameObject[index].transform.localPosition = Vector3.zero;
+                _filtrosGameObject[index].GetComponent<CategoricFilterConfiguration>().
                     SetOptions(GetLabelAtributosCategoricos(index));
             }
             else
             {
-                filters[index] = Instantiate(original: NumericTemplate,
+                _filtrosGameObject[index] = Instantiate(original: templateNumerico,
                 parent: ancoraFiltros.transform,
                 position: new Vector3(0, 0, 0),
                 rotation: Quaternion.identity
                 );
 
-                filters[index].name = filterLabels[index] + "_num_" + index;
-                filters[index].transform.localPosition = Vector3.zero;
-                filters[index].GetComponent<NumericFilterConfiguration>().
-                    SetOptions(GetRangeNumerico(index));
+                _filtrosGameObject[index].name = _labelFiltros[index] + "_num_" + index;
+                _filtrosGameObject[index].transform.localPosition = Vector3.zero;
+                _filtrosGameObject[index].GetComponent<NumericFilterConfiguration>().
+                    SetRange(GetRangeNumerico(index));
             }
         }
 
-        filters[index].SetActive(true);
+        _filtrosGameObject[index].SetActive(true);
     }
 
     public string GetFiltrosConfigurados()
     {
-        filtros = new Filtro[filterLabels.Length];
+        _filtros = new Filtro[_labelFiltros.Length];
 
 
-        for(int i = 0; i < filterLabels.Length; i++)
+        for(int i = 0; i < _labelFiltros.Length; i++)
         {
             CategoricFilterConfiguration catConf;
             NumericFilterConfiguration numConf;
 
-            if(filters[i] != null)
+            if(_filtrosGameObject[i] != null)
             {
-                filters[i].TryGetComponent<CategoricFilterConfiguration>(out catConf);
-                filters[i].TryGetComponent<NumericFilterConfiguration>(out numConf);
+                _filtrosGameObject[i].TryGetComponent<CategoricFilterConfiguration>(out catConf);
+                _filtrosGameObject[i].TryGetComponent<NumericFilterConfiguration>(out numConf);
 
                 if (catConf != null)
                 {
-                    filtros[i] = new Filtro(filterLabels[i], catConf.GetValues());
+                    _filtros[i] = new Filtro(_labelFiltros[i], catConf.GetValores());
                     continue;
                 }
                 if (numConf != null)
                 {
-                    filtros[i] = new Filtro(filterLabels[i], numConf.GetValues());
+                    _filtros[i] = new Filtro(_labelFiltros[i], numConf.GetValores());
                     continue;
                 }
-                filtros[i] = new Filtro(filterLabels[i], new string[0]);     
+                _filtros[i] = new Filtro(_labelFiltros[i], new string[0]);     
             }
         }
 
-        FiltrosSelecionados fs = new FiltrosSelecionados(filtros);
+        FiltrosSelecionados fs = new FiltrosSelecionados(_filtros);
             
         return JsonUtility.ToJson(fs);
     }

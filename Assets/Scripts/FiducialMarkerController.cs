@@ -14,7 +14,7 @@ public class FiducialMarkerController : MonoBehaviour
         canvas.enabled = false;
     }
 
-    public void SetText(string text)
+    public void SetTexto(string text)
     {
         markerText.text = text;
     }

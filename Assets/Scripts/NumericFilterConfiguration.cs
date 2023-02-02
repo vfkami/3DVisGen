@@ -6,51 +6,44 @@ using UnityEngine.UI;
 
 public class NumericFilterConfiguration : MonoBehaviour
 {
-    private float min;
-    private float max;
-    private bool inverter;
+    private float _min;
+    private float _max;
+    private bool _inverter;
 
     public TextMeshProUGUI helper;
-
     public TMP_InputField inputMinValue; 
     public TMP_InputField inputMaxValue;
-
     public TMP_Text inputMinPlaceholder;
     public TMP_Text inputMaxPlaceholder;
-
     public Toggle selecaoInvertida;
 
-    //TODO: Add validacao de valores adicionados pelo usuario
-
-    public void SetOptions(Vector2 valorMinMax)
+    public void SetRange(Vector2 valorMinMax)
     {
-        min = valorMinMax.x;
-        max = valorMinMax.y;
+        _min = valorMinMax.x;
+        _max = valorMinMax.y;
 
-        inputMinPlaceholder.text = min.ToString();
-        inputMaxPlaceholder.text = max.ToString();
+        inputMinPlaceholder.text = _min.ToString();
+        inputMaxPlaceholder.text = _max.ToString();
 
-        helper.text = $"Both value must be between " + min + " and " + max;
+        helper.text = $"Both value must be between " + _min + " and " + _max;
     }
 
-    public string[] GetValues() // TODO: Adicionar informaçao do checkbox valores invertidos
+    public string[] GetValores()
     {
         return new string[] { inputMinValue.text, inputMaxValue.text, selecaoInvertida.isOn.ToString() };
     }
 
     public void ValidaValorInput()
     {
-        float input1value = 0;
-        float input2value = 0;
+        float input1value;
+        float input2value;
 
         float.TryParse(inputMinValue.text, out input1value);
         float.TryParse(inputMaxValue.text, out input2value);
 
-        Debug.Log(input1value + "" + input2value);
-
-        if (input1value < min) inputMinValue.text = min.ToString();
-        if (input1value > max) inputMinValue.text = max.ToString();
-        if (input2value < min) inputMaxValue.text = min.ToString();
-        if (input2value > max) inputMaxValue.text = max.ToString();
+        if (input1value < _min) inputMinValue.text = _min.ToString();
+        if (input1value > _max) inputMinValue.text = _max.ToString();
+        if (input2value < _min) inputMaxValue.text = _min.ToString();
+        if (input2value > _max) inputMaxValue.text = _max.ToString();
     }
 }

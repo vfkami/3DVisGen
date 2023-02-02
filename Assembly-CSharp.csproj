@@ -57,7 +57,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\PontoLinha.cs" />
-    <Compile Include="Assets\Scripts\CameraController.cs" />
     <Compile Include="Assets\Scripts\CategoricFilterConfiguration.cs" />
     <Compile Include="Assets\Scripts\ScatterplotManager.cs" />
     <Compile Include="Assets\Scripts\FilterConfigurationWidgetManager.cs" />
@@ -65,9 +64,9 @@
     <Compile Include="Assets\Scripts\DatasetManager.cs" />
     <Compile Include="Assets\Scripts\LineChartManager.cs" />
     <Compile Include="Assets\Scripts\Utils.cs" />
-    <Compile Include="Assets\DatasetSelectorWidgetManager.cs" />
+    <Compile Include="Assets\Scripts\DatasetSelectorWidgetManager.cs" />
     <Compile Include="Assets\Scripts\NumericFilterConfiguration.cs" />
-    <Compile Include="Assets\CanvasBehavior.cs" />
+    <Compile Include="Assets\Scripts\CanvasBehavior.cs" />
     <Compile Include="Assets\Scripts\FiducialMarkerManager.cs" />
     <Compile Include="Assets\Scripts\AxisConfigurationWidgetManager.cs" />
     <Compile Include="Assets\Scripts\VariavelVisual.cs" />

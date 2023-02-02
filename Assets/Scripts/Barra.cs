@@ -13,9 +13,9 @@ public class Barra : MonoBehaviour
     public string xValor, grupoValor, corValor;
 
     //altura minima da barra caso valor seja 0
-    public const float ALTURA_MINIMA = 0.5F;
+    public const float AlturaMinima = 0.5F;
 
-    public void setAtributosGameObject(float x, float grossuraBarra, float y, Material cor)
+    public void SetAtributosGameObject(float x, float grossuraBarra, float y, Material cor)
     {
         posX = x;
         posY = y;
@@ -36,13 +36,13 @@ public class Barra : MonoBehaviour
         barra.name = "Barra";
 
         transform.localPosition = new Vector3(x, 0, 0);
-        transform.localScale = new Vector3(grossuraBarra, y + ALTURA_MINIMA, 1);
+        transform.localScale = new Vector3(grossuraBarra, y + AlturaMinima, 1);
 
         Destroy(referenciaPrefab);
     }
 
     //TODO: Seta os atributos da base de dados no GameObject
-    public void setAtributosBase(string x, float y, float z, string grupo, string cor)
+    public void SetAtributosBase(string x, float y, float z, string grupo, string cor)
     {
         xValor = x;
         yValor = y;
@@ -50,13 +50,13 @@ public class Barra : MonoBehaviour
         grupoValor = grupo;
         corValor = cor;
     }
-    public void setAtributosBase(string x, float y, string cor)
+    public void SetAtributosBase(string x, float y, string cor)
     {
         xValor = x;
         yValor = y;
         corValor = cor;
     }
-    public void setAtributosBase(string x, float y)
+    public void SetAtributosBase(string x, float y)
     {
         xValor = x;
         yValor = y;

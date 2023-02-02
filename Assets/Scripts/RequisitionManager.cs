@@ -7,25 +7,20 @@ public class RequisitionManager : MonoBehaviour
 {
     public DatasetSelectorWidgetManager datasetWidget;
 
+    public string uri;
     public static string enderecoServidor = "http://localhost";
     public static string porta = "3000";
-
-    public string uri;
-
-    string respostaJson = "";
+    string respostaJson;
     
-    // Start is called before the first frame update
+    // TODO: Adiciona validação de conexão com servidor
     void Start()
     {
-        Debug.Log("Application Start...");
-
-        getDatasetPorNome("automobile", true);
+        GetDatasetPorNome("automobile", true);
     }
 
-    public void getDatasetPorNome(string datasetName, bool updateCanvas)
+    public void GetDatasetPorNome(string datasetName, bool updateCanvas)
     {
-        Debug.Log("start coroutine");
-        string uri = enderecoServidor + ":" + porta + "/metadata/" + datasetName;
+        string uri = $"{enderecoServidor}:{porta}/metadata/{datasetName}";
         StartCoroutine(GetRequest(uri, true));
     }
 
@@ -57,6 +52,5 @@ public class RequisitionManager : MonoBehaviour
     {
         respostaJson = data;
         DatasetManager.SetDataset(data);
-        Debug.Log(data);
     }
 }

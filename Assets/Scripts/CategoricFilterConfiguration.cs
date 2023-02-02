@@ -6,36 +6,36 @@ using UnityEngine.UI;
 
 public class CategoricFilterConfiguration : MonoBehaviour
 {
-    public Toggle[] goToggle;
-    private string[] values;
+    public Toggle[] toggles;
+    private string[] textoLabels;
 
-    public void SetOptions(string[] labelText)
+    public void SetOptions(string[] labels)
     {
-        values = labelText;
+        textoLabels = labels;
 
-        if (labelText.Length > goToggle.Length)
+        if (labels.Length > toggles.Length)
         {
             Debug.LogWarning(
                 $"A quantidade de atributos excede o máximo aceitado. Só serão exibidas 10 opções.");
         }
 
-        for(int i=0; i < goToggle.Length; i++)
+        for(int i=0; i < toggles.Length; i++)
         {
-            if (i < labelText.Length)
-                goToggle[i].GetComponentInChildren<TextMeshProUGUI>().text = labelText[i];
+            if (i < labels.Length)
+                toggles[i].GetComponentInChildren<TextMeshProUGUI>().text = labels[i];
             else
-                goToggle[i].gameObject.SetActive(false);
+                toggles[i].gameObject.SetActive(false);
         }
     }
 
-    public string[] GetValues()
+    public string[] GetValores()
     {
         List<string> valoresSelecionados = new List<string>();
 
-        for (int i = 0; i < goToggle.Length; i++)
+        for (int i = 0; i < toggles.Length; i++)
 
-            if (goToggle[i].gameObject.activeSelf && goToggle[i].isOn)              
-                valoresSelecionados.Add(values[i]);
+            if (toggles[i].gameObject.activeSelf && toggles[i].isOn)              
+                valoresSelecionados.Add(textoLabels[i]);
 
         return valoresSelecionados.ToArray();
     }

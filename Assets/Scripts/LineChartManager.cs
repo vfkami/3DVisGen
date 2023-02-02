@@ -5,21 +5,18 @@ using UnityEngine;
 
 public class LineChartManager : MonoBehaviour
 {
-    public Transform VariaveisVisuaisParent;
-    public Material[] TemplateMaterials;
+    private GameObject[] _elementosVisuais;
+    private int _qtdObjetos;
 
-    public TextMeshPro XAxisLabel;
-    public TextMeshPro YAxisLabel;
+    public Transform parentVariavelVisual;
+    public Material[] materiais;
+    public TextMeshPro oLabelEixoX;
+    public TextMeshPro oLabelEixoY;
     //public TextMeshPro ZAxisLabel;
 
-    public const int TAMANHO_EIXOX = 10;
+    public const int TamanhoEixoX = 10;
 
-    private GameObject[] ElementosVisuais;
-
-    private int QtdObjetos;
-
-
-    public void CriaSingleLineChart(
+    public void CriaLineChartUnico(
         string[] eixoX,
         float[] eixoY,
         string labelEixoX,
@@ -31,53 +28,49 @@ public class LineChartManager : MonoBehaviour
             return;
         }
 
+        _qtdObjetos = eixoX.Length;
+        _elementosVisuais = new GameObject[_qtdObjetos];
 
-        QtdObjetos = eixoX.Length;
-        ElementosVisuais = new GameObject[QtdObjetos];
-        float[] EixoXNormalizado = Utils.CalculaPosicaoBarras(QtdObjetos, TAMANHO_EIXOX);
-        float[] EixoYNormalizado = Utils.NormalizaValoresComMultiplicador(eixoY, TAMANHO_EIXOX);
-        
-        
+        float[] eixoXNormalizado = Utils.CalculaPosicaoBarras(_qtdObjetos, TamanhoEixoX);
+        float[] eixoYNormalizado = Utils.NormalizaValoresComMultiplicador(eixoY, TamanhoEixoX);
         //int[] CorNormalizado = Utils.ConverteCategoriasParaNumerico(cor);
 
-        ElementosVisuais = new GameObject[QtdObjetos];
+        _elementosVisuais = new GameObject[_qtdObjetos];
 
         GameObject empty = new GameObject();
 
-        for (int i = 0; i < QtdObjetos; i++)
+        for (int i = 0; i < _qtdObjetos; i++)
         {
-            ElementosVisuais[i] = Instantiate(original: empty,
-                parent: VariaveisVisuaisParent,
+            _elementosVisuais[i] = Instantiate(original: empty,
+                parent: parentVariavelVisual,
                 position: new Vector3(0, 0, 0),
                 rotation: Quaternion.identity
             );
 
-            ElementosVisuais[i].name = "Row " + i;
+            _elementosVisuais[i].name = "Row " + i;
             
-            ElementosVisuais[i].AddComponent<PontoLinha>();
-            ElementosVisuais[i].GetComponent<PontoLinha>().setAtributosBase(eixoX[i], eixoY[i]);
+            _elementosVisuais[i].AddComponent<PontoLinha>();
+            _elementosVisuais[i].GetComponent<PontoLinha>().SetAtributosBase(eixoX[i], eixoY[i]);
+            _elementosVisuais[i].GetComponent<PontoLinha>().SetAtributosGameObject(
+                eixoXNormalizado[i], eixoYNormalizado[i]);
 
-            ElementosVisuais[i].GetComponent<PontoLinha>().setAtributosGameObject(
-                EixoXNormalizado[i], EixoYNormalizado[i]);
-
-            ElementosVisuais[i].GetComponent<PontoLinha>().CriaPonto(TemplateMaterials[0]);
+            _elementosVisuais[i].GetComponent<PontoLinha>().CriaPonto(materiais[0]);
 
 
-            if (i != QtdObjetos -1)
-                ElementosVisuais[i].GetComponent<PontoLinha>().CriaLinha(TemplateMaterials[0]);
+            if (i != _qtdObjetos -1)
+                _elementosVisuais[i].GetComponent<PontoLinha>().CriaLinha(materiais[0]);
 
             if (i != 0)
             {
-                ElementosVisuais[i - 1].GetComponent<PontoLinha>().setProximoPonto(ElementosVisuais[i]);
-                ElementosVisuais[i - 1].GetComponent<PontoLinha>().ConectaProximoPonto();
-                ElementosVisuais[i - 1].GetComponent<PontoLinha>().RedefineEscalaLinha();
-
+                _elementosVisuais[i - 1].GetComponent<PontoLinha>().SetProximoPonto(_elementosVisuais[i]);
+                _elementosVisuais[i - 1].GetComponent<PontoLinha>().ConectaProximoPonto();
+                _elementosVisuais[i - 1].GetComponent<PontoLinha>().RedefineEscalaLinha();
             }
 
         }
 
-        XAxisLabel.text = labelEixoX;
-        YAxisLabel.text = labelEixoY;
+        oLabelEixoX.text = labelEixoX;
+        oLabelEixoY.text = labelEixoY;
         //ZAxisLabel.text = labelEixoZ;
 
         Destroy(empty);
@@ -99,7 +92,7 @@ public class LineChartManager : MonoBehaviour
         //"azul", "marrom", "marrom", "preto", "vermelho", "lilas"
         //};
 
-        CriaSingleLineChart(X, Y, "Producao", "Custo");
+        CriaLineChartUnico(X, Y, "Producao", "Custo");
 
         Vector2[][] matriz = new Vector2[2][];
 

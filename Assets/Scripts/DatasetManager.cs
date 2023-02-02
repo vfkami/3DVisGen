@@ -6,17 +6,17 @@ using UnityEngine;
 
 public class DatasetManager : MonoBehaviour
 {
-    static private Dataset dataset;
+    static private Dataset _dataset;
 
     public static void SetDataset(string json)
     {
         try
         {
-            dataset = Utils.CriaDoJSON(json);
+            _dataset = Utils.CriaDoJSON(json);
         }
         catch (ArgumentException ex)
         {
-            dataset = new Dataset()
+            _dataset = new Dataset()
             {
                 columns = new string[0],
                 rows = 0,
@@ -31,24 +31,29 @@ public class DatasetManager : MonoBehaviour
 
     public static void AtualizaTodosElementosCanvas()
     {
-        Canvas cv = GameObject.Find("Canvas").GetComponent<Canvas>();
+        Canvas canvas = GameObject.Find("Canvas").GetComponent<Canvas>();
 
-        AxisConfigurationWidgetManager aw =
-            cv.GetComponentInChildren<AxisConfigurationWidgetManager>();
-        FilterConfigurationWidgetManager fw =
-            cv.GetComponentInChildren<FilterConfigurationWidgetManager>();
+        AxisConfigurationWidgetManager axisWidget =
+            canvas.GetComponentInChildren<AxisConfigurationWidgetManager>();
+        FilterConfigurationWidgetManager filterWidget =
+            canvas.GetComponentInChildren<FilterConfigurationWidgetManager>();
         
-        fw.SetLabelsFiltro(dataset.meta.Select(i => i.name.ToString()).ToArray());
-        fw.SetTipoFiltros(dataset.meta.Select(i => i.type.ToString()).ToArray());
-        fw.SetInfoFiltros(dataset.meta.Select(i => i.extent.ToArray<string>()).ToArray());
+        filterWidget.SetLabelsFiltro(_dataset.meta
+            .Select(i => i.name.ToString()).ToArray());
+
+        filterWidget.SetTipoFiltros(_dataset.meta
+            .Select(i => i.type.ToString()).ToArray());
+
+        filterWidget.SetInfoFiltros(_dataset.meta
+            .Select(i => i.extent.ToArray<string>()).ToArray());
 
         List<string> categoricLabels = new List<string>();
         List<string> numericLabels = new List<string>();
 
 
-        for (int i=0; i < dataset.meta.Length; i++)
+        for (int i=0; i < _dataset.meta.Length; i++)
         {
-            var column = dataset.meta[i];
+            var column = _dataset.meta[i];
 
             if (column.type.Equals("categorical"))
             {
@@ -60,9 +65,12 @@ public class DatasetManager : MonoBehaviour
             }
         }
 
-        aw.SetLabelsAtributoCor(dataset.meta.Select(i => i.name.ToString()).ToArray());
-        aw.SetLabelsAtributoEixoX(categoricLabels.ToArray());
-        aw.SetLabelsAtributoEixoY(numericLabels.ToArray());
+        axisWidget.SetLabelsAtributoCor(
+            _dataset.meta.Select(i => i.name.ToString()).ToArray());
+
+        axisWidget.SetLabelsAtributoEixoX(categoricLabels.ToArray());
+
+        axisWidget.SetLabelsAtributoEixoY(numericLabels.ToArray());
     }
 
 
