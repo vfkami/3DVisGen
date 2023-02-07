@@ -15,17 +15,23 @@ public class RequisitionManager : MonoBehaviour
     // TODO: Adiciona validação de conexão com servidor
     void Start()
     {
-        GetDatasetPorNome("automobile", true);
+        GetDatasetsDisponiveis();
     }
 
     public void GetDatasetPorNome(string datasetName, bool updateCanvas)
     {
         string uri = $"{enderecoServidor}:{porta}/metadata/{datasetName}";
-        StartCoroutine(GetRequest(uri, true));
+        StartCoroutine(GetRequest(uri, 2));
+    }
+
+    public void GetDatasetsDisponiveis()
+    {
+        string uri = $"{enderecoServidor}:{porta}/info.html";
+        StartCoroutine(GetRequest(uri, 1));
     }
 
 
-    IEnumerator GetRequest(string uri, bool updateText = false)
+    IEnumerator GetRequest(string uri, int operacao)
     {
         using (UnityWebRequest webRequest = UnityWebRequest.Get(uri))
         {
@@ -40,17 +46,30 @@ public class RequisitionManager : MonoBehaviour
                     datasetWidget.AtualizaTextoCanvas(webRequest.error);
                     break;
                 case UnityWebRequest.Result.Success:
-                    ResponseCallback(webRequest.downloadHandler.text);
-                    if (updateText)
-                        datasetWidget.AtualizaTextoCanvas(respostaJson);
+                    ResponseCallback(webRequest.downloadHandler.text, operacao);
                     break;
             }
         }
     }
 
-    private void ResponseCallback(string data)
+    private void ResponseCallback(string data, int operacao)
     {
-        respostaJson = data;
-        DatasetManager.SetDataset(data);
+        switch (operacao)
+        {
+            case 1: // GET Lista de Datasets
+                string[] splitedData = data.Split(',');
+                datasetWidget.AtualizaOpcoesDropdownDataset(splitedData);
+                break;
+
+            case 2: // GET Metadados Dataset Selecionado 
+                datasetWidget.AtualizaTextoCanvas(data);
+                DatasetManager.SetDataset(data);
+                break;
+
+            default:
+                respostaJson = data;
+                break;
+        }
+
     }
 }

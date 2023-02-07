@@ -7,30 +7,32 @@ using UnityEngine.UI;
 public class DatasetSelectorWidgetManager : MonoBehaviour
 {
     public RequisitionManager requisitionManager;
-    public TMP_InputField iFDataset;
     public TMP_Dropdown dpdDataset;
     public TMP_Text txtConteudoDataset;
 
-    private bool _searchEnabled = false;
-
-    public void switchVisibility()
+    public void AtualizaOpcoesDropdownDataset(string[] data)
     {
-        _searchEnabled = !_searchEnabled;
+        dpdDataset.ClearOptions();
 
-        iFDataset.gameObject.SetActive(_searchEnabled);
-        dpdDataset.gameObject.SetActive(!_searchEnabled);
+
+        List<TMP_Dropdown.OptionData> newOptions = new List<TMP_Dropdown.OptionData>();
+        TMP_Dropdown.OptionData option = new TMP_Dropdown.OptionData("Selecione");
+        newOptions.Add(option);
+
+        foreach (var label in data)
+        {
+            option = new TMP_Dropdown.OptionData(label);
+            newOptions.Add(option);
+        }
+
+        dpdDataset.options = newOptions;
     }
 
-    public void GetDatasetBySearchButton()
+    public void AtualizaOpcoesDisponiveis()
     {
-        string nomeDataset = iFDataset.text;
-
-        if (nomeDataset.Equals("")) return;
-
-        Debug.Log("Searching by... " + nomeDataset);
-        requisitionManager.GetDatasetPorNome(nomeDataset, true);
-
+        requisitionManager.GetDatasetsDisponiveis();
     }
+
 
     public void GetDatasetByDropodownOptions()
     {
@@ -38,7 +40,7 @@ public class DatasetSelectorWidgetManager : MonoBehaviour
         string nomeDataset = dpdDataset.options[dpdDataset.value].text;
 
         if (dropdownIndex < 0) return;
-        Debug.Log("Select the " + nomeDataset + " dataset");
+        Debug.Log($"{nomeDataset} dataset selected!");
 
         requisitionManager.GetDatasetPorNome(nomeDataset, true);
     }

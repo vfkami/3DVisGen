@@ -24,26 +24,31 @@ public class NumericFilterConfiguration : MonoBehaviour
 
         inputMinPlaceholder.text = _min.ToString();
         inputMaxPlaceholder.text = _max.ToString();
+        inputMinValue.text = _min.ToString();
+        inputMaxValue.text = _max.ToString();
 
         helper.text = $"Both value must be between " + _min + " and " + _max;
     }
 
     public string[] GetValores()
     {
-        return new string[] { inputMinValue.text, inputMaxValue.text, selecaoInvertida.isOn.ToString() };
+        string input1 = string.IsNullOrEmpty(inputMinValue.text) ? _min.ToString() : inputMinValue.text;
+        string input2 = string.IsNullOrEmpty(inputMaxValue.text) ? _max.ToString() : inputMaxValue.text;
+
+        return new string[] { input1, input2, selecaoInvertida.isOn.ToString()};
     }
 
     public void ValidaValorInput()
     {
-        float input1value;
-        float input2value;
+        float input1;
+        float input2;
 
-        float.TryParse(inputMinValue.text, out input1value);
-        float.TryParse(inputMaxValue.text, out input2value);
+        float.TryParse(inputMinValue.text, out input1);
+        float.TryParse(inputMaxValue.text, out input2);
 
-        if (input1value < _min) inputMinValue.text = _min.ToString();
-        if (input1value > _max) inputMinValue.text = _max.ToString();
-        if (input2value < _min) inputMaxValue.text = _min.ToString();
-        if (input2value > _max) inputMaxValue.text = _max.ToString();
+        if (input1 < _min) inputMinValue.text = _min.ToString();
+        if (input1 > _max) inputMinValue.text = _max.ToString();
+        if (input2 < _min) inputMaxValue.text = _max.ToString();
+        if (input2 > _max) inputMaxValue.text = _max.ToString();
     }
 }

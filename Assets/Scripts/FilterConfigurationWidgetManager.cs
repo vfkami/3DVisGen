@@ -16,6 +16,7 @@ public class FilterConfigurationWidgetManager : MonoBehaviour
     private string[] _labelFiltros;
     private string[] _tipoFiltros;
     private string[][] _informacaoFiltros;
+    private string _uri;
     
     public TMP_Dropdown dpdSeletorFiltros;
 
@@ -82,11 +83,8 @@ public class FilterConfigurationWidgetManager : MonoBehaviour
 
         var extent = _informacaoFiltros[index];
 
-        float min = 0;
-        float max = 0;
-
-        float.TryParse(extent[0], out min);
-        float.TryParse(extent[1], out max);
+        float.TryParse(extent[0], out float min);
+        float.TryParse(extent[1], out float max);
 
         return new Vector2(min, max);
     }
@@ -136,8 +134,7 @@ public class FilterConfigurationWidgetManager : MonoBehaviour
     {
         _filtros = new Filtro[_labelFiltros.Length];
 
-
-        for(int i = 0; i < _labelFiltros.Length; i++)
+        for (int i = 0; i < _labelFiltros.Length; i++)
         {
             CategoricFilterConfiguration catConf;
             NumericFilterConfiguration numConf;
@@ -150,20 +147,51 @@ public class FilterConfigurationWidgetManager : MonoBehaviour
                 if (catConf != null)
                 {
                     _filtros[i] = new Filtro(_labelFiltros[i], catConf.GetValores());
+
+                    var filtroStringfy = 
+                        String.Join("," , _filtros[i].values.ToList().Select(str => "\"" + str + "\"").ToList());
+
+                    _filtros[i].uri = $"{{\"field\": \" {_filtros[i].nome} \"," +
+                        $"\"oneOf\": [ { filtroStringfy} ]}}";
+                      
+                    Debug.Log("filtro  " + _filtros[i].ToString);
                     continue;
                 }
-                if (numConf != null)
+                else if (numConf != null)
                 {
                     _filtros[i] = new Filtro(_labelFiltros[i], numConf.GetValores());
+                    
+                    _filtros[i].uri = $"{{\"field\": \" {_filtros[i].nome} \", " +
+                        $"\"range\":[ {_filtros[i].values[0] }, {_filtros[i].values[1] } ]}}";
+
+                    if (Convert.ToBoolean(_filtros[i].values[2]))
+                        _filtros[i].uri = $"{{\"not\": {_filtros[i].uri} }}";
+
+                    Debug.Log("filtro  " + _filtros[i].ToString);
                     continue;
                 }
-                _filtros[i] = new Filtro(_labelFiltros[i], new string[0]);     
+                else
+                {
+                    _filtros[i] = new Filtro(_labelFiltros[i], new string[0]);
+                    _filtros[i].uri = "";
+                }
             }
         }
 
-        FiltrosSelecionados fs = new FiltrosSelecionados(_filtros);
-            
-        return JsonUtility.ToJson(fs);
+
+        string uriUnified = string.Join(",",
+            _filtros.Where(go => go != null && !string.IsNullOrEmpty(go.uri))
+                    .ToList()
+                    .Select(go => go.uri)
+                    .ToArray());
+
+        _uri = $"[" +
+               $"{uriUnified}" +
+               $"]";
+
+
+        Debug.Log(_uri);
+        return _uri;
     }
 
     public void DebugAtributosSelecionados()
@@ -172,24 +200,15 @@ public class FilterConfigurationWidgetManager : MonoBehaviour
         Debug.Log(json);
     }
 }
-
-public class FiltrosSelecionados
-{
-    public Filtro[] fSelecionados;
-
-    public FiltrosSelecionados(Filtro[] fs)
-    {
-        fSelecionados = fs;
-    }
-}
-
 public class Filtro
 {
-    public string atributo;
+    public string uri;
+    public string nome;
     public string[] values;
+    public new string ToString => $"{nome}: {string.Join(",", values)}";
 
-    public Filtro (string nome, string[] valores){
-        atributo = nome;
+    public Filtro (string name, string[] valores){
+        this.nome = name;
         values = valores;
     }
 }

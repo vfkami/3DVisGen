@@ -37,7 +37,7 @@ public class DatasetManager : MonoBehaviour
             canvas.GetComponentInChildren<AxisConfigurationWidgetManager>();
         FilterConfigurationWidgetManager filterWidget =
             canvas.GetComponentInChildren<FilterConfigurationWidgetManager>();
-        
+
         filterWidget.SetLabelsFiltro(_dataset.meta
             .Select(i => i.name.ToString()).ToArray());
 
@@ -51,7 +51,7 @@ public class DatasetManager : MonoBehaviour
         List<string> numericLabels = new List<string>();
 
 
-        for (int i=0; i < _dataset.meta.Length; i++)
+        for (int i = 0; i < _dataset.meta.Length; i++)
         {
             var column = _dataset.meta[i];
 
@@ -72,8 +72,6 @@ public class DatasetManager : MonoBehaviour
 
         axisWidget.SetLabelsAtributoEixoY(numericLabels.ToArray());
     }
-
-
 }
 
 [System.Serializable]
