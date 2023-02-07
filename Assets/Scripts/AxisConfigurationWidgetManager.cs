@@ -9,8 +9,6 @@ public class AxisConfigurationWidgetManager : MonoBehaviour
     public TMP_Dropdown yAxisSelector;
     public TMP_Dropdown colorSelector;
 
-    private AtributosSelecionados _atributos;
-
     public void SetLabelsAtributoEixoX(string[] labels)
     {
         List<TMP_Dropdown.OptionData> newOptions = new List<TMP_Dropdown.OptionData>();
@@ -25,7 +23,6 @@ public class AxisConfigurationWidgetManager : MonoBehaviour
 
         xAxisSelector.ClearOptions();
         xAxisSelector.AddOptions(newOptions);
-
     }
 
 
@@ -61,20 +58,29 @@ public class AxisConfigurationWidgetManager : MonoBehaviour
         colorSelector.AddOptions(opcoes);
     }
 
-    public string GetAtributosSelecionados()
+    public void SetEixoX()
+    {
+        string eixoX = GetAtributoSelecionadoEixoX();
+        DatasetManager.SetNomeEixoX(eixoX);
+    }
+
+    public void SetEixoY()
+    {
+        string eixoY = GetAtributoSelecionadoEixoY();
+        DatasetManager.SetNomeEixoY(eixoY);
+    }
+
+    public string[] GetAtributosSelecionados()
     {
         string eixoX = GetAtributoSelecionadoEixoX();
         string eixoY = GetAtributoSelecionadoEixoY();
-        string cor = GetAtributoSelecionadoCor();
 
-        _atributos = new AtributosSelecionados(eixoX, eixoY, cor);
-        return JsonUtility.ToJson(_atributos);
+        return new string[] { eixoX, eixoY };
     }
     
     public void DebugAtributosSelecionados()
     {
-        string json = GetAtributosSelecionados();
-        Debug.Log(json);
+        Debug.Log(GetAtributosSelecionados()) ;
     }
 
     public string GetAtributoSelecionadoEixoX()
@@ -99,19 +105,5 @@ public class AxisConfigurationWidgetManager : MonoBehaviour
         if (value.Equals("Selecione") || value == "") return "null";
 
         return value;
-    }
-}
-
-class AtributosSelecionados 
-{
-    public string eixoX;
-    public string eixoY;
-    public string cor;
-
-    public AtributosSelecionados(string x, string y, string c)
-    {
-        eixoX = x;
-        eixoY = y;
-        cor = c;
     }
 }

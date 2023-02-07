@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class DatasetSelectorWidgetManager : MonoBehaviour
 {
     public RequisitionManager requisitionManager;
+
     public TMP_Dropdown dpdDataset;
     public TMP_Text txtConteudoDataset;
 
@@ -40,9 +41,9 @@ public class DatasetSelectorWidgetManager : MonoBehaviour
         string nomeDataset = dpdDataset.options[dpdDataset.value].text;
 
         if (dropdownIndex < 0) return;
-        Debug.Log($"{nomeDataset} dataset selected!");
 
         requisitionManager.GetDatasetPorNome(nomeDataset, true);
+        DatasetManager.SetNomeDataset(nomeDataset);
     }
 
     public void AtualizaTextoCanvas(string text)

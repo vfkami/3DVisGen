@@ -8,6 +8,28 @@ public class DatasetManager : MonoBehaviour
 {
     static private Dataset _dataset;
 
+    static private string _nomeDataset;
+    static private string _nomeEixoX;
+    static private string _nomeEixoY;
+
+    static private string[] _eixoX;
+    static private string[] _eixoY;
+
+    static private string _filtrosUri;
+
+    private static AxisConfigurationWidgetManager _axisWidget;
+    private static FilterConfigurationWidgetManager _filterWidget;
+    private static RequisitionManager _requisitionManager;
+
+    private void Start()
+    {
+        GameObject canvas = GameObject.Find("Canvas");
+
+        _axisWidget = canvas.GetComponentInChildren<AxisConfigurationWidgetManager>();
+        _filterWidget = canvas.GetComponentInChildren<FilterConfigurationWidgetManager>();
+        _requisitionManager = GameObject.Find("SceneManager").GetComponent<RequisitionManager>();
+
+    }
     public static void SetDataset(string json)
     {
         try
@@ -26,25 +48,33 @@ public class DatasetManager : MonoBehaviour
             Debug.LogError(ex.Message);
         }
 
-        AtualizaTodosElementosCanvas();
+        AtualizaElementosCanvas();
     }
 
-    public static void AtualizaTodosElementosCanvas()
+    public static void SetNomeDataset(string nome)
     {
-        Canvas canvas = GameObject.Find("Canvas").GetComponent<Canvas>();
+        _nomeDataset = nome;
+    }
 
-        AxisConfigurationWidgetManager axisWidget =
-            canvas.GetComponentInChildren<AxisConfigurationWidgetManager>();
-        FilterConfigurationWidgetManager filterWidget =
-            canvas.GetComponentInChildren<FilterConfigurationWidgetManager>();
+    public static void SetNomeEixoX(string eixo)
+    {
+        _nomeEixoX = eixo;
+    }
+    
+    public static void SetNomeEixoY(string eixo)
+    {
+        _nomeEixoY = eixo;
+    }
 
-        filterWidget.SetLabelsFiltro(_dataset.meta
+    public static void AtualizaElementosCanvas()
+    {
+        _filterWidget.SetLabelsFiltro(_dataset.meta
             .Select(i => i.name.ToString()).ToArray());
 
-        filterWidget.SetTipoFiltros(_dataset.meta
+        _filterWidget.SetTipoFiltros(_dataset.meta
             .Select(i => i.type.ToString()).ToArray());
 
-        filterWidget.SetInfoFiltros(_dataset.meta
+        _filterWidget.SetInfoFiltros(_dataset.meta
             .Select(i => i.extent.ToArray<string>()).ToArray());
 
         List<string> categoricLabels = new List<string>();
@@ -65,12 +95,43 @@ public class DatasetManager : MonoBehaviour
             }
         }
 
-        axisWidget.SetLabelsAtributoCor(
+        _axisWidget.SetLabelsAtributoCor(
             _dataset.meta.Select(i => i.name.ToString()).ToArray());
 
-        axisWidget.SetLabelsAtributoEixoX(categoricLabels.ToArray());
+        _axisWidget.SetLabelsAtributoEixoX(categoricLabels.ToArray());
+        _axisWidget.SetLabelsAtributoEixoY(numericLabels.ToArray());
+    }
 
-        axisWidget.SetLabelsAtributoEixoY(numericLabels.ToArray());
+    public static void RequestVisualization()
+    {
+        //Passo 1: Reunir dados da base
+        if (string.IsNullOrEmpty(_nomeDataset))
+        {
+            Debug.LogError("Nenhum dataset selecionado. Escolha um e tente novamente!");
+            return;
+        }
+
+        if (_dataset == null) 
+        {
+            Debug.LogError("O dataset retornou nulo. Selecione outro dataset ou tente novamente!");
+            return;
+        }
+
+        // Passo 2: Reunir dados do eixo x e y
+        if (string.IsNullOrEmpty(_nomeEixoX) || string.IsNullOrEmpty(_nomeEixoX))
+        {
+            Debug.LogError("Um dos eixos não foi definido. Use o menu e selecione um dos atributos disponíveis!");
+            return;
+        }
+
+        _filtrosUri = _filterWidget.GetFiltrosConfigurados();
+
+        _requisitionManager.RequestVisualization(
+            nomeDataset: _nomeDataset,
+            nomeEixoX: _nomeEixoX,
+            nomeEixoY: _nomeEixoY,
+            filter: _filtrosUri
+            );
     }
 }
 

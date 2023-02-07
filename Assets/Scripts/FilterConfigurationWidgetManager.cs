@@ -154,7 +154,6 @@ public class FilterConfigurationWidgetManager : MonoBehaviour
                     _filtros[i].uri = $"{{\"field\": \" {_filtros[i].nome} \"," +
                         $"\"oneOf\": [ { filtroStringfy} ]}}";
                       
-                    Debug.Log("filtro  " + _filtros[i].ToString);
                     continue;
                 }
                 else if (numConf != null)
@@ -167,7 +166,6 @@ public class FilterConfigurationWidgetManager : MonoBehaviour
                     if (Convert.ToBoolean(_filtros[i].values[2]))
                         _filtros[i].uri = $"{{\"not\": {_filtros[i].uri} }}";
 
-                    Debug.Log("filtro  " + _filtros[i].ToString);
                     continue;
                 }
                 else
@@ -189,8 +187,6 @@ public class FilterConfigurationWidgetManager : MonoBehaviour
                $"{uriUnified}" +
                $"]";
 
-
-        Debug.Log(_uri);
         return _uri;
     }
 

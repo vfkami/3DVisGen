@@ -14,8 +14,8 @@ public class Utils : MonoBehaviour
         float[] valoresNormalizados = new float[valores.Length];
 
         for (int i = 0; i < valores.Length; i++)
-            valoresNormalizados[i] = (valores[i] - valores.Min()) / (valores.Max() - valores.Min()); 
-            
+            valoresNormalizados[i] = (valores[i] - valores.Min()) / (valores.Max() - valores.Min());
+
         return valoresNormalizados;
     }
 
@@ -41,7 +41,7 @@ public class Utils : MonoBehaviour
         {
             if (!dicionario.ContainsKey(valores[i]))
                 dicionario.Add(valores[i], dicionario.Count);
-            
+
             valoresNormalizados[i] = dicionario[valores[i]];
         }
 
@@ -64,7 +64,8 @@ public class Utils : MonoBehaviour
         float espacoTotalBarra = grossuraBarra + espacamento;
         float[] posicaoBarras = new float[qtdBarras];
 
-        for (int i = 0; i < qtdBarras; i++) {
+        for (int i = 0; i < qtdBarras; i++)
+        {
             posicaoBarras[i] = espacoTotalBarra * i;
         }
 
@@ -82,7 +83,7 @@ public class Utils : MonoBehaviour
     public static float CalculaEspacamentoEntreBarras(int qtdBarras, int tamanhoEixoX)
     {
         float decimo = tamanhoEixoX / 10;
-        return decimo / qtdBarras; 
+        return decimo / qtdBarras;
     }
 
     // Calcula o ângulo de rotação (eixo y) para que um objeto X aponte para um objeto Y.
@@ -115,7 +116,7 @@ public class Utils : MonoBehaviour
     public static Vector3 CalculaDistorcaoLinha(GameObject x, GameObject y)
     {
         Quaternion angulo = CalculaAnguloEntreDoisPontos(x, y);
-        
+
         // O Objeto não pode estar rotacionado
         x.transform.localRotation = new Quaternion(0, 0, 0, 0);
         RotacionaObjeto(x, angulo);
@@ -126,7 +127,7 @@ public class Utils : MonoBehaviour
             Mathf.Pow(direcao.x, 2) + Mathf.Pow(direcao.y, 2) + Mathf.Pow(direcao.z, 2)
         );
 
-        return new Vector3(1, hipotenusa, 1); 
+        return new Vector3(1, hipotenusa, 1);
     }
 
     public static Dataset CriaDoJSON(string JSON)
@@ -134,6 +135,4 @@ public class Utils : MonoBehaviour
         return JsonUtility.FromJson<Dataset>(JSON);
     }
 }
-
-
 
