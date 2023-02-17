@@ -8,9 +8,8 @@ public class RequisitionManager : MonoBehaviour
     public DatasetSelectorWidgetManager datasetWidget;
     public VisualizationRenderer visualization;
 
-    public string uri;
-    public static string enderecoServidor = "http://localhost";
-    public static string porta = "3000";
+    public string enderecoServidor = "http://localhost";
+    public string porta = "3000";
 
     string respostaJson;
         
@@ -34,7 +33,7 @@ public class RequisitionManager : MonoBehaviour
 
     public void RequestVisualization(string nomeDataset, string nomeEixoX, string nomeEixoY, string filter)
     {
-        string request = $"chartgen.html?";
+        string request = $"chartgen.png?";
         string x = $"x={nomeEixoX}";
         string y = $"&y={nomeEixoY}";
         string chartType = $"&chart=barchartvertical";
@@ -52,6 +51,8 @@ public class RequisitionManager : MonoBehaviour
 
     IEnumerator GetRequest(string uri, int operacao)
     {
+        Debug.Log(uri);
+
         using (UnityWebRequest webRequest = UnityWebRequest.Get(uri))
         {
             yield return webRequest.SendWebRequest();
@@ -65,30 +66,31 @@ public class RequisitionManager : MonoBehaviour
                     datasetWidget.AtualizaTextoCanvas(webRequest.error);
                     break;
                 case UnityWebRequest.Result.Success:
-                    ResponseCallback(webRequest.downloadHandler.text, operacao);
+                    ResponseCallback(webRequest.downloadHandler, operacao);
                     break;
             }
         }
     }
 
-    private void ResponseCallback(string data, int operacao)
+    private void ResponseCallback(DownloadHandler data, int operacao)
     {
         switch (operacao)
         {
             case 1: // GET Lista de Datasets
-                string[] splitedData = data.Split(',');
+                string[] splitedData = data.text.Split(',');
                 datasetWidget.AtualizaOpcoesDropdownDataset(splitedData);
                 break;
 
             case 2: // GET Metadados Dataset Selecionado 
-                datasetWidget.AtualizaTextoCanvas(data);
-                DatasetManager.SetDataset(data);
+                datasetWidget.AtualizaTextoCanvas(data.text);
+                DatasetManager.SetDataset(data.text);
                 break;
             case 5: // GET Visualizacao BarChart
-                visualization.RenderOfBase64(data);
+                byte[] response = data.data;
+                visualization.RenderOfBytes(response);
                 break;
             default:
-                respostaJson = data;
+                respostaJson = data.text;
                 break;
         }
 

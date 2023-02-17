@@ -60,6 +60,7 @@
     <Compile Include="Assets\Scripts\CategoricFilterConfiguration.cs" />
     <Compile Include="Assets\Scripts\ScatterplotManager.cs" />
     <Compile Include="Assets\Scripts\FilterConfigurationWidgetManager.cs" />
+    <Compile Include="Assets\VisualizationRenderer.cs" />
     <Compile Include="Assets\Scripts\BarChartManager.cs" />
     <Compile Include="Assets\Scripts\DatasetManager.cs" />
     <Compile Include="Assets\Scripts\LineChartManager.cs" />
@@ -73,7 +74,6 @@
     <Compile Include="Assets\Scripts\RequisitionManager.cs" />
     <Compile Include="Assets\Scripts\FiducialMarkerController.cs" />
     <Compile Include="Assets\Scripts\Barra.cs" />
-    <Compile Include="Assets\VisualizationRenderer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
