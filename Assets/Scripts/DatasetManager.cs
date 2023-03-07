@@ -98,7 +98,9 @@ public class DatasetManager : MonoBehaviour
         _axisWidget.SetLabelsAtributoCor(
             _dataset.meta.Select(i => i.name.ToString()).ToArray());
 
-        _axisWidget.SetLabelsAtributoEixoX(categoricLabels.ToArray());
+        _axisWidget.SetLabelsAtributoEixoX(categoricLabels.ToArray()); 
+        _axisWidget.SetLabelsSubVisualization(categoricLabels.ToArray());
+
         _axisWidget.SetLabelsAtributoEixoY(numericLabels.ToArray());
     }
 

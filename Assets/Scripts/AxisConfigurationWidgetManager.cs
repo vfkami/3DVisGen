@@ -8,41 +8,9 @@ public class AxisConfigurationWidgetManager : MonoBehaviour
     public TMP_Dropdown xAxisSelector;
     public TMP_Dropdown yAxisSelector;
     public TMP_Dropdown colorSelector;
+    public TMP_Dropdown subVisualizationSelector;
 
-    public void SetLabelsAtributoEixoX(string[] labels)
-    {
-        List<TMP_Dropdown.OptionData> newOptions = new List<TMP_Dropdown.OptionData>();
-        TMP_Dropdown.OptionData option = new TMP_Dropdown.OptionData("Selecione");
-        newOptions.Add(option);
-
-        foreach (string label in labels)
-        {
-            option = new TMP_Dropdown.OptionData(label);
-            newOptions.Add(option);
-        }
-
-        xAxisSelector.ClearOptions();
-        xAxisSelector.AddOptions(newOptions);
-    }
-
-
-    public void SetLabelsAtributoEixoY(string[] labels)
-    {
-        List<TMP_Dropdown.OptionData> opcoes = new List<TMP_Dropdown.OptionData>();
-        TMP_Dropdown.OptionData opcao = new TMP_Dropdown.OptionData("Selecione");
-        opcoes.Add(opcao);
-
-        foreach (string label in labels)
-        {
-            opcao = new TMP_Dropdown.OptionData(label);
-            opcoes.Add(opcao);
-        }
-
-        yAxisSelector.ClearOptions();
-        yAxisSelector.AddOptions(opcoes);
-    }
-
-    public void SetLabelsAtributoCor(string[] labels)
+    private void SetDropdownLabels(TMP_Dropdown dropdown, string[] labels)
     {
         List<TMP_Dropdown.OptionData> opcoes = new List<TMP_Dropdown.OptionData>();
         TMP_Dropdown.OptionData option = new TMP_Dropdown.OptionData("Selecione");
@@ -54,8 +22,30 @@ public class AxisConfigurationWidgetManager : MonoBehaviour
             opcoes.Add(option);
         }
 
-        colorSelector.ClearOptions();
-        colorSelector.AddOptions(opcoes);
+        dropdown.ClearOptions();
+        dropdown.AddOptions(opcoes);
+    }
+
+    public void SetLabelsSubVisualization(string[] labels)
+    {
+        SetDropdownLabels(subVisualizationSelector, labels);
+    }
+
+    public void SetLabelsAtributoEixoX(string[] labels)
+    {
+        SetDropdownLabels(xAxisSelector, labels);
+    }
+
+
+    public void SetLabelsAtributoEixoY(string[] labels)
+    {
+        SetDropdownLabels(yAxisSelector, labels);
+
+    }
+
+    public void SetLabelsAtributoCor(string[] labels)
+    {
+        SetDropdownLabels(colorSelector, labels);
     }
 
     public void SetEixoX()
@@ -76,6 +66,12 @@ public class AxisConfigurationWidgetManager : MonoBehaviour
         string eixoY = GetAtributoSelecionadoEixoY();
 
         return new string[] { eixoX, eixoY };
+    }
+
+    public void SetAtributoSubVisualizacao()
+    {
+        string atributo = GetAtributoSelecionadoSubVisualization();
+        SubVisualizationManager.SetNomeAtributo(atributo);
     }
     
     public void DebugAtributosSelecionados()
@@ -103,6 +99,14 @@ public class AxisConfigurationWidgetManager : MonoBehaviour
     {
         string value = colorSelector.options[colorSelector.value].text;
         if (value.Equals("Selecione") || value == "") return "null";
+
+        return value;
+    }
+
+    public string GetAtributoSelecionadoSubVisualization()
+    {
+        string value = subVisualizationSelector.options[subVisualizationSelector.value].text;
+        if (value.Contains("Selecione") || value == "") return "null";
 
         return value;
     }
