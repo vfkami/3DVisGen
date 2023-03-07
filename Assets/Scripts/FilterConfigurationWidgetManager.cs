@@ -17,6 +17,7 @@ public class FilterConfigurationWidgetManager : MonoBehaviour
     private string[] _tipoFiltros;
     private string[][] _informacaoFiltros;
     private string _uri;
+    private string[] _uriSubVisualization;
     
     public TMP_Dropdown dpdSeletorFiltros;
 
@@ -188,6 +189,81 @@ public class FilterConfigurationWidgetManager : MonoBehaviour
                $"]";
 
         return _uri;
+    }
+
+    public string[] GetFiltrosConfiguradosParaSubvisualizacao(string nomeAtributo)
+    {
+        _filtros = new Filtro[_labelFiltros.Length];
+
+        for (int i = 0; i < _labelFiltros.Length; i++)
+        {
+            CategoricFilterConfiguration catConf;
+            NumericFilterConfiguration numConf;
+
+            if (_filtrosGameObject[i] != null)
+            {
+                _filtrosGameObject[i].TryGetComponent<CategoricFilterConfiguration>(out catConf);
+                _filtrosGameObject[i].TryGetComponent<NumericFilterConfiguration>(out numConf);
+
+                if (catConf != null && !_filtrosGameObject[i].name.Contains(nomeAtributo))
+                {
+                    _filtros[i] = new Filtro(_labelFiltros[i], catConf.GetValores());
+
+                    var filtroStringfy =
+                            String.Join(",", _filtros[i].values.ToList().Select(str => "\"" + str + "\"").ToList());
+
+                    _filtros[i].uri = $"{{\"field\": \" {_filtros[i].nome} \"," +
+                            $"\"oneOf\": [ { filtroStringfy} ]}}";
+
+                    continue;
+                }
+                else if (numConf != null)
+                {
+                    _filtros[i] = new Filtro(_labelFiltros[i], numConf.GetValores());
+
+                    _filtros[i].uri = $"{{\"field\": \" {_filtros[i].nome} \", " +
+                        $"\"range\":[ {_filtros[i].values[0] }, {_filtros[i].values[1] } ]}}";
+
+                    if (Convert.ToBoolean(_filtros[i].values[2]))
+                        _filtros[i].uri = $"{{\"not\": {_filtros[i].uri} }}";
+
+                    continue;
+                }
+                else
+                {
+                    _filtros[i] = new Filtro(_labelFiltros[i], new string[0]);
+                    _filtros[i].uri = "";
+                }
+            }
+        }
+
+        string uriUnified = string.Join(",",
+            _filtros.Where(go => go != null && !string.IsNullOrEmpty(go.uri))
+            .ToList()
+            .Select(go => go.uri)
+            .ToArray());
+
+        int indexAtributo = GetIndexFiltroPorNome(nomeAtributo);
+        string[] values = _filtrosGameObject[indexAtributo].GetComponent<CategoricFilterConfiguration>().GetValores();
+
+        List<string> _uriFiltrosParaSubVisualizacao = new List<string>();
+
+        foreach (var label in values)
+        {
+            string subVisualizationFilterUri = $"{{\"field\": \" {nomeAtributo} \"," +
+                            $"\"oneOf\": [{label}]}}";
+
+            string finalUri = $"[{uriUnified},{subVisualizationFilterUri}]";
+
+            _uriFiltrosParaSubVisualizacao.Add(finalUri);
+        }
+
+        return _uriFiltrosParaSubVisualizacao.ToArray();
+    }
+
+    private int GetIndexFiltroPorNome(string nomeAtributo)
+    {   
+        return Array.FindIndex(_filtrosGameObject, f => f.name.Contains(nomeAtributo));
     }
 
     public void DebugAtributosSelecionados()

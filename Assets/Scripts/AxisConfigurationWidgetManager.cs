@@ -71,7 +71,7 @@ public class AxisConfigurationWidgetManager : MonoBehaviour
     public void SetAtributoSubVisualizacao()
     {
         string atributo = GetAtributoSelecionadoSubVisualization();
-        SubVisualizationManager.SetNomeAtributo(atributo);
+        DatasetManager.SetNomeAtributoSubVisualizacao(atributo);
     }
     
     public void DebugAtributosSelecionados()

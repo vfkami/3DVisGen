@@ -49,6 +49,29 @@ public class RequisitionManager : MonoBehaviour
 
     }
 
+    public void RequestSubVisualization(string nomeDataset, string nomeEixoX, string nomeEixoY, string filter)
+    {
+        string request = $"chartgen.png?";
+        string x = $"x={nomeEixoX}";
+        string y = $"&y={nomeEixoY}";
+        string chartType = $"&chart=barchartvertical";
+        string title = $"&title={nomeEixoX} X {nomeEixoY}";
+        string xLabel = $"&xlabel={nomeEixoX}";
+        string yLabel = $"&xlabel={nomeEixoY}";
+        string filterUri = $"&filter={filter}";
+
+        string uri = $"{enderecoServidor}:{porta}/generate/{nomeDataset}/{request}{x}{y}{chartType}{title}{xLabel}{yLabel}{filterUri}";
+        uri = uri.Replace(" ", "");
+        Debug.Log(uri);
+
+        // TODO: Adicionar opção 6 no ResponseCallback
+        // TODO: Adicionar gerenciador/renderizador de subvisualizacoes
+        // TODO: Adicionar gerenciador dos botões virtuais - marcadores
+
+        //StartCoroutine(GetRequest(uri, 6));
+
+    }
+
     IEnumerator GetRequest(string uri, int operacao)
     {
         Debug.Log(uri);
@@ -89,6 +112,9 @@ public class RequisitionManager : MonoBehaviour
                 byte[] response = data.data;
                 visualization.RenderOfBytes(response);
                 break;
+            case 6:
+
+
             default:
                 respostaJson = data.text;
                 break;

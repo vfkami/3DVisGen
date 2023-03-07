@@ -11,11 +11,14 @@ public class DatasetManager : MonoBehaviour
     static private string _nomeDataset;
     static private string _nomeEixoX;
     static private string _nomeEixoY;
+    static private string _nomeAtributoSubVisualizacao;
 
     static private string[] _eixoX;
     static private string[] _eixoY;
 
     static private string _filtrosUri;
+    static private string[] _filtrosUriSubVisualizacao;
+
 
     private static AxisConfigurationWidgetManager _axisWidget;
     private static FilterConfigurationWidgetManager _filterWidget;
@@ -48,6 +51,7 @@ public class DatasetManager : MonoBehaviour
             Debug.LogError(ex.Message);
         }
 
+
         AtualizaElementosCanvas();
     }
 
@@ -64,6 +68,11 @@ public class DatasetManager : MonoBehaviour
     public static void SetNomeEixoY(string eixo)
     {
         _nomeEixoY = eixo;
+    }
+
+    public static void SetNomeAtributoSubVisualizacao(string nomeAtributo)
+    {
+        _nomeAtributoSubVisualizacao = nomeAtributo;
     }
 
     public static void AtualizaElementosCanvas()
@@ -113,7 +122,7 @@ public class DatasetManager : MonoBehaviour
             return;
         }
 
-        if (_dataset == null) 
+        if (_dataset == null)
         {
             Debug.LogError("O dataset retornou nulo. Selecione outro dataset ou tente novamente!");
             return;
@@ -134,6 +143,49 @@ public class DatasetManager : MonoBehaviour
             nomeEixoY: _nomeEixoY,
             filter: _filtrosUri
             );
+    }
+
+    public static void RequestSubVisualization()
+    {
+        //Passo 1: Reunir dados da base
+        if (string.IsNullOrEmpty(_nomeDataset))
+        {
+            Debug.LogError("Nenhum dataset selecionado. Escolha um e tente novamente!");
+            return;
+        }
+
+        if (_dataset == null)
+        {
+            Debug.LogError("O dataset retornou nulo. Selecione outro dataset ou tente novamente!");
+            return;
+        }
+
+        // Passo 2: Reunir dados do eixo x e y
+        if (string.IsNullOrEmpty(_nomeEixoX) || string.IsNullOrEmpty(_nomeEixoX))
+        {
+            Debug.LogError("Um dos eixos não foi definido. Use o menu e selecione um dos atributos disponíveis!");
+            return;
+        }
+
+        _filtrosUriSubVisualizacao = _filterWidget
+            .GetFiltrosConfiguradosParaSubvisualizacao(_nomeAtributoSubVisualizacao);
+
+        if (_filtrosUriSubVisualizacao == null)
+        {
+            Debug.LogError("Houve algum erro ao gerar a string das subvisualizações. A requisição não será feita!");
+            return;
+        }
+
+        foreach (var subvisualizacaouri in _filtrosUriSubVisualizacao)
+        {
+            _requisitionManager.RequestSubVisualization(
+            nomeDataset: _nomeDataset,
+            nomeEixoX: _nomeEixoX,
+            nomeEixoY: _nomeEixoY,
+            filter: subvisualizacaouri
+            );
+        }
+        
     }
 }
 
