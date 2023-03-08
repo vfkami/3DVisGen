@@ -60,6 +60,11 @@ public class AxisConfigurationWidgetManager : MonoBehaviour
         DatasetManager.SetNomeEixoY(eixoY);
     }
 
+    public int GetIndexAtributoSelecionadoSubVisualizacao()
+    {
+        return subVisualizationSelector.value - 1;
+    }
+
     public string[] GetAtributosSelecionados()
     {
         string eixoX = GetAtributoSelecionadoEixoX();
@@ -71,7 +76,9 @@ public class AxisConfigurationWidgetManager : MonoBehaviour
     public void SetAtributoSubVisualizacao()
     {
         string atributo = GetAtributoSelecionadoSubVisualization();
-        DatasetManager.SetNomeAtributoSubVisualizacao(atributo);
+        int index = atributo != null ? subVisualizationSelector.value -1 : -1;
+
+        DatasetManager.SetNomeAtributoSubVisualizacao(index, atributo);
     }
     
     public void DebugAtributosSelecionados()

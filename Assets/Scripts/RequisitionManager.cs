@@ -7,6 +7,7 @@ public class RequisitionManager : MonoBehaviour
 {
     public DatasetSelectorWidgetManager datasetWidget;
     public VisualizationRenderer visualization;
+    public FiducialMarkerManager fiducialMarkerManager;
 
     public string enderecoServidor = "http://localhost";
     public string porta = "3000";
@@ -29,7 +30,7 @@ public class RequisitionManager : MonoBehaviour
     {
         string uri = $"{enderecoServidor}:{porta}/metadata/{datasetName}";
         StartCoroutine(GetRequest(uri, 2));
-    }   
+    }
 
     public void RequestVisualization(string nomeDataset, string nomeEixoX, string nomeEixoY, string filter)
     {
@@ -44,11 +45,12 @@ public class RequisitionManager : MonoBehaviour
 
         string uri = $"{enderecoServidor}:{porta}/generate/{nomeDataset}/{request}{x}{y}{chartType}{title}{xLabel}{yLabel}{filterUri}";
         uri = uri.Replace(" ", "");
-        Debug.Log(uri);
         StartCoroutine(GetRequest(uri, 5));
 
     }
 
+    // TODO: Adicionar gerenciador/renderizador de subvisualizacoes
+    // TODO: Adicionar gerenciador dos botões virtuais - marcadores
     public void RequestSubVisualization(string nomeDataset, string nomeEixoX, string nomeEixoY, string filter)
     {
         string request = $"chartgen.png?";
@@ -64,11 +66,7 @@ public class RequisitionManager : MonoBehaviour
         uri = uri.Replace(" ", "");
         Debug.Log(uri);
 
-        // TODO: Adicionar opção 6 no ResponseCallback
-        // TODO: Adicionar gerenciador/renderizador de subvisualizacoes
-        // TODO: Adicionar gerenciador dos botões virtuais - marcadores
-
-        //StartCoroutine(GetRequest(uri, 6));
+        StartCoroutine(GetRequest(uri, 6));
 
     }
 
@@ -113,8 +111,10 @@ public class RequisitionManager : MonoBehaviour
                 visualization.RenderOfBytes(response);
                 break;
             case 6:
-
-
+                byte[] res = data.data;
+                Sprite sprite = Utils.RenderOfBytes(res);
+                fiducialMarkerManager.AddNovaSubVisualizacao(sprite);
+                break;
             default:
                 respostaJson = data.text;
                 break;

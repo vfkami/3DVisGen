@@ -25,7 +25,6 @@ public class VisualizationRenderer : MonoBehaviour
 
     public void RenderOfBase64(string base64str)
     {
-
         _base64string = base64str;
         byte[] Bytes = Convert.FromBase64String(_base64string);
         Texture2D tex = new Texture2D(900, 465);

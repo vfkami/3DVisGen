@@ -73,6 +73,11 @@ public class FilterConfigurationWidgetManager : MonoBehaviour
         return _informacaoFiltros[index];
     }
 
+    private int GetIndexAtributoPorNome(string nomeAtributo)
+    {
+        return Array.FindIndex(_labelFiltros, f => f.Equals(nomeAtributo));
+    }
+
     private Vector2 GetRangeNumerico(int index)
     {
         if (!_tipoFiltros[index].Equals(Numeric))
@@ -243,17 +248,29 @@ public class FilterConfigurationWidgetManager : MonoBehaviour
             .Select(go => go.uri)
             .ToArray());
 
-        int indexAtributo = GetIndexFiltroPorNome(nomeAtributo);
-        string[] values = _filtrosGameObject[indexAtributo].GetComponent<CategoricFilterConfiguration>().GetValores();
+        // TODO: Refatorar depois
+        int indexFiltro = GetIndexFiltroPorNome(nomeAtributo);
+        string[] values; 
+
+
+        if (indexFiltro > 0)
+        {
+            values = _filtrosGameObject[indexFiltro].GetComponent<CategoricFilterConfiguration>().GetValores();
+        }
+        else
+        {
+            int indexAtributo = GetIndexAtributoPorNome(nomeAtributo);
+            values = GetLabelAtributosCategoricos(indexAtributo);
+        }
 
         List<string> _uriFiltrosParaSubVisualizacao = new List<string>();
 
         foreach (var label in values)
         {
             string subVisualizationFilterUri = $"{{\"field\": \" {nomeAtributo} \"," +
-                            $"\"oneOf\": [{label}]}}";
+               $"\"oneOf\": [\"{label}\"]}}";
 
-            string finalUri = $"[{uriUnified},{subVisualizationFilterUri}]";
+            string finalUri = uriUnified.Equals("") ? $"[{subVisualizationFilterUri}]" : $"[{uriUnified},{subVisualizationFilterUri}]";
 
             _uriFiltrosParaSubVisualizacao.Add(finalUri);
         }
@@ -262,8 +279,16 @@ public class FilterConfigurationWidgetManager : MonoBehaviour
     }
 
     private int GetIndexFiltroPorNome(string nomeAtributo)
-    {   
-        return Array.FindIndex(_filtrosGameObject, f => f.name.Contains(nomeAtributo));
+    {
+        try
+        {
+            return Array.FindIndex(_filtrosGameObject, f => f.name.Contains(nomeAtributo));
+        }
+        catch (NullReferenceException ex)
+        {
+            Debug.LogWarning("Nenhum filtro configurado com o atributo selecionado");
+            return -1;
+        }
     }
 
     public void DebugAtributosSelecionados()

@@ -12,6 +12,7 @@ public class DatasetManager : MonoBehaviour
     static private string _nomeEixoX;
     static private string _nomeEixoY;
     static private string _nomeAtributoSubVisualizacao;
+    static private int _indexAtributoSubVisualizacao;
 
     static private string[] _eixoX;
     static private string[] _eixoY;
@@ -28,13 +29,17 @@ public class DatasetManager : MonoBehaviour
     {
         GameObject canvas = GameObject.Find("Canvas");
 
-        _axisWidget = canvas.GetComponentInChildren<AxisConfigurationWidgetManager>();
-        _filterWidget = canvas.GetComponentInChildren<FilterConfigurationWidgetManager>();
-        _requisitionManager = GameObject.Find("SceneManager").GetComponent<RequisitionManager>();
+        _axisWidget = GameObject.Find("AxisConfigurationWidget")
+            .GetComponentInChildren<AxisConfigurationWidgetManager>();
+        _filterWidget = GameObject.Find("FilterConfigurationWidgetManager").
+            GetComponent<FilterConfigurationWidgetManager>();
+        _requisitionManager = GameObject.Find("SceneManager").
+            GetComponent<RequisitionManager>();
 
     }
     public static void SetDataset(string json)
     {
+
         try
         {
             _dataset = Utils.CriaDoJSON(json);
@@ -70,9 +75,11 @@ public class DatasetManager : MonoBehaviour
         _nomeEixoY = eixo;
     }
 
-    public static void SetNomeAtributoSubVisualizacao(string nomeAtributo)
+    public static void SetNomeAtributoSubVisualizacao(int indexAtributo, string nomeAtributo)
     {
         _nomeAtributoSubVisualizacao = nomeAtributo;
+        _indexAtributoSubVisualizacao = indexAtributo;
+        //
     }
 
     public static void AtualizaElementosCanvas()
@@ -167,8 +174,9 @@ public class DatasetManager : MonoBehaviour
             return;
         }
 
+
         _filtrosUriSubVisualizacao = _filterWidget
-            .GetFiltrosConfiguradosParaSubvisualizacao(_nomeAtributoSubVisualizacao);
+             .GetFiltrosConfiguradosParaSubvisualizacao(_nomeAtributoSubVisualizacao);
 
         if (_filtrosUriSubVisualizacao == null)
         {

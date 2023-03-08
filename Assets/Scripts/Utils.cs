@@ -134,5 +134,13 @@ public class Utils : MonoBehaviour
     {
         return JsonUtility.FromJson<Dataset>(JSON);
     }
+
+    public static Sprite RenderOfBytes(byte[] data)
+    {
+        Texture2D tex = new Texture2D(900, 465);
+        tex.LoadImage(data);
+        Rect rect = new Rect(0, 0, tex.width, tex.height);
+        return Sprite.Create(tex, rect, new Vector2(0, 0), 100f);
+    }
 }
 
