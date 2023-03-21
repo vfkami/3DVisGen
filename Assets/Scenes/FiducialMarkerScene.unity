@@ -420,6 +420,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1765590911108518979, guid: 9417f16d79eb5544da147048dd24997e, type: 3}
+      propertyPath: modeloMarcador
+      value: 
+      objectReference: {fileID: 5243766215031248324, guid: 0f72d7dd45077aa4e9f6f330a62d5094, type: 3}
     - target: {fileID: 1765590911108518980, guid: 9417f16d79eb5544da147048dd24997e, type: 3}
       propertyPath: m_Name
       value: FiducialMarkersManager

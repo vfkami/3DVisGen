@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class FiducialMarkerManager : MonoBehaviour
 {
-    private const int NumeroMarcadores = 8;
+    private static int NumeroMarcadores = 8;
 
     private Sprite[] sprites = new Sprite[NumeroMarcadores];
     private int _indexUltimoSpriteAdicionado;
@@ -16,6 +16,7 @@ public class FiducialMarkerManager : MonoBehaviour
     private void Start()
     {
         _indexUltimoSpriteAdicionado = 0;
+        SetNumeroMarcadores(6);
     }
 
     public void SetTextoMarcadorPorIndex(string text, int index)
@@ -101,6 +102,28 @@ public class FiducialMarkerManager : MonoBehaviour
 
         SetSpriteMarcadorPorIndex(sp, _indexUltimoSpriteAdicionado);
     }
+
+    public void SetNumeroMarcadores(int value)
+    {
+        NumeroMarcadores = value;
+        AtualizarQuantidadeMarcadores();
+    }
+
+    public void AtualizarQuantidadeMarcadores()
+    {
+        foreach (GameObject go in fiducialMarkers) Destroy(go);
+
+        fiducialMarkers = new GameObject[NumeroMarcadores];
+        
+        for(int i=0; i < NumeroMarcadores; i++)
+        {
+            fiducialMarkers[i] = Instantiate(original: modeloMarcador, position: new Vector3(0, 0, 0), rotation: Quaternion.identity, parent: transform);
+            fiducialMarkers[i].transform.localPosition = new Vector3((i * 2) - (NumeroMarcadores) , 0, 0);
+        }
+
+    }
+
+    
 
 
 }
