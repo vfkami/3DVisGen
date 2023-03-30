@@ -14,7 +14,7 @@ public class FiducialMarkerController : MonoBehaviour
     private void Start()
     {
         canvas.enabled = false;
-        SetModoImagem();
+        //SetModoImagem();
     }
     public void SetModoTexto()
     {
@@ -24,7 +24,7 @@ public class FiducialMarkerController : MonoBehaviour
     public void SetModoImagem()
     {
         markerText.gameObject.SetActive(false);
-        image.gameObject.SetActive(true);
+        image.gameObject.SetActive(true);   
     }
 
     public void SetTexto(string text)

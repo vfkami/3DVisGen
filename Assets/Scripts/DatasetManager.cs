@@ -20,24 +20,15 @@ public class DatasetManager : MonoBehaviour
     static private string _filtrosUri;
     static private string[] _filtrosUriSubVisualizacao;
 
-
-    private static AxisConfigurationWidgetManager _axisWidget;
-    private static FilterConfigurationWidgetManager _filterWidget;
-    private static RequisitionManager _requisitionManager;
+    public AxisConfigurationWidgetManager _axisWidget;
+    public FilterConfigurationWidgetManager _filterWidget;
+    public RequisitionManager _requisitionManager;
 
     private void Start()
     {
         GameObject canvas = GameObject.Find("Canvas");
-
-        _axisWidget = GameObject.Find("AxisConfigurationWidget")
-            .GetComponentInChildren<AxisConfigurationWidgetManager>();
-        _filterWidget = GameObject.Find("FilterConfigurationWidgetManager").
-            GetComponent<FilterConfigurationWidgetManager>();
-        _requisitionManager = GameObject.Find("SceneManager").
-            GetComponent<RequisitionManager>();
-
     }
-    public static void SetDataset(string json)
+    public void SetDataset(string json)
     {
 
         try
@@ -82,8 +73,11 @@ public class DatasetManager : MonoBehaviour
         //
     }
 
-    public static void AtualizaElementosCanvas()
+    public void AtualizaElementosCanvas()
     {
+        _filterWidget.gameObject.SetActive(true);
+        _axisWidget.gameObject.SetActive(true);
+
         _filterWidget.SetLabelsFiltro(_dataset.meta
             .Select(i => i.name.ToString()).ToArray());
 
@@ -118,9 +112,12 @@ public class DatasetManager : MonoBehaviour
         _axisWidget.SetLabelsSubVisualization(categoricLabels.ToArray());
 
         _axisWidget.SetLabelsAtributoEixoY(numericLabels.ToArray());
+
+        _filterWidget.gameObject.SetActive(false);
+        _axisWidget.gameObject.SetActive(false);
     }
 
-    public static void RequestVisualization()
+    public void RequestVisualization()
     {
         //Passo 1: Reunir dados da base
         if (string.IsNullOrEmpty(_nomeDataset))
@@ -152,7 +149,7 @@ public class DatasetManager : MonoBehaviour
             );
     }
 
-    public static void RequestSubVisualization()
+    public void RequestSubVisualization()
     {
         //Passo 1: Reunir dados da base
         if (string.IsNullOrEmpty(_nomeDataset))

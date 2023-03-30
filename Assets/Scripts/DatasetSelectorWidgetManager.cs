@@ -27,6 +27,7 @@ public class DatasetSelectorWidgetManager : MonoBehaviour
         }
 
         dpdDataset.options = newOptions;
+        txtConteudoDataset.text = "Connection Established. Select the dataset";
     }
 
     public void AtualizaOpcoesDisponiveis()

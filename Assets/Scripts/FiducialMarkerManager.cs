@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class FiducialMarkerManager : MonoBehaviour
 {
-    private static int NumeroMarcadores = 8;
+    private static int NumeroMarcadores = 0;
 
     private Sprite[] sprites = new Sprite[NumeroMarcadores];
     private int _indexUltimoSpriteAdicionado;
@@ -16,7 +16,7 @@ public class FiducialMarkerManager : MonoBehaviour
     private void Start()
     {
         _indexUltimoSpriteAdicionado = 0;
-        SetNumeroMarcadores(6);
+        //SetNumeroMarcadores(6);
     }
 
     public void SetTextoMarcadorPorIndex(string text, int index)

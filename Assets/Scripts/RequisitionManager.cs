@@ -5,11 +5,12 @@ using UnityEngine.Networking;
 
 public class RequisitionManager : MonoBehaviour
 {
+    public DatasetManager dataserManager;
     public DatasetSelectorWidgetManager datasetWidget;
     public VisualizationRenderer visualization;
     public FiducialMarkerManager fiducialMarkerManager;
 
-    public string enderecoServidor = "http://localhost";
+    public string enderecoServidor = "";
     public string porta = "3000";
 
     string respostaJson;
@@ -17,6 +18,12 @@ public class RequisitionManager : MonoBehaviour
     // TODO: Adiciona validação de conexão com servidor
     void Start()
     {
+        //GetDatasetsDisponiveis();
+    }
+
+    public void SetEnderecoServidor(string endereco)
+    {
+        enderecoServidor = "http://" + endereco;
         GetDatasetsDisponiveis();
     }
 
@@ -56,7 +63,7 @@ public class RequisitionManager : MonoBehaviour
         string request = $"chartgen.png?";
         string x = $"x={nomeEixoX}";
         string y = $"&y={nomeEixoY}";
-        string chartType = $"&chart=barchartvertical";
+        string chartType = $"&chart=piechart";
         string title = $"&title={nomeEixoX} X {nomeEixoY}";
         string xLabel = $"&xlabel={nomeEixoX}";
         string yLabel = $"&xlabel={nomeEixoY}";
@@ -72,6 +79,12 @@ public class RequisitionManager : MonoBehaviour
 
     IEnumerator GetRequest(string uri, int operacao)
     {
+        if (string.IsNullOrEmpty(enderecoServidor))
+        { 
+            Debug.LogError("endereço do servidor não definido");
+            throw new System.Exception();
+        }
+        
         Debug.Log(uri);
 
         using (UnityWebRequest webRequest = UnityWebRequest.Get(uri))
@@ -104,7 +117,7 @@ public class RequisitionManager : MonoBehaviour
 
             case 2: // GET Metadados Dataset Selecionado 
                 datasetWidget.AtualizaTextoCanvas(data.text);
-                DatasetManager.SetDataset(data.text);
+                dataserManager.SetDataset(data.text);
                 break;
             case 5: // GET Visualizacao BarChart
                 byte[] response = data.data;
