@@ -60,6 +60,12 @@ public class AxisConfigurationWidgetManager : MonoBehaviour
         DatasetManager.SetNomeEixoY(eixoY);
     }
 
+    public void SetCor()
+    {
+        string cor = GetAtributoSelecionadoCor();
+        DatasetManager.SetNomeCor(cor);
+    }
+
     public int GetIndexAtributoSelecionadoSubVisualizacao()
     {
         return subVisualizationSelector.value - 1;

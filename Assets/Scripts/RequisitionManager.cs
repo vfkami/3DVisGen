@@ -15,7 +15,7 @@ public class RequisitionManager : MonoBehaviour
 
     string respostaJson;
         
-    // TODO: Adiciona validação de conexão com servidor
+    // TODO: Adicionar validação de conexão com servidor
     void Start()
     {
         //GetDatasetsDisponiveis();
@@ -51,6 +51,24 @@ public class RequisitionManager : MonoBehaviour
         string filterUri = $"&filter={filter}";
 
         string uri = $"{enderecoServidor}:{porta}/generate/{nomeDataset}/{request}{x}{y}{chartType}{title}{xLabel}{yLabel}{filterUri}";
+        uri = uri.Replace(" ", "");
+        StartCoroutine(GetRequest(uri, 5));
+
+    }
+
+    public void RequestVisualization(string nomeDataset, string nomeEixoX, string nomeEixoY, string cor, string filter)
+    {
+        string request = $"chartgen.png?";
+        string x = $"x={nomeEixoX}";
+        string y = $"&y={nomeEixoY}";
+        string chartType = $"&chart=barchartvertical";
+        string title = $"&title={nomeEixoX} X {nomeEixoY}";
+        string xLabel = $"&xlabel={nomeEixoX}";
+        string yLabel = $"&xlabel={nomeEixoY}";
+        string color = $"&color={cor}";
+        string filterUri = $"&filter={filter}";
+
+        string uri = $"{enderecoServidor}:{porta}/generate/{nomeDataset}/{request}{x}{y}{color}{chartType}{title}{xLabel}{yLabel}{filterUri}";
         uri = uri.Replace(" ", "");
         StartCoroutine(GetRequest(uri, 5));
 
@@ -124,7 +142,6 @@ public class RequisitionManager : MonoBehaviour
                 visualization.RenderOfBytes(response);
                 break;
             case 6:
-                Debug.Log("Recebeu resposta");
                 byte[] res = data.data;
                 Sprite sprite = Utils.RenderOfBytes(res);
                 fiducialMarkerManager.AddNovaSubVisualizacao(sprite);

@@ -11,11 +11,13 @@ public class DatasetManager : MonoBehaviour
     static private string _nomeDataset;
     static private string _nomeEixoX;
     static private string _nomeEixoY;
+    static private string _nomeCor;
     static private string _nomeAtributoSubVisualizacao;
     static private int _indexAtributoSubVisualizacao;
 
     static private string[] _eixoX;
     static private string[] _eixoY;
+    static private string[] _cor;
 
     static private string _filtrosUri;
     static private string[] _filtrosUriSubVisualizacao;
@@ -66,6 +68,11 @@ public class DatasetManager : MonoBehaviour
         _nomeEixoY = eixo;
     }
 
+    public static void SetNomeCor(string cor)
+    {
+        _nomeCor = cor;
+    }
+
     public static void SetNomeAtributoSubVisualizacao(int indexAtributo, string nomeAtributo)
     {
         _nomeAtributoSubVisualizacao = nomeAtributo;
@@ -105,12 +112,10 @@ public class DatasetManager : MonoBehaviour
             }
         }
 
-        _axisWidget.SetLabelsAtributoCor(
-            _dataset.meta.Select(i => i.name.ToString()).ToArray());
-
         _axisWidget.SetLabelsAtributoEixoX(categoricLabels.ToArray()); 
         _axisWidget.SetLabelsSubVisualization(categoricLabels.ToArray());
-
+        _axisWidget.SetLabelsAtributoCor(categoricLabels.ToArray());
+            
         _axisWidget.SetLabelsAtributoEixoY(numericLabels.ToArray());
 
         _filterWidget.gameObject.SetActive(false);
@@ -139,14 +144,33 @@ public class DatasetManager : MonoBehaviour
             return;
         }
 
+        // Passo 3: Reunir informacao dos filtros
         _filtrosUri = _filterWidget.GetFiltrosConfigurados();
+
+        // Passo 4: Reunir dados da cor (opcional) - se cor não selecionado, faz requisicao sem cor
+        if (string.IsNullOrEmpty(_nomeCor))
+        {
+            Debug.LogWarning("O atributo referente à cor não foi definido. A requisição será enviada assim mesmo!");
+         
+            _requisitionManager.RequestVisualization(
+                nomeDataset: _nomeDataset,
+                nomeEixoX: _nomeEixoX,
+                nomeEixoY: _nomeEixoY,
+                filter: _filtrosUri
+            );
+            return;
+        }
 
         _requisitionManager.RequestVisualization(
             nomeDataset: _nomeDataset,
             nomeEixoX: _nomeEixoX,
             nomeEixoY: _nomeEixoY,
+            cor: _nomeCor,
             filter: _filtrosUri
-            );
+        );
+
+        return;
+
     }
 
     public void RequestSubVisualization()
