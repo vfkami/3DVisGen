@@ -56,25 +56,25 @@
     <Analyzer Include="C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\Extensions\Microsoft\Visual Studio Tools for Unity\Analyzers\Microsoft.Unity.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Scripts\PontoLinha.cs" />
+    <Compile Include="Assets\Scripts\3D vis techiniques\PontoLinha.cs" />
     <Compile Include="Assets\Scripts\CategoricFilterConfiguration.cs" />
-    <Compile Include="Assets\Scripts\ScatterplotManager.cs" />
+    <Compile Include="Assets\Scripts\3D vis techiniques\ScatterplotManager.cs" />
+    <Compile Include="Assets\SettingsManager.cs" />
     <Compile Include="Assets\Scripts\FilterConfigurationWidgetManager.cs" />
     <Compile Include="Assets\VisualizationRenderer.cs" />
-    <Compile Include="Assets\Scripts\BarChartManager.cs" />
+    <Compile Include="Assets\Scripts\3D vis techiniques\BarChartManager.cs" />
     <Compile Include="Assets\Scripts\DatasetManager.cs" />
-    <Compile Include="Assets\Scripts\LineChartManager.cs" />
+    <Compile Include="Assets\Scripts\3D vis techiniques\LineChartManager.cs" />
     <Compile Include="Assets\Scripts\Utils.cs" />
     <Compile Include="Assets\Scripts\DatasetSelectorWidgetManager.cs" />
     <Compile Include="Assets\Scripts\NumericFilterConfiguration.cs" />
     <Compile Include="Assets\Scripts\CanvasBehavior.cs" />
     <Compile Include="Assets\Scripts\FiducialMarkerManager.cs" />
     <Compile Include="Assets\Scripts\AxisConfigurationWidgetManager.cs" />
-    <Compile Include="Assets\Scripts\VariavelVisual.cs" />
+    <Compile Include="Assets\Scripts\3D vis techiniques\VariavelVisual.cs" />
     <Compile Include="Assets\Scripts\RequisitionManager.cs" />
     <Compile Include="Assets\Scripts\FiducialMarkerController.cs" />
-    <Compile Include="Assets\Scripts\Barra.cs" />
-    <Compile Include="Assets\SettingsManager.cs" />
+    <Compile Include="Assets\Scripts\3D vis techiniques\Barra.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />

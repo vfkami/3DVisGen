@@ -10,7 +10,7 @@ public class RequisitionManager : MonoBehaviour
     public VisualizationRenderer visualization;
     public FiducialMarkerManager fiducialMarkerManager;
 
-    public string enderecoServidor = "";
+    public string enderecoServidor = "localhost";
     public string porta = "3000";
 
     string respostaJson;
@@ -124,6 +124,7 @@ public class RequisitionManager : MonoBehaviour
                 visualization.RenderOfBytes(response);
                 break;
             case 6:
+                Debug.Log("Recebeu resposta");
                 byte[] res = data.data;
                 Sprite sprite = Utils.RenderOfBytes(res);
                 fiducialMarkerManager.AddNovaSubVisualizacao(sprite);
