@@ -25,6 +25,7 @@ public class DatasetManager : MonoBehaviour
     public AxisConfigurationWidgetManager _axisWidget;
     public FilterConfigurationWidgetManager _filterWidget;
     public RequisitionManager _requisitionManager;
+    public HeightBarBehavior _heightBarBehavior;
 
     private void Start()
     {
@@ -66,6 +67,20 @@ public class DatasetManager : MonoBehaviour
     public static void SetNomeEixoY(string eixo)
     {
         _nomeEixoY = eixo;
+        GameObject.Find("SceneManager").GetComponent<DatasetManager>().ConfiguraBarraAltura(eixo);
+    }
+
+    public void ConfiguraBarraAltura(string eixo)
+    {
+        
+        var index = _filterWidget.GetIndexAtributoPorNome(eixo);
+        var range = _filterWidget.GetRangeNumerico(index);
+        
+        Vector3 values = Vector3.zero;
+        if (range != null)
+            values = new Vector3(range.x, (float)Math.Round((range.x  + range.y) / 2) , range.y);
+
+        _heightBarBehavior.DefineTextoEixoY(values);
     }
 
     public static void SetNomeCor(string cor)
@@ -152,7 +167,7 @@ public class DatasetManager : MonoBehaviour
         {
             Debug.LogWarning("O atributo referente à cor não foi definido. A requisição será enviada assim mesmo!");
          
-            _requisitionManager.RequestVisualization(
+            _requisitionManager.RequestBarChart(
                 nomeDataset: _nomeDataset,
                 nomeEixoX: _nomeEixoX,
                 nomeEixoY: _nomeEixoY,
@@ -161,11 +176,62 @@ public class DatasetManager : MonoBehaviour
             return;
         }
 
-        _requisitionManager.RequestVisualization(
+        _requisitionManager.RequestBarChart(
             nomeDataset: _nomeDataset,
             nomeEixoX: _nomeEixoX,
             nomeEixoY: _nomeEixoY,
-            cor: _nomeCor,
+            nomeCor: _nomeCor,
+            filter: _filtrosUri
+        );
+
+        return;
+
+    }
+
+    public void SendToArduino()
+    {
+        //Passo 1: Reunir dados da base
+        if (string.IsNullOrEmpty(_nomeDataset))
+        {
+            Debug.LogError("Nenhum dataset selecionado. Escolha um e tente novamente!");
+            return;
+        }
+
+        if (_dataset == null)
+        {
+            Debug.LogError("O dataset retornou nulo. Selecione outro dataset ou tente novamente!");
+            return;
+        }
+
+        // Passo 2: Reunir dados do eixo x e y
+        if (string.IsNullOrEmpty(_nomeEixoX) || string.IsNullOrEmpty(_nomeEixoX))
+        {
+            Debug.LogError("Um dos eixos não foi definido. Use o menu e selecione um dos atributos disponíveis!");
+            return;
+        }
+
+        // Passo 3: Reunir informacao dos filtros
+        _filtrosUri = _filterWidget.GetFiltrosConfigurados();
+
+        // Passo 4: Reunir dados da cor (opcional) - se cor não selecionado, faz requisicao sem cor
+        if (string.IsNullOrEmpty(_nomeCor))
+        {
+            Debug.LogWarning("O atributo referente à cor não foi definido. A requisição será enviada assim mesmo!");
+
+            _requisitionManager.SendVisualizationConfigurationToArduino(
+                nomeDataset: _nomeDataset,
+                nomeEixoX: _nomeEixoX,
+                nomeEixoY: _nomeEixoY,
+                filter: _filtrosUri
+            );
+            return;
+        }
+
+        _requisitionManager.SendVisualizationConfigurationToArduino(
+            nomeDataset: _nomeDataset,
+            nomeEixoX: _nomeEixoX,
+            nomeEixoY: _nomeEixoY,
+            nomeCor: _nomeCor,
             filter: _filtrosUri
         );
 
@@ -195,10 +261,17 @@ public class DatasetManager : MonoBehaviour
             return;
         }
 
+        //Passo 3: Verificar se todos os dados da subvisualizacao estao preechidos
+        if (string.IsNullOrEmpty(_nomeAtributoSubVisualizacao))
+        {
+            Debug.LogError("O atributo da Sub Visualização não está definido!");
+            return;
+        }
 
         _filtrosUriSubVisualizacao = _filterWidget
-             .GetFiltrosConfiguradosParaSubvisualizacao(_nomeAtributoSubVisualizacao);
+            .GetFiltrosConfiguradosParaSubvisualizacao(_nomeAtributoSubVisualizacao);
 
+        //Passo 4: Verificar se o valor dos filtros voltou ok
         if (_filtrosUriSubVisualizacao == null)
         {
             Debug.LogError("Houve algum erro ao gerar a string das subvisualizações. A requisição não será feita!");

@@ -12,6 +12,7 @@ public class RequisitionManager : MonoBehaviour
 
     public string enderecoServidor = "localhost";
     public string porta = "3000";
+    public string portaMiddleware = "5501";
 
     string respostaJson;
         
@@ -39,7 +40,7 @@ public class RequisitionManager : MonoBehaviour
         StartCoroutine(GetRequest(uri, 2));
     }
 
-    public void RequestVisualization(string nomeDataset, string nomeEixoX, string nomeEixoY, string filter)
+    public void RequestBarChart(string nomeDataset, string nomeEixoX, string nomeEixoY, string filter)
     {
         string request = $"chartgen.png?";
         string x = $"x={nomeEixoX}";
@@ -53,10 +54,9 @@ public class RequisitionManager : MonoBehaviour
         string uri = $"{enderecoServidor}:{porta}/generate/{nomeDataset}/{request}{x}{y}{chartType}{title}{xLabel}{yLabel}{filterUri}";
         uri = uri.Replace(" ", "");
         StartCoroutine(GetRequest(uri, 5));
-
     }
 
-    public void RequestVisualization(string nomeDataset, string nomeEixoX, string nomeEixoY, string cor, string filter)
+    public void RequestBarChart(string nomeDataset, string nomeEixoX, string nomeEixoY, string nomeCor, string filter)
     {
         string request = $"chartgen.png?";
         string x = $"x={nomeEixoX}";
@@ -65,13 +65,39 @@ public class RequisitionManager : MonoBehaviour
         string title = $"&title={nomeEixoX} X {nomeEixoY}";
         string xLabel = $"&xlabel={nomeEixoX}";
         string yLabel = $"&xlabel={nomeEixoY}";
-        string color = $"&color={cor}";
+        string color = $"&color={nomeCor}";
+
         string filterUri = $"&filter={filter}";
 
         string uri = $"{enderecoServidor}:{porta}/generate/{nomeDataset}/{request}{x}{y}{color}{chartType}{title}{xLabel}{yLabel}{filterUri}";
         uri = uri.Replace(" ", "");
         StartCoroutine(GetRequest(uri, 5));
+    }
 
+    public void SendVisualizationConfigurationToArduino(string nomeDataset, string nomeEixoX, string nomeEixoY, string nomeCor, string filter)
+    {
+        string request = $"mainPayload";
+        string endBody = $"?max=50bars=6";
+        //string filterUri = $"&filter={filter}";
+
+        string uri = $"{enderecoServidor}:{portaMiddleware}/{request}/{nomeDataset}/{nomeEixoX}/{nomeEixoY}/{nomeCor}{endBody}";
+        uri = uri.Replace(" ", "");
+
+        Debug.Log(uri);
+        StartCoroutine(GetRequest(uri, 999));
+    }
+
+    public void SendVisualizationConfigurationToArduino(string nomeDataset, string nomeEixoX, string nomeEixoY, string filter)
+    {
+        string request = $"mainPayload";
+        string endBody = $"?max=50bars=6";
+        //string filterUri = $"&filter={filter}";
+
+        string uri = $"{enderecoServidor}:{portaMiddleware}/{request}/{nomeDataset}/{nomeEixoX}/{nomeEixoY}{endBody}";
+        uri = uri.Replace(" ", "");
+
+        Debug.Log(uri);
+        StartCoroutine(GetRequest(uri, 999));
     }
 
     // TODO: Adicionar gerenciador/renderizador de subvisualizacoes

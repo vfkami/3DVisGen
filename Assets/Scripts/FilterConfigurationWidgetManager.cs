@@ -73,12 +73,12 @@ public class FilterConfigurationWidgetManager : MonoBehaviour
         return _informacaoFiltros[index];
     }
 
-    private int GetIndexAtributoPorNome(string nomeAtributo)
+    public int GetIndexAtributoPorNome(string nomeAtributo)
     {
         return Array.FindIndex(_labelFiltros, f => f.Equals(nomeAtributo));
     }
 
-    private Vector2 GetRangeNumerico(int index)
+    public Vector2 GetRangeNumerico(int index)
     {
         if (!_tipoFiltros[index].Equals(Numeric))
         {
@@ -136,8 +136,15 @@ public class FilterConfigurationWidgetManager : MonoBehaviour
         _filtrosGameObject[index].SetActive(true);
     }
 
+    public bool HasFiltroValido()
+    {
+        return _filtrosGameObject.Any(filtro => filtro != null);
+    }
+
     public string GetFiltrosConfigurados()
     {
+        if (!HasFiltroValido()) return "";       
+
         _filtros = new Filtro[_labelFiltros.Length];
 
         for (int i = 0; i < _labelFiltros.Length; i++)

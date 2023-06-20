@@ -59,9 +59,9 @@
     <Compile Include="Assets\Scripts\3D vis techiniques\PontoLinha.cs" />
     <Compile Include="Assets\Scripts\CategoricFilterConfiguration.cs" />
     <Compile Include="Assets\Scripts\3D vis techiniques\ScatterplotManager.cs" />
-    <Compile Include="Assets\SettingsManager.cs" />
+    <Compile Include="Assets\Scripts\SettingsManager.cs" />
     <Compile Include="Assets\Scripts\FilterConfigurationWidgetManager.cs" />
-    <Compile Include="Assets\VisualizationRenderer.cs" />
+    <Compile Include="Assets\Scripts\VisualizationRenderer.cs" />
     <Compile Include="Assets\Scripts\3D vis techiniques\BarChartManager.cs" />
     <Compile Include="Assets\Scripts\DatasetManager.cs" />
     <Compile Include="Assets\Scripts\3D vis techiniques\LineChartManager.cs" />
@@ -75,6 +75,8 @@
     <Compile Include="Assets\Scripts\RequisitionManager.cs" />
     <Compile Include="Assets\Scripts\FiducialMarkerController.cs" />
     <Compile Include="Assets\Scripts\3D vis techiniques\Barra.cs" />
+    <Compile Include="Assets\HeightBarBehavior.cs" />
+    <Compile Include="Assets\Scripts\TestScenariosManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
