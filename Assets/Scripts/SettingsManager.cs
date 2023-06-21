@@ -37,6 +37,14 @@ public class SettingsManager : MonoBehaviour
             _fmm.SetNumeroMarcadores(qtdMarcadores);
     }
 
+    public void SetQtdBarras(int qtdMarcadores)
+    {
+        if (_fmm == null)
+            _fmm = GameObject.Find("FiducialMarkersManager").GetComponent<FiducialMarkerManager>();
+
+        _fmm.SetNumeroMarcadores(qtdMarcadores);
+    }
+
     public bool IsIPValido(string ipAddress)
     {
         // Separa o endereço IP em 4 partes

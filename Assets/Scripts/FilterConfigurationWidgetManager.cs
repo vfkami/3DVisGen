@@ -75,9 +75,19 @@ public class FilterConfigurationWidgetManager : MonoBehaviour
 
     public int GetIndexAtributoPorNome(string nomeAtributo)
     {
-        return Array.FindIndex(_labelFiltros, f => f.Equals(nomeAtributo));
-    }
+        Debug.Log(nomeAtributo);
 
+
+        try
+        {
+            return Array.FindIndex(_labelFiltros, f => f.Contains(nomeAtributo));
+        }
+        catch (NullReferenceException ex)
+        {
+            Debug.LogWarning($"{ex.Message} - Atributo {nomeAtributo} não encontrado!");
+            return -1;
+        }
+    }
     public Vector2 GetRangeNumerico(int index)
     {
         if (!_tipoFiltros[index].Equals(Numeric))

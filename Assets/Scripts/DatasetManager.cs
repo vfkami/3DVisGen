@@ -50,7 +50,6 @@ public class DatasetManager : MonoBehaviour
             Debug.LogError(ex.Message);
         }
 
-
         AtualizaElementosCanvas();
     }
 
@@ -72,7 +71,6 @@ public class DatasetManager : MonoBehaviour
 
     public void ConfiguraBarraAltura(string eixo)
     {
-        
         var index = _filterWidget.GetIndexAtributoPorNome(eixo);
         var range = _filterWidget.GetRangeNumerico(index);
         
@@ -92,7 +90,11 @@ public class DatasetManager : MonoBehaviour
     {
         _nomeAtributoSubVisualizacao = nomeAtributo;
         _indexAtributoSubVisualizacao = indexAtributo;
-        //
+    }
+
+    public static void SetNomeAtributoSubVisualizacao(string nomeAtributo)
+    {
+        _nomeAtributoSubVisualizacao = nomeAtributo;
     }
 
     public void AtualizaElementosCanvas()

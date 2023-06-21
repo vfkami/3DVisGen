@@ -43,7 +43,7 @@ public class DatasetSelectorWidgetManager : MonoBehaviour
 
         if (dropdownIndex < 0) return;
 
-        requisitionManager.GetDatasetPorNome(nomeDataset, true);
+        requisitionManager.GetDatasetPorNome(nomeDataset);
         DatasetManager.SetNomeDataset(nomeDataset);
     }
 

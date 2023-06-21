@@ -9,6 +9,7 @@ public class RequisitionManager : MonoBehaviour
     public DatasetSelectorWidgetManager datasetWidget;
     public VisualizationRenderer visualization;
     public FiducialMarkerManager fiducialMarkerManager;
+    public TestScenariosManager testScenariosManager;
 
     public string enderecoServidor = "localhost";
     public string porta = "3000";
@@ -34,10 +35,16 @@ public class RequisitionManager : MonoBehaviour
         StartCoroutine(GetRequest(uri, 1));
     }
 
-    public void GetDatasetPorNome(string datasetName, bool updateCanvas)
+    public void GetDatasetPorNome(string datasetName)
     {
         string uri = $"{enderecoServidor}:{porta}/metadata/{datasetName}";
         StartCoroutine(GetRequest(uri, 2));
+    }
+
+    public void GetDatasetPorNomeAtributosPreenchidos(string datasetName)
+    {
+        string uri = $"{enderecoServidor}:{porta}/metadata/{datasetName}";
+        StartCoroutine(GetRequest(uri, 7));
     }
 
     public void RequestBarChart(string nomeDataset, string nomeEixoX, string nomeEixoY, string filter)
@@ -171,6 +178,11 @@ public class RequisitionManager : MonoBehaviour
                 byte[] res = data.data;
                 Sprite sprite = Utils.RenderOfBytes(res);
                 fiducialMarkerManager.AddNovaSubVisualizacao(sprite);
+                break;
+            case 7:
+                datasetWidget.AtualizaTextoCanvas(data.text);
+                dataserManager.SetDataset(data.text);
+                testScenariosManager.DefineAtributosSelecionados();
                 break;
             default:
                 respostaJson = data.text;
