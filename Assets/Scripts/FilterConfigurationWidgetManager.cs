@@ -75,9 +75,6 @@ public class FilterConfigurationWidgetManager : MonoBehaviour
 
     public int GetIndexAtributoPorNome(string nomeAtributo)
     {
-        Debug.Log(nomeAtributo);
-
-
         try
         {
             return Array.FindIndex(_labelFiltros, f => f.Contains(nomeAtributo));
