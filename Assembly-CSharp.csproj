@@ -77,6 +77,7 @@
     <Compile Include="Assets\Scripts\HeightBarBehavior.cs" />
     <Compile Include="Assets\Scripts\FiducialMarkerController.cs" />
     <Compile Include="Assets\Scripts\3D vis techiniques\Barra.cs" />
+    <Compile Include="Assets\Scripts\AugmentedImageBehavior.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />

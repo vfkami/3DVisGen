@@ -9,11 +9,18 @@ public class FiducialMarkerController : MonoBehaviour
     public TextMeshProUGUI markerText;
     public Image image;
     public Canvas canvas;
+    public Button button;
+
+    private bool isClicked = false;
+    private float doubleClickTimeThreshold = 0.3f; // Time threshold for a double-click (in seconds)
+
 
     //by default, canvas start the scene disabled;
     private void Start()
     {
+        button.onClick.AddListener(OnClick);
         canvas.enabled = true;
+
         //SetModoImagem();
     }
     public void SetModoTexto()
@@ -40,6 +47,26 @@ public class FiducialMarkerController : MonoBehaviour
     void OnMouseDown()
     {
         canvas.enabled = !canvas.enabled;
+    }
+
+    void OnClick()
+    {
+        if (isClicked) // Double-click detected
+        {
+            FindObjectOfType<FiducialMarkerManager>().setZoomedImageSprite(image.sprite);
+            isClicked = false;
+        }
+        else // Start the timer for the double-click
+        {
+            isClicked = true;
+            Invoke("ResetClick", doubleClickTimeThreshold);
+        }
+    }
+
+    void ResetClick()
+    {
+        // Reset the click state after the time threshold
+        isClicked = false;
     }
 
 }

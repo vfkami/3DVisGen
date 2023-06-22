@@ -13,6 +13,8 @@ public class FiducialMarkerManager : MonoBehaviour
     public GameObject modeloMarcador;
     public GameObject[] fiducialMarkers = new GameObject[NumeroMarcadores];
 
+    public AugmentedImageBehavior augmentedImageBehavior;
+
     private void Start()
     {
         _indexUltimoSpriteAdicionado = 0;
@@ -122,6 +124,11 @@ public class FiducialMarkerManager : MonoBehaviour
             fiducialMarkers[i].transform.localPosition = new Vector3((i * 2) - (NumeroMarcadores) , 0, 0);
         }
 
+    }
+
+    public void setZoomedImageSprite(Sprite sp)
+    {
+        augmentedImageBehavior.setSprite(sp);
     }
 
     
