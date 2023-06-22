@@ -279,16 +279,25 @@ public class DatasetManager : MonoBehaviour
             Debug.LogError("Houve algum erro ao gerar a string das subvisualizações. A requisição não será feita!");
             return;
         }
+        // Passo 5: Obter label das categorias para enviar para o gráfico
 
-        foreach (var subvisualizacaouri in _filtrosUriSubVisualizacao)
+        int indexEixoX = _filterWidget.GetIndexAtributoPorNome(_nomeEixoX);
+        string[] atributosCategoricosLabels = _filterWidget.GetLabelAtributosCategoricos(indexEixoX);
+
+        int loopTimes = atributosCategoricosLabels.Length <= _filtrosUriSubVisualizacao.Length ? atributosCategoricosLabels.Length : _filtrosUriSubVisualizacao.Length;
+
+        for (int i = 0; i < loopTimes; i++)
         {
             _requisitionManager.RequestSubVisualization(
             nomeDataset: _nomeDataset,
             nomeEixoX: _nomeEixoX,
             eixoSubVis: _nomeAtributoSubVisualizacao,
-            filter: subvisualizacaouri
+            filter: _filtrosUriSubVisualizacao[i],
+            nomeCategoria: atributosCategoricosLabels[i],
+            index: i
             );
         }
+
         
     }
 }

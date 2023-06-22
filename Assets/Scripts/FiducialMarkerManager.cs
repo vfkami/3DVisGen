@@ -16,7 +16,6 @@ public class FiducialMarkerManager : MonoBehaviour
     private void Start()
     {
         _indexUltimoSpriteAdicionado = 0;
-        //SetNumeroMarcadores(6);
     }
 
     public void SetTextoMarcadorPorIndex(string text, int index)
@@ -29,7 +28,6 @@ public class FiducialMarkerManager : MonoBehaviour
         try
         {
             fiducialMarkers[index].GetComponent<FiducialMarkerController>().SetImage(sprite);
-            _indexUltimoSpriteAdicionado++;
         }
         catch (Exception ex)
         {
@@ -93,14 +91,15 @@ public class FiducialMarkerManager : MonoBehaviour
         sprites = new Sprite[NumeroMarcadores];
     }
 
-    public void AddNovaSubVisualizacao(Sprite sp)
+    public void AddNovaSubVisualizacao(Sprite sp, int index)
     {
-        if(_indexUltimoSpriteAdicionado >= NumeroMarcadores)
+        if(_indexUltimoSpriteAdicionado >= NumeroMarcadores || index >= NumeroMarcadores)
         {
             Debug.LogError("Lista de Sprites cheia. Os proximos não serão adicionados");
+            return;
         }
 
-        SetSpriteMarcadorPorIndex(sp, _indexUltimoSpriteAdicionado);
+        SetSpriteMarcadorPorIndex(sp, index);
     }
 
     public void SetNumeroMarcadores(int value)

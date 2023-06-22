@@ -109,24 +109,23 @@ public class RequisitionManager : MonoBehaviour
 
     // TODO: Adicionar gerenciador/renderizador de subvisualizacoes
     // TODO: Adicionar gerenciador dos botões virtuais - marcadores
-    public void RequestSubVisualization(string nomeDataset, string eixoSubVis, string nomeEixoX, string filter)
+    public void RequestSubVisualization(string nomeDataset, string eixoSubVis, string nomeEixoX, string filter, string nomeCategoria, int index)
     {
         string request = $"chartgen.png?";
         string x = $"x={eixoSubVis}";
         string chartType = $"&chart=piechart";
-        string title = $"&title={nomeEixoX} X {eixoSubVis}";
+        string title = $"&title={nomeEixoX}_{nomeCategoria.ToUpper()}_X_{eixoSubVis}";
         string xLabel = $"&xlabel={eixoSubVis}";
         string filterUri = $"&filter={filter}";
 
         string uri = $"{enderecoServidor}:{porta}/generate/{nomeDataset}/{request}{x}{chartType}{title}{xLabel}{filterUri}";
         uri = uri.Replace(" ", "");
-        Debug.Log(uri);
 
-        StartCoroutine(GetRequest(uri, 6));
+        StartCoroutine(GetRequest(uri, 6, index));
 
     }
 
-    IEnumerator GetRequest(string uri, int operacao)
+    IEnumerator GetRequest(string uri, int operacao, int index = -1)
     {
         if (string.IsNullOrEmpty(enderecoServidor))
         { 
@@ -149,13 +148,13 @@ public class RequisitionManager : MonoBehaviour
                     datasetWidget.AtualizaTextoCanvas(webRequest.error);
                     break;
                 case UnityWebRequest.Result.Success:
-                    ResponseCallback(webRequest.downloadHandler, operacao);
+                    ResponseCallback(webRequest.downloadHandler, operacao, index);
                     break;
             }
         }
     }
 
-    private void ResponseCallback(DownloadHandler data, int operacao)
+    private void ResponseCallback(DownloadHandler data, int operacao, int index = -1)
     {
         switch (operacao)
         {
@@ -175,7 +174,10 @@ public class RequisitionManager : MonoBehaviour
             case 6:
                 byte[] res = data.data;
                 Sprite sprite = Utils.RenderOfBytes(res);
-                fiducialMarkerManager.AddNovaSubVisualizacao(sprite);
+                if (index < 0)
+                    Debug.LogWarning("Posição do sprite não definida. Não será possível garantir a ordem correspondente!");
+
+                fiducialMarkerManager.AddNovaSubVisualizacao(sprite, index);
                 break;
             case 7:
                 datasetWidget.AtualizaTextoCanvas(data.text);

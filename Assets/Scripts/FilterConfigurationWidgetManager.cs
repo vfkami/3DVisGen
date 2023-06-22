@@ -60,7 +60,7 @@ public class FilterConfigurationWidgetManager : MonoBehaviour
         _informacaoFiltros = infos;
     }
 
-    private string[] GetLabelAtributosCategoricos(int index)
+    public string[] GetLabelAtributosCategoricos(int index)
     {
         if (!_tipoFiltros[index].Equals(Categoric))
         {

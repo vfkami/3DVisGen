@@ -13,7 +13,7 @@ public class FiducialMarkerController : MonoBehaviour
     //by default, canvas start the scene disabled;
     private void Start()
     {
-        canvas.enabled = false;
+        canvas.enabled = true;
         //SetModoImagem();
     }
     public void SetModoTexto()
