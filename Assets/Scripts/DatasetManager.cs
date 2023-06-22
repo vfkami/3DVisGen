@@ -271,7 +271,7 @@ public class DatasetManager : MonoBehaviour
         }
 
         _filtrosUriSubVisualizacao = _filterWidget
-            .GetFiltrosConfiguradosParaSubvisualizacao(_nomeAtributoSubVisualizacao);
+            .GetFiltrosConfiguradosParaSubvisualizacao(_nomeEixoX);
 
         //Passo 4: Verificar se o valor dos filtros voltou ok
         if (_filtrosUriSubVisualizacao == null)
@@ -285,7 +285,7 @@ public class DatasetManager : MonoBehaviour
             _requisitionManager.RequestSubVisualization(
             nomeDataset: _nomeDataset,
             nomeEixoX: _nomeEixoX,
-            nomeEixoY: _nomeEixoY,
+            eixoSubVis: _nomeAtributoSubVisualizacao,
             filter: subvisualizacaouri
             );
         }

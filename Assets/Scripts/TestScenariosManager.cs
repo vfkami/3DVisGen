@@ -13,15 +13,16 @@ public class TestScenariosManager : MonoBehaviour
 
     public RequisitionManager _requisitionManager;
     public SettingsManager _settingsManager;
+    public DatasetManager _datasetManager;
 
     public void ConfiguraCenario01()
     {
         _serverIp = "127.0.0.1";
         _dataset = "carros_teste";
         _eixoX = "MARCA";
-        _eixoY = "ANO";
-        _cor = "ORIGEM";
-        _subVis = "TIPO";
+        _eixoY = "NRCILINDROS";
+        _cor = "TIPO";
+        _subVis = "COMBUSTIVEL";
 
         RealizaRequisicao();
     }
@@ -31,9 +32,9 @@ public class TestScenariosManager : MonoBehaviour
         _serverIp = "127.0.0.1";
         _dataset = "carros_teste";
         _eixoX = "MARCA";
-        _eixoY = "NRCILINDROS";
-        _cor = "TIPO";
-        _subVis = "COMBUSTIVEL";
+        _eixoY = "ANO";
+        _cor = "ORIGEM";
+        _subVis = "TIPO";
 
         RealizaRequisicao();
     }
@@ -52,6 +53,10 @@ public class TestScenariosManager : MonoBehaviour
         DatasetManager.SetNomeEixoY(_eixoY);
         DatasetManager.SetNomeCor(_cor);
         DatasetManager.SetNomeAtributoSubVisualizacao(_subVis);
+
+        _datasetManager.RequestVisualization();
+        _datasetManager.RequestSubVisualization();
+
     }
 
 

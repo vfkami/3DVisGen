@@ -105,6 +105,8 @@ public class FiducialMarkerManager : MonoBehaviour
 
     public void SetNumeroMarcadores(int value)
     {
+        if (value == NumeroMarcadores) return;
+
         NumeroMarcadores = value;
         AtualizarQuantidadeMarcadores();
     }

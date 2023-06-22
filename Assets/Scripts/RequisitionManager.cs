@@ -109,18 +109,16 @@ public class RequisitionManager : MonoBehaviour
 
     // TODO: Adicionar gerenciador/renderizador de subvisualizacoes
     // TODO: Adicionar gerenciador dos botões virtuais - marcadores
-    public void RequestSubVisualization(string nomeDataset, string nomeEixoX, string nomeEixoY, string filter)
+    public void RequestSubVisualization(string nomeDataset, string eixoSubVis, string nomeEixoX, string filter)
     {
         string request = $"chartgen.png?";
-        string x = $"x={nomeEixoX}";
-        string y = $"&y={nomeEixoY}";
+        string x = $"x={eixoSubVis}";
         string chartType = $"&chart=piechart";
-        string title = $"&title={nomeEixoX} X {nomeEixoY}";
-        string xLabel = $"&xlabel={nomeEixoX}";
-        string yLabel = $"&xlabel={nomeEixoY}";
+        string title = $"&title={nomeEixoX} X {eixoSubVis}";
+        string xLabel = $"&xlabel={eixoSubVis}";
         string filterUri = $"&filter={filter}";
 
-        string uri = $"{enderecoServidor}:{porta}/generate/{nomeDataset}/{request}{x}{y}{chartType}{title}{xLabel}{yLabel}{filterUri}";
+        string uri = $"{enderecoServidor}:{porta}/generate/{nomeDataset}/{request}{x}{chartType}{title}{xLabel}{filterUri}";
         uri = uri.Replace(" ", "");
         Debug.Log(uri);
 

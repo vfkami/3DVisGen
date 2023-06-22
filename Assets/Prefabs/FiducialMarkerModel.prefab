@@ -110,7 +110,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   markerText: {fileID: 5243766215738078201}
-  image: {fileID: 0}
+  image: {fileID: 5243766215858410172}
   canvas: {fileID: 5243766216036522886}
 --- !u!1 &5243766215738078203
 GameObject:
