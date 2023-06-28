@@ -97,7 +97,7 @@ public class RequisitionManager : MonoBehaviour
     public void SendVisualizationConfigurationToArduino(string nomeDataset, string nomeEixoX, string nomeEixoY, string filter)
     {
         string request = $"mainPayload";
-        string endBody = $"?max=50bars=6";
+        string endBody = $"?max=50&bars=6&sort=true&random=false";
         //string filterUri = $"&filter={filter}";
 
         string uri = $"{enderecoServidor}:{portaMiddleware}/{request}/{nomeDataset}/{nomeEixoX}/{nomeEixoY}{endBody}";

@@ -7,7 +7,7 @@ public class AugmentedImageBehavior : MonoBehaviour
 {
     public void setSprite(Sprite sp)
     {
-        GetComponent<Image>().sprite = sp;
+        GetComponent<SpriteRenderer>().sprite = sp;
         turnOn();
     }
 
@@ -19,10 +19,5 @@ public class AugmentedImageBehavior : MonoBehaviour
     public void turnOff()
     {
         gameObject.SetActive(false);
-        Debug.Log("off");
     }
-
-
-
-
 }

@@ -18,10 +18,10 @@ public class TestScenariosManager : MonoBehaviour
     public void ConfiguraCenario01()
     {
         _serverIp = "127.0.0.1";
-        _dataset = "carros_teste";
+        _dataset = "datasetcarros_testes";
         _eixoX = "MARCA";
-        _eixoY = "NRCILINDROS";
-        _cor = "TIPO";
+        _eixoY = "VALOR";
+        _cor = "ORIGEM";
         _subVis = "COMBUSTIVEL";
 
         RealizaRequisicao();
@@ -30,10 +30,10 @@ public class TestScenariosManager : MonoBehaviour
     public void ConfiguraCenario02()
     {
         _serverIp = "127.0.0.1";
-        _dataset = "carros_teste";
+        _dataset = "datasetcarros_testes";
         _eixoX = "MARCA";
-        _eixoY = "ANO";
-        _cor = "ORIGEM";
+        _eixoY = "POTENCIA";
+        _cor = "POSMOTOR";
         _subVis = "TIPO";
 
         RealizaRequisicao();

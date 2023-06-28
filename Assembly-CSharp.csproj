@@ -58,6 +58,7 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\TestScenariosManager.cs" />
     <Compile Include="Assets\Scripts\3D vis techiniques\PontoLinha.cs" />
+    <Compile Include="Assets\Scripts\AugmentedImageBehavior.cs" />
     <Compile Include="Assets\Scripts\CategoricFilterConfiguration.cs" />
     <Compile Include="Assets\Scripts\3D vis techiniques\ScatterplotManager.cs" />
     <Compile Include="Assets\Scripts\SettingsManager.cs" />
@@ -77,7 +78,7 @@
     <Compile Include="Assets\Scripts\HeightBarBehavior.cs" />
     <Compile Include="Assets\Scripts\FiducialMarkerController.cs" />
     <Compile Include="Assets\Scripts\3D vis techiniques\Barra.cs" />
-    <Compile Include="Assets\Scripts\AugmentedImageBehavior.cs" />
+    <Compile Include="Assets\CloseButtonBehavior.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
