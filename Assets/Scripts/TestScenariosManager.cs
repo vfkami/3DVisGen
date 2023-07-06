@@ -18,11 +18,11 @@ public class TestScenariosManager : MonoBehaviour
     public void ConfiguraCenario01()
     {
         _serverIp = "127.0.0.1";
-        _dataset = "datasetcarros_testes";
-        _eixoX = "MARCA";
-        _eixoY = "VALOR";
-        _cor = "ORIGEM";
-        _subVis = "COMBUSTIVEL";
+        _dataset = "base_regioes_brasil";
+        _eixoX = "REGIAO";
+        _eixoY = "NUM_MUNICIPIOS";
+        _cor = "TAXA_ALFABETI_CAT";
+        _subVis = "ESTADO";
 
         RealizaRequisicao();
     }
@@ -30,11 +30,11 @@ public class TestScenariosManager : MonoBehaviour
     public void ConfiguraCenario02()
     {
         _serverIp = "127.0.0.1";
-        _dataset = "datasetcarros_testes";
-        _eixoX = "MARCA";
-        _eixoY = "POTENCIA";
-        _cor = "POSMOTOR";
-        _subVis = "TIPO";
+        _dataset = "base_regioes_brasil";
+        _eixoX = "REGIAO";
+        _eixoY = "RENDA_PER_CAPITA";
+        _cor = "DENS_DEMO_CAT";
+        _subVis = "ESTADO";
 
         RealizaRequisicao();
     }
@@ -56,11 +56,7 @@ public class TestScenariosManager : MonoBehaviour
 
         _datasetManager.RequestVisualization();
         _datasetManager.RequestSubVisualization();
+        _datasetManager.SendToArduino();
 
     }
-
-
-
-
-    //TODO: Aplicar essa configurações nos métodos para verificar se a interface corresponde!
 }
